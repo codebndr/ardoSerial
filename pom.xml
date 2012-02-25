@@ -20,6 +20,9 @@
                             jar-with-dependencies
                         </descriptorRef>
                     </descriptorRefs>
+                    <excludes>
+                        <exclude>**/eu/amaxilatis/**</exclude>
+                    </excludes>
                 </configuration>
 
                 <executions>
@@ -41,23 +44,23 @@
                 <version>1.2</version>
                 <executions>
                     <execution>
-                        <id>sign</id>
                         <configuration>
                             <alias>MyApplet</alias>
                             <keypass>123456</keypass>
                             <storepass>123456</storepass>
                             <archive>./target/ardoSerial-0.1-jar-with-dependencies.jar</archive>
                         </configuration>
+                        <id>sign</id>
                         <phase>deploy</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
                     </execution>
                     <!--<execution>-->
-                        <!--<id>verify</id>-->
-                        <!--<goals>-->
-                            <!--<goal>verify</goal>-->
-                        <!--</goals>-->
+                    <!--<id>verify</id>-->
+                    <!--<goals>-->
+                    <!--<goal>verify</goal>-->
+                    <!--</goals>-->
                     <!--</execution>-->
                 </executions>
             </plugin>
