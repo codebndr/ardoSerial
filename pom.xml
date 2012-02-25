@@ -48,7 +48,7 @@
                             <storepass>123456</storepass>
                             <archive>./target/ardoSerial-0.1-jar-with-dependencies.jar</archive>
                         </configuration>
-                        <phase>install</phase>
+                        <phase>deploy</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
