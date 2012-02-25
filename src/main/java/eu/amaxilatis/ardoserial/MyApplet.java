@@ -1,6 +1,8 @@
 package eu.amaxilatis.ardoserial;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -38,15 +40,22 @@ public class MyApplet extends JApplet {
         }
 
 
-        m = new Main(1, textArea);
+        m = new Main("/dev/ttyACM0", textArea);
         m.run();
     }
 
 
     private void createGUI() {
         port = new JButton("Set Port");
+        port.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                textArea.setText("");
+                m.reconnect(portField.getText());
+            }
+        });
         portField = new TextField("/dev/ttyACM1");
-        JPanel topPanel = new JPanel();
+        final JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 2));
         topPanel.add(portField, 0);
         topPanel.add(port, 1);
@@ -59,10 +68,12 @@ public class MyApplet extends JApplet {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 textArea.setText("");
+
                 m.disconnect();
             }
         });
-        JPanel bottomPanel = new JPanel();
+
+        final JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new GridLayout(2, 2));
         bottomPanel.add(portField, 0);
         bottomPanel.add(port, 1);
@@ -70,7 +81,36 @@ public class MyApplet extends JApplet {
         bottomPanel.add(disconnect, 3);
 
         textArea = new JTextArea();
-//
+        textArea.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent documentEvent) {
+                int x;
+                textArea.selectAll();
+                x = textArea.getSelectionEnd();
+                textArea.select(x, x);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent documentEvent) {
+                int x;
+                textArea.selectAll();
+                x = textArea.getSelectionEnd();
+                textArea.select(x, x);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent documentEvent) {
+                int x;
+                textArea.selectAll();
+                x = textArea.getSelectionEnd();
+                textArea.select(x, x);
+            }
+        });
+
+        JScrollPane sp = new JScrollPane(textArea);
+
+
+        //
         getContentPane().setLayout(new BorderLayout());
 
 
@@ -79,7 +119,7 @@ public class MyApplet extends JApplet {
 //        add(about);
 //        add(port);
         this.getContentPane().add(topPanel, BorderLayout.NORTH);
-        this.getContentPane().add(textArea, BorderLayout.CENTER);
+        this.getContentPane().add(sp, BorderLayout.CENTER);
         this.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
         System.out.println("moving");

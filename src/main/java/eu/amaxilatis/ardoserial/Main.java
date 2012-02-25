@@ -10,26 +10,26 @@ import javax.swing.*;
 public class Main implements Runnable {
 
     static SerialPort serialPort;
-    private int portname;
+    private static String port;
     private static JTextArea jTextArea;
 
 
-    public Main(int port, JTextArea jTextArea) {
-        portname = port;
+    public Main(String port, JTextArea jTextArea) {
+        this.port = port;
         this.jTextArea = jTextArea;
     }
 
     public static void main(String[] args) {
-        connect(1);
+        connect();
     }
 
-    public static void connect(int pport) {
+    public static void connect() {
         try {
             Thread.sleep(5000);
         } catch (InterruptedException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-        serialPort = new SerialPort("/dev/ttyACM" + pport);
+        serialPort = new SerialPort(port);
         jTextArea.append(serialPort.getPortName());
         try {
             serialPort.openPort();
@@ -51,7 +51,7 @@ public class Main implements Runnable {
 
     @Override
     public void run() {
-        connect(portname);
+        connect();
     }
 
     public void disconnect() {
@@ -61,6 +61,12 @@ public class Main implements Runnable {
         } catch (SerialPortException e) {
             jTextArea.setText("Cannot close port");
         }
+    }
+
+    public void reconnect(final String newport) {
+        disconnect();
+        port = newport;
+        connect();
     }
 
     static class SerialPortReader implements SerialPortEventListener {
