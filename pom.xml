@@ -48,17 +48,17 @@
                             <storepass>123456</storepass>
                             <archive>./target/ardoSerial-0.1-jar-with-dependencies.jar</archive>
                         </configuration>
-                        <phase>deploy</phase>
+                        <phase>install</phase>
                         <goals>
                             <goal>sign</goal>
                         </goals>
                     </execution>
-                    <execution>
-                        <id>verify</id>
-                        <goals>
-                            <goal>verify</goal>
-                        </goals>
-                    </execution>
+                    <!--<execution>-->
+                        <!--<id>verify</id>-->
+                        <!--<goals>-->
+                            <!--<goal>verify</goal>-->
+                        <!--</goals>-->
+                    <!--</execution>-->
                 </executions>
             </plugin>
             <plugin>
