@@ -75,7 +75,7 @@ public class Main implements Runnable {
      * connects to the previously set port.
      */
     public final void connect() {
-        String[] portNames = SerialPortList.getPortNames();
+        final String[] portNames = SerialPortList.getPortNames();
         LOGGER.info("found ports: " + portNames.length);
         if (portNames.length > 0) {
             for (String portname : portNames) {

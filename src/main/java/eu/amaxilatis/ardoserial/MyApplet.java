@@ -40,7 +40,7 @@ public class MyApplet extends JApplet {
     /**
      * a connection handler.
      */
-    private Main arduinoConnection;
+    private transient Main arduinoConnection;
 
     @Override
     public final void destroy() {
