@@ -14,14 +14,24 @@ import java.awt.event.ActionListener;
  * Time: 10:07 PM
  */
 public class MyApplet extends JApplet {
-    private JTextArea textArea;
-    private JButton port;
-    private JButton about;
-    private TextField portField;
-    private JButton send;
-    private TextField sendField;
-    private JButton disconnect;
-    private Main m;
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(MyApplet.class);
+
+    private final JTextArea textArea;
+
+    private final TextField portField;
+    private final TextField sendField;
+    private Main arduinoConnection;
+
+    public MyApplet() throws HeadlessException {
+        portField = new TextField("/dev/ttyACM1");
+
+
+        textArea = new JTextArea();
+
+        sendField = new TextField("...");
+
+
+    }
 
     @Override
     public void init() {
@@ -36,84 +46,76 @@ public class MyApplet extends JApplet {
                 }
             });
         } catch (Exception e) {
-            System.err.println("createGUI didn't successfully complete");
+            LOGGER.error("createGUI didn't successfully complete");
         }
 
 
-        m = new Main("/dev/ttyACM0", textArea);
-        m.run();
+        arduinoConnection = new Main(textArea);
+        arduinoConnection.setPort("/dev/ttyACM0");
+        arduinoConnection.run();
     }
 
 
     private void createGUI() {
-        port = new JButton("Set Port");
+        final JButton port = new JButton("Set Port");
         port.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            public void actionPerformed(final ActionEvent actionEvent) {
                 textArea.setText("");
-                m.reconnect(portField.getText());
+                arduinoConnection.reconnect(portField.getText());
             }
         });
-        portField = new TextField("/dev/ttyACM1");
+
         final JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 2));
         topPanel.add(portField, 0);
         topPanel.add(port, 1);
 
-        send = new JButton("Send to Arduino");
-        sendField = new TextField("...");
-        about = new JButton("about");
-        disconnect = new JButton("disconnect");
+        final JButton disconnect = new JButton("disconnect");
         disconnect.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            public void actionPerformed(final ActionEvent actionEvent) {
                 textArea.setText("");
 
-                m.disconnect();
+                arduinoConnection.disconnect();
             }
         });
 
         final JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new GridLayout(2, 2));
-        bottomPanel.add(portField, 0);
-        bottomPanel.add(port, 1);
+        final JButton about = new JButton("about");
+        final JButton send = new JButton("Send to Arduino");
+        bottomPanel.add(sendField, 0);
+        bottomPanel.add(send, 1);
         bottomPanel.add(about, 2);
         bottomPanel.add(disconnect, 3);
 
-        textArea = new JTextArea();
+
         textArea.getDocument().addDocumentListener(new DocumentListener() {
             @Override
-            public void insertUpdate(DocumentEvent documentEvent) {
-                int x;
+            public void insertUpdate(final DocumentEvent documentEvent) {
                 textArea.selectAll();
-                x = textArea.getSelectionEnd();
-                textArea.select(x, x);
+                final int prevText = textArea.getSelectionEnd();
+                textArea.select(prevText, prevText);
             }
 
             @Override
-            public void removeUpdate(DocumentEvent documentEvent) {
-                int x;
+            public void removeUpdate(final DocumentEvent documentEvent) {
                 textArea.selectAll();
-                x = textArea.getSelectionEnd();
-                textArea.select(x, x);
+                final int prevText = textArea.getSelectionEnd();
+                textArea.select(prevText, prevText);
             }
 
             @Override
-            public void changedUpdate(DocumentEvent documentEvent) {
-                int x;
+            public void changedUpdate(final DocumentEvent documentEvent) {
                 textArea.selectAll();
-                x = textArea.getSelectionEnd();
-                textArea.select(x, x);
+                final int prevText = textArea.getSelectionEnd();
+                textArea.select(prevText, prevText);
             }
         });
 
-        JScrollPane sp = new JScrollPane(textArea);
-
-
-        //
+        final JScrollPane sp = new JScrollPane(textArea);
         getContentPane().setLayout(new BorderLayout());
-
-
 //        add(menu);
 //        add(port);
 //        add(about);
@@ -122,7 +124,7 @@ public class MyApplet extends JApplet {
         this.getContentPane().add(sp, BorderLayout.CENTER);
         this.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
-        System.out.println("moving");
+        LOGGER.info("booting up");
 
 
     }
