@@ -49,7 +49,7 @@ public class Main implements Runnable {
      *
      * @return the port name
      */
-    public String getPort() {
+    public final String getPort() {
         return port;
     }
 
@@ -58,7 +58,7 @@ public class Main implements Runnable {
      *
      * @param port the new port name.
      */
-    public void setPort(final String port) {
+    public final void setPort(final String port) {
         Main.port = port;
     }
 
@@ -67,14 +67,14 @@ public class Main implements Runnable {
      *
      * @param args input args
      */
-    public void main(final String[] args) {
+    public final void main(final String[] args) {
         connect();
     }
 
     /**
      * connects to the previously set port.
      */
-    public void connect() {
+    public final void connect() {
         String[] portNames = SerialPortList.getPortNames();
         LOGGER.info("found ports: " + portNames.length);
         if (portNames.length > 0) {
@@ -164,16 +164,10 @@ public class Main implements Runnable {
          * @param event a new SerialPortEvent.
          */
         public void serialEvent(final SerialPortEvent event) {
-//            final char ch = (char) event.getEventValue();
-//            System.out.print(ch);
-//            System.out.println(event.getEventType());
-//            System.out.println(event.isRXCHAR());
-//            System.out.println(event.getEventValue());
+
             //Object type SerialPortEvent carries information about which event occurred and a value.
-            //For example, if the data came a method event.getEventValue() returns us the number of bytes in the input buffer.
+            //ie, if the data came a method event.getEventValue() returns the number of bytes in the in buffer.
             if (event.isRXCHAR()) {
-//                                            System.out.println(event.getEventValue() );
-//                if (event.getEventValue() == 10) {
                 try {
 
                     final byte buffer[] = serialPort.readBytes(1);
@@ -182,29 +176,12 @@ public class Main implements Runnable {
                 } catch (SerialPortException ex) {
                     jTextArea.append(ex.getExceptionType());
                 }
-//                }
             } else {
                 LOGGER.info(event.isBREAK());
                 LOGGER.info(event.isCTS());
                 LOGGER.info(event.isTXEMPTY());
                 LOGGER.info(event.isRXFLAG());
             }
-
-
-            //If the CTS line status has changed, then the method event.getEventValue() returns 1 if the line is ON and 0 if it is OFF.
-//            else if (event.isCTS()) {
-//                if (event.getEventValue() == 1) {
-//                    System.out.println("CTS - ON");
-//                } else {
-//                    System.out.println("CTS - OFF");
-//                }
-//            } else if (event.isDSR()) {
-//                if (event.getEventValue() == 1) {
-//                    System.out.println("DSR - ON");
-//                } else {
-//                    System.out.println("DSR - OFF");
-//                }
-//        }
         }
     }
 }

@@ -53,7 +53,7 @@ public class MyApplet extends JApplet {
      *
      * @throws HeadlessException an exception.
      */
-    public MyApplet() throws HeadlessException {
+    public MyApplet() {
         BasicConfigurator.configure();
         portField = new TextField("/dev/ttyACM0");
         textArea = new JTextArea();
