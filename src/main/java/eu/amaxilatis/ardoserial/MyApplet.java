@@ -1,41 +1,68 @@
 package eu.amaxilatis.ardoserial;
 
-import javax.swing.*;
+import org.apache.log4j.BasicConfigurator;
+
+import javax.swing.JApplet;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import java.awt.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.HeadlessException;
+import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by IntelliJ IDEA.
- * User: amaxilatis
- * Date: 2/24/12
- * Time: 10:07 PM
+ * A JApplet class.
+ * Provides user interface to connecto to an arduino using a usb connection.
  */
 public class MyApplet extends JApplet {
+    /**
+     * Logger.
+     */
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(MyApplet.class);
-
-    private final JTextArea textArea;
-
-    private final TextField portField;
-    private final TextField sendField;
+    /**
+     * the textArea that contains output from the arduino.
+     */
+    private final transient JTextArea textArea;
+    /**
+     * the arduino port.
+     */
+    private final transient TextField portField;
+    /**
+     * a new command to the arduino.
+     */
+    private final transient TextField sendField;
+    /**
+     * a connection handler.
+     */
     private Main arduinoConnection;
 
+    @Override
+    public final void destroy() {
+        LOGGER.info("MyApplet called Destroy");
+        arduinoConnection.disconnect();
+    }
+
+    /**
+     * default constructor.
+     *
+     * @throws HeadlessException an exception.
+     */
     public MyApplet() throws HeadlessException {
-        portField = new TextField("/dev/ttyACM1");
-
-
+        BasicConfigurator.configure();
+        portField = new TextField("/dev/ttyACM0");
         textArea = new JTextArea();
-
         sendField = new TextField("...");
-
-
     }
 
     @Override
-    public void init() {
-
+    public final void init() {
+        LOGGER.info("MyApplet called Init");
 
         //Execute a job on the event-dispatching thread:
         //creating this applet's GUI.
@@ -49,14 +76,17 @@ public class MyApplet extends JApplet {
             LOGGER.error("createGUI didn't successfully complete");
         }
 
-
         arduinoConnection = new Main(textArea);
         arduinoConnection.setPort("/dev/ttyACM0");
         arduinoConnection.run();
     }
 
-
+    /**
+     * Build the default user interface.
+     */
     private void createGUI() {
+        LOGGER.info("MyApplet called CreateGUI");
+
         final JButton port = new JButton("Set Port");
         port.addActionListener(new ActionListener() {
             @Override
@@ -114,14 +144,14 @@ public class MyApplet extends JApplet {
             }
         });
 
-        final JScrollPane sp = new JScrollPane(textArea);
+        final JScrollPane scrollPane = new JScrollPane(textArea);
         getContentPane().setLayout(new BorderLayout());
 //        add(menu);
 //        add(port);
 //        add(about);
 //        add(port);
         this.getContentPane().add(topPanel, BorderLayout.NORTH);
-        this.getContentPane().add(sp, BorderLayout.CENTER);
+        this.getContentPane().add(scrollPane, BorderLayout.CENTER);
         this.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
         LOGGER.info("booting up");
