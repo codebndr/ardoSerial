@@ -4,7 +4,6 @@ import jssc.SerialPort;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
-import jssc.SerialPortList;
 
 import javax.swing.JTextArea;
 
@@ -75,13 +74,6 @@ public class Main implements Runnable {
      * connects to the previously set port.
      */
     public final void connect() {
-        final String[] portNames = SerialPortList.getPortNames();
-        LOGGER.info("found ports: " + portNames.length);
-        if (portNames.length > 0) {
-            for (String portname : portNames) {
-                LOGGER.info(portname);
-            }
-        }
 
         try {
             Thread.sleep(SLEEP_TIME);
@@ -111,19 +103,26 @@ public class Main implements Runnable {
 
     @Override
     public final void run() {
-        connect();
+        while (true) {
+            try {
+                Thread.sleep(SLEEP_TIME);
+            } catch (InterruptedException e) {
+            }
+        }
     }
 
     /**
      * called to disconnect form the port.
      */
     public final void disconnect() {
-        if (serialPort.isOpened()) {
-            try {
-                serialPort.closePort();
-                jTextArea.setText("Port closed");
-            } catch (final SerialPortException e) {
-                jTextArea.setText("Cannot close port");
+        if (serialPort != null) {
+            if (serialPort.isOpened()) {
+                try {
+                    serialPort.closePort();
+                    jTextArea.setText("Port closed");
+                } catch (final SerialPortException e) {
+                    jTextArea.setText("Cannot close port");
+                }
             }
         }
     }
@@ -173,6 +172,7 @@ public class Main implements Runnable {
                     final byte buffer[] = serialPort.readBytes(1);
                     LOGGER.info("|" + (char) buffer[0] + "|");
                     jTextArea.append(String.valueOf((char) buffer[0]));
+                    jTextArea.setCaretPosition(jTextArea.getDocument().getLength());
                 } catch (SerialPortException ex) {
                     jTextArea.append(ex.getExceptionType());
                 }

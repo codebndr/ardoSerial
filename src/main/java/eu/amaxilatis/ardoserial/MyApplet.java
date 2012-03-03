@@ -1,14 +1,14 @@
 package eu.amaxilatis.ardoserial;
 
+import eu.amaxilatis.ardoserial.serialPorts.SerialPortList;
 import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.JApplet;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
@@ -32,7 +32,7 @@ public class MyApplet extends JApplet {
     /**
      * the arduino port.
      */
-    private final transient TextField portField;
+    private final transient JComboBox portSelection;
     /**
      * a new command to the arduino.
      */
@@ -41,6 +41,8 @@ public class MyApplet extends JApplet {
      * a connection handler.
      */
     private transient Main arduinoConnection;
+    private Thread serialPortThread;
+
 
     @Override
     public final void destroy() {
@@ -55,7 +57,11 @@ public class MyApplet extends JApplet {
      */
     public MyApplet() {
         BasicConfigurator.configure();
-        portField = new TextField("/dev/ttyACM0");
+        portSelection = new JComboBox();
+        for (final String detectedPort : SerialPortList.getPortNames()) {
+            portSelection.addItem(detectedPort);
+        }
+
         textArea = new JTextArea();
         sendField = new TextField("...");
     }
@@ -77,8 +83,10 @@ public class MyApplet extends JApplet {
         }
 
         arduinoConnection = new Main(textArea);
-        arduinoConnection.setPort("/dev/ttyACM0");
-        arduinoConnection.run();
+        serialPortThread = new Thread(arduinoConnection);
+        serialPortThread.start();
+        arduinoConnection.setPort(portSelection.getSelectedItem().toString());
+
     }
 
     /**
@@ -92,13 +100,13 @@ public class MyApplet extends JApplet {
             @Override
             public void actionPerformed(final ActionEvent actionEvent) {
                 textArea.setText("");
-                arduinoConnection.reconnect(portField.getText());
+                arduinoConnection.reconnect(portSelection.getSelectedItem().toString());
             }
         });
 
         final JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 2));
-        topPanel.add(portField, 0);
+        topPanel.add(portSelection, 0);
         topPanel.add(port, 1);
 
         final JButton disconnect = new JButton("disconnect");
@@ -121,28 +129,28 @@ public class MyApplet extends JApplet {
         bottomPanel.add(disconnect, 3);
 
 
-        textArea.getDocument().addDocumentListener(new DocumentListener() {
-            @Override
-            public void insertUpdate(final DocumentEvent documentEvent) {
-                textArea.selectAll();
-                final int prevText = textArea.getSelectionEnd();
-                textArea.select(prevText, prevText);
-            }
-
-            @Override
-            public void removeUpdate(final DocumentEvent documentEvent) {
-                textArea.selectAll();
-                final int prevText = textArea.getSelectionEnd();
-                textArea.select(prevText, prevText);
-            }
-
-            @Override
-            public void changedUpdate(final DocumentEvent documentEvent) {
-                textArea.selectAll();
-                final int prevText = textArea.getSelectionEnd();
-                textArea.select(prevText, prevText);
-            }
-        });
+//        textArea.getDocument().addDocumentListener(new DocumentListener() {
+//            @Override
+//            public void insertUpdate(final DocumentEvent documentEvent) {
+//                textArea.selectAll();
+//                final int prevText = textArea.getSelectionEnd();
+//                textArea.select(prevText, prevText);
+//            }
+//
+//            @Override
+//            public void removeUpdate(final DocumentEvent documentEvent) {
+//                textArea.selectAll();
+//                final int prevText = textArea.getSelectionEnd();
+//                textArea.select(prevText, prevText);
+//            }
+//
+//            @Override
+//            public void changedUpdate(final DocumentEvent documentEvent) {
+//                textArea.selectAll();
+//                final int prevText = textArea.getSelectionEnd();
+//                textArea.select(prevText, prevText);
+//            }
+//        });
 
         final JScrollPane scrollPane = new JScrollPane(textArea);
         getContentPane().setLayout(new BorderLayout());
