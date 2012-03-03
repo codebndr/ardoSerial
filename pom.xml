@@ -8,6 +8,7 @@
     <artifactId>ardoSerial</artifactId>
     <version>0.1</version>
 
+    <name>ardoSerial</name>
 
     <build>
         <plugins>
@@ -27,6 +28,9 @@
 
                 <executions>
                     <execution>
+                        <configuration>
+                            <finalName>${project.name}</finalName>
+                        </configuration>
                         <id>make-assembly</id>
                         <!-- this is used for inheritance merges -->
                         <phase>package</phase>
@@ -73,6 +77,41 @@
                     <target>1.6</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.google.code.maven-replacer-plugin</groupId>
+                <artifactId>maven-replacer-plugin</artifactId>
+                <version>1.3.9</version>
+                <executions>
+                    <execution>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>replace</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <includes>
+                        <include>
+                            target/classes/index.html
+                        </include>
+                    </includes>
+                    <replacements>
+                        <replacement>
+                            <token>@@NAME@@</token>
+                            <value>${project.name}</value>
+                        </replacement>
+                        <replacement>
+                            <token>@@BUILD@@</token>
+                            <value>${BUILD_NUMBER}</value>
+                        </replacement>
+                        <replacement>
+                            <token>@@VERSION@@</token>
+                            <value>${project.version}</value>
+                        </replacement>
+                    </replacements>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
