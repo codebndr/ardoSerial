@@ -3,6 +3,7 @@ package eu.amaxilatis.ardoserial.util;
 import jssc.SerialNativeInterface;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -57,9 +58,9 @@ public class SerialPortList {
             String buffer = "";
             while ((buffer = reader.readLine()) != null && !buffer.isEmpty()) {
                 if (buffer.contains("ttyUSB")) {
-                    portsTree.add("/dev/"+buffer);
+                    portsTree.add("/dev/" + buffer);
                 } else if (buffer.contains("ttyACM")) {
-                    portsTree.add("/dev/"+buffer);
+                    portsTree.add("/dev/" + buffer);
                 }
             }
             returnArray = portsTree.toArray(returnArray);
@@ -77,23 +78,22 @@ public class SerialPortList {
     public static String[] getMacOSXPortNames() {
         System.out.println("getMacOSXPortNames");
         String[] returnArray = new String[]{};
-        try {
-            Process dmesgProcess = Runtime.getRuntime().exec("ls /dev/");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(dmesgProcess.getInputStream()));
-            TreeSet<String> portsTree = new TreeSet<String>();
-            ArrayList<String> portsList = new ArrayList<String>();
-            String buffer = "";
-            while ((buffer = reader.readLine()) != null && !buffer.isEmpty()) {
-                if (buffer.contains("tty.serial.")) {
-                    portsTree.add("/dev/"+buffer);
-                } else if (buffer.contains("tty.usbserial.")) {
-                    portsTree.add("/dev/"+buffer);
+        File dir = new File("/dev");
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (files.length > 0) {
+                TreeSet<String> portsTree = new TreeSet<String>();
+                ArrayList<String> portsList = new ArrayList<String>();
+                for (File file : files) {
+                    if (!file.isDirectory() && !file.isFile() && (file.getName().contains("tty.") || file.getName().contains("cu."))) {
+                        portsTree.add("/dev/" + file.getName());
+                    }
                 }
+                for (String portName : portsTree) {
+                    portsList.add(portName);
+                }
+                returnArray = portsList.toArray(returnArray);
             }
-            returnArray = portsTree.toArray(returnArray);
-            reader.close();
-        } catch (IOException ex) {
-            //Do nothing
         }
         return returnArray;
     }
