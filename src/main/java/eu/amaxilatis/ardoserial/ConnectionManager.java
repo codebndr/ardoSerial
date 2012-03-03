@@ -1,8 +1,8 @@
 package eu.amaxilatis.ardoserial;
 
+import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
+import eu.amaxilatis.ardoserial.util.SerialPortReader;
 import jssc.SerialPort;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
 
 import javax.swing.JTextArea;
@@ -11,11 +11,11 @@ import javax.swing.JTextArea;
  * This is the Class Responsible for connecting to the arduino.
  * Uses the jSSC library provided by http://code.google.com/p/java-simple-serial-connector/
  */
-public class Main implements Runnable {
+public class ConnectionManager implements Runnable {
     /**
      * Logger.
      */
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(Main.class);
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ConnectionManager.class);
     /**
      * the serial port connection.
      */
@@ -39,8 +39,12 @@ public class Main implements Runnable {
      *
      * @param jTextArea the JTextArea to append to.
      */
-    public Main(final JTextArea jTextArea) {
+    public ConnectionManager(final JTextArea jTextArea) {
         this.jTextArea = jTextArea;
+    }
+
+    public SerialPort getSerialPort() {
+        return serialPort;
     }
 
     /**
@@ -58,7 +62,7 @@ public class Main implements Runnable {
      * @param port the new port name.
      */
     public final void setPort(final String port) {
-        Main.port = port;
+        ConnectionManager.port = port;
     }
 
     /**
@@ -94,7 +98,8 @@ public class Main implements Runnable {
             //Set the prepared mask
             serialPort.setEventsMask(SerialPort.MASK_RXCHAR);
             //Add an interface through which we will receive information about events
-            serialPort.addEventListener(new SerialPortReader(jTextArea));
+            serialPort.addEventListener(new SerialPortReader(this, jTextArea));
+            ArduinoStatusImage.setConnected();
         } catch (SerialPortException ex) {
             jTextArea.append(ex.getExceptionType());
 
@@ -120,6 +125,7 @@ public class Main implements Runnable {
                 try {
                     serialPort.closePort();
                     jTextArea.setText("Port closed");
+                    ArduinoStatusImage.setDisconnected();
                 } catch (final SerialPortException e) {
                     jTextArea.setText("Cannot close port");
                 }
@@ -138,50 +144,14 @@ public class Main implements Runnable {
         connect();
     }
 
-    /**
-     * A class that handles the serial port output.
-     */
-    static class SerialPortReader implements SerialPortEventListener {
-
-        /**
-         * the JTextArea to append output.
-         */
-        private final transient JTextArea jTextArea;
-
-        /**
-         * basic constructor.
-         *
-         * @param jTextArea1 a JTextArea object.
-         */
-        public SerialPortReader(final JTextArea jTextArea1) {
-            this.jTextArea = jTextArea1;
-        }
-
-        /**
-         * event handler for new serial port output.
-         *
-         * @param event a new SerialPortEvent.
-         */
-        public void serialEvent(final SerialPortEvent event) {
-
-            //Object type SerialPortEvent carries information about which event occurred and a value.
-            //ie, if the data came a method event.getEventValue() returns the number of bytes in the in buffer.
-            if (event.isRXCHAR()) {
-                try {
-
-                    final byte buffer[] = serialPort.readBytes(1);
-                    LOGGER.info("|" + (char) buffer[0] + "|");
-                    jTextArea.append(String.valueOf((char) buffer[0]));
-                    jTextArea.setCaretPosition(jTextArea.getDocument().getLength());
-                } catch (SerialPortException ex) {
-                    jTextArea.append(ex.getExceptionType());
-                }
-            } else {
-                LOGGER.info(event.isBREAK());
-                LOGGER.info(event.isCTS());
-                LOGGER.info(event.isTXEMPTY());
-                LOGGER.info(event.isRXFLAG());
-            }
+    public void send(final String inputString) {
+        try {
+            serialPort.writeBytes(inputString.getBytes());
+        } catch (SerialPortException e) {
+            jTextArea.append(e.getExceptionType());
+            jTextArea.setCaretPosition(jTextArea.getDocument().getLength());
         }
     }
+
+
 }

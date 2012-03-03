@@ -1,6 +1,7 @@
 package eu.amaxilatis.ardoserial;
 
-import eu.amaxilatis.ardoserial.serialPorts.SerialPortList;
+import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
+import eu.amaxilatis.ardoserial.util.SerialPortList;
 import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.JApplet;
@@ -10,6 +11,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.HeadlessException;
 import java.awt.TextField;
@@ -40,7 +43,7 @@ public class MyApplet extends JApplet {
     /**
      * a connection handler.
      */
-    private transient Main arduinoConnection;
+    private transient ConnectionManager arduinoConnection;
     private Thread serialPortThread;
 
 
@@ -82,7 +85,7 @@ public class MyApplet extends JApplet {
             LOGGER.error("createGUI didn't successfully complete");
         }
 
-        arduinoConnection = new Main(textArea);
+        arduinoConnection = new ConnectionManager(textArea);
         serialPortThread = new Thread(arduinoConnection);
         serialPortThread.start();
         arduinoConnection.setPort(portSelection.getSelectedItem().toString());
@@ -95,7 +98,11 @@ public class MyApplet extends JApplet {
     private void createGUI() {
         LOGGER.info("MyApplet called CreateGUI");
 
-        final JButton port = new JButton("Set Port");
+        this.setBackground(Color.white);
+
+        final JButton port = new JButton("Connect");
+        final JButton disconnect = new JButton("Disconnect");
+
         port.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent actionEvent) {
@@ -104,12 +111,6 @@ public class MyApplet extends JApplet {
             }
         });
 
-        final JPanel topPanel = new JPanel();
-        topPanel.setLayout(new GridLayout(1, 2));
-        topPanel.add(portSelection, 0);
-        topPanel.add(port, 1);
-
-        final JButton disconnect = new JButton("disconnect");
         disconnect.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent actionEvent) {
@@ -119,45 +120,48 @@ public class MyApplet extends JApplet {
             }
         });
 
+        final JPanel topPanel = new JPanel();
+        ArduinoStatusImage.setDisconnected();
+//        topPanel.setLayout(new GridLayout(1, 3));
+        topPanel.setLayout(new FlowLayout());
+        topPanel.add(portSelection);
+        topPanel.add(port);
+        topPanel.add(disconnect);
+        topPanel.add(ArduinoStatusImage.getArduinoStatus());
+
+
         final JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new GridLayout(2, 2));
+        bottomPanel.setLayout(new GridLayout(0, 1));
         final JButton about = new JButton("about");
+        about.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                new AboutFrame();
+            }
+        });
         final JButton send = new JButton("Send to Arduino");
-        bottomPanel.add(sendField, 0);
-        bottomPanel.add(send, 1);
-        bottomPanel.add(about, 2);
-        bottomPanel.add(disconnect, 3);
 
+        send.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                arduinoConnection.send(sendField.getText());
+            }
+        });
+        final JPanel pan1 = new JPanel();
+        pan1.setLayout(new FlowLayout());
+        sendField.setColumns(25);
+        pan1.add(sendField);
+        pan1.add(send);
+        final JPanel pan2 = new JPanel();
+        pan2.setLayout(new FlowLayout());
+        pan2.add(about);
 
-//        textArea.getDocument().addDocumentListener(new DocumentListener() {
-//            @Override
-//            public void insertUpdate(final DocumentEvent documentEvent) {
-//                textArea.selectAll();
-//                final int prevText = textArea.getSelectionEnd();
-//                textArea.select(prevText, prevText);
-//            }
-//
-//            @Override
-//            public void removeUpdate(final DocumentEvent documentEvent) {
-//                textArea.selectAll();
-//                final int prevText = textArea.getSelectionEnd();
-//                textArea.select(prevText, prevText);
-//            }
-//
-//            @Override
-//            public void changedUpdate(final DocumentEvent documentEvent) {
-//                textArea.selectAll();
-//                final int prevText = textArea.getSelectionEnd();
-//                textArea.select(prevText, prevText);
-//            }
-//        });
+        bottomPanel.add(pan1);
+        bottomPanel.add(pan2);
+
 
         final JScrollPane scrollPane = new JScrollPane(textArea);
         getContentPane().setLayout(new BorderLayout());
-//        add(menu);
-//        add(port);
-//        add(about);
-//        add(port);
         this.getContentPane().add(topPanel, BorderLayout.NORTH);
         this.getContentPane().add(scrollPane, BorderLayout.CENTER);
         this.getContentPane().add(bottomPanel, BorderLayout.SOUTH);

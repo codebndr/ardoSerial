@@ -1,4 +1,4 @@
-import eu.amaxilatis.ardoserial.serialPorts.SerialPortList;
+import eu.amaxilatis.ardoserial.util.SerialPortList;
 
 /**
  * Created by IntelliJ IDEA.

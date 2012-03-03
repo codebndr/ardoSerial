@@ -1,4 +1,4 @@
-package eu.amaxilatis.ardoserial.serialPorts;
+package eu.amaxilatis.ardoserial.util;
 
 import jssc.SerialNativeInterface;
 
