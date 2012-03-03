@@ -29,7 +29,7 @@
                 <executions>
                     <execution>
                         <configuration>
-                            <finalName>${project.name}</finalName>
+                            <finalName>${project.name}-0.1</finalName>
                         </configuration>
                         <id>make-assembly</id>
                         <!-- this is used for inheritance merges -->
