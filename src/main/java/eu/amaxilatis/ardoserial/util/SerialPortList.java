@@ -71,7 +71,7 @@ public class SerialPortList {
         for (int i = 0; i < ports.size(); i++) {
             portsString[i] = ports.get(i);
         }
-        return (String[]) ports.toArray();
+        return portsString;
     }
 
     public static String[] getLinuxPortNames() {
