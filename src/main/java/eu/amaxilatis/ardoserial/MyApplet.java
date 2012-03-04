@@ -1,21 +1,17 @@
 package eu.amaxilatis.ardoserial;
 
 import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
+import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.ardoserial.util.SerialPortList;
+import jssc.SerialPort;
 import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.HeadlessException;
-import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -29,17 +25,13 @@ public class MyApplet extends JApplet {
      */
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(MyApplet.class);
     /**
-     * the textArea that contains output from the arduino.
-     */
-    private final transient JTextArea textArea;
-    /**
      * the arduino port.
      */
     private final transient JComboBox portSelection;
     /**
-     * a new command to the arduino.
+     * the arduino port.
      */
-    private final transient TextField sendField;
+    private final transient JComboBox portBaudrate;
     /**
      * a connection handler.
      */
@@ -61,12 +53,28 @@ public class MyApplet extends JApplet {
     public MyApplet() {
         BasicConfigurator.configure();
         portSelection = new JComboBox();
+        portBaudrate = new JComboBox();
+        initBaudrates(portBaudrate);
         for (final String detectedPort : SerialPortList.getPortNames()) {
             portSelection.addItem(detectedPort);
         }
 
-        textArea = new JTextArea();
-        sendField = new TextField("...");
+    }
+
+    private void initBaudrates(final JComboBox portBaudrate) {
+        portBaudrate.addItem(SerialPort.BAUDRATE_110);
+        portBaudrate.addItem(SerialPort.BAUDRATE_300);
+        portBaudrate.addItem(SerialPort.BAUDRATE_600);
+        portBaudrate.addItem(SerialPort.BAUDRATE_1200);
+        portBaudrate.addItem(SerialPort.BAUDRATE_4800);
+        portBaudrate.addItem(SerialPort.BAUDRATE_9600);
+        portBaudrate.addItem(SerialPort.BAUDRATE_14400);
+        portBaudrate.addItem(SerialPort.BAUDRATE_19200);
+        portBaudrate.addItem(SerialPort.BAUDRATE_38400);
+        portBaudrate.addItem(SerialPort.BAUDRATE_115200);
+        portBaudrate.addItem(SerialPort.BAUDRATE_128000);
+        portBaudrate.addItem(SerialPort.BAUDRATE_256000);
+        portBaudrate.setSelectedIndex(5);
     }
 
     @Override
@@ -84,12 +92,6 @@ public class MyApplet extends JApplet {
         } catch (Exception e) {
             LOGGER.error("createGUI didn't successfully complete");
         }
-
-        arduinoConnection = new ConnectionManager(textArea);
-        serialPortThread = new Thread(arduinoConnection);
-        serialPortThread.start();
-        arduinoConnection.setPort(portSelection.getSelectedItem().toString());
-
     }
 
     /**
@@ -101,70 +103,36 @@ public class MyApplet extends JApplet {
         this.setBackground(Color.white);
 
         final JButton port = new JButton("Connect");
-        final JButton disconnect = new JButton("Disconnect");
+//        final JButton disconnect = new JButton("Disconnect");
 
         port.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent actionEvent) {
-                textArea.setText("");
-                arduinoConnection.reconnect(portSelection.getSelectedItem().toString());
+                arduinoConnection = new ConnectionManager(new PortOutputViewerFrame());
+                serialPortThread = new Thread(arduinoConnection);
+                serialPortThread.start();
+                arduinoConnection.setPort(portSelection.getSelectedItem().toString(),portBaudrate.getSelectedItem().toString());
+                arduinoConnection.connect();
+//                arduinoConnection.reconnect(portSelection.getSelectedItem().toString());
             }
         });
 
-        disconnect.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent actionEvent) {
-                textArea.setText("");
+//        disconnect.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(final ActionEvent actionEvent) {
+////                textArea.setText("");
+//
+//                arduinoConnection.disconnect();
+//            }
+//        });
 
-                arduinoConnection.disconnect();
-            }
-        });
 
-        final JPanel topPanel = new JPanel();
         ArduinoStatusImage.setDisconnected();
-//        topPanel.setLayout(new GridLayout(1, 3));
-        topPanel.setLayout(new FlowLayout());
-        topPanel.add(portSelection);
-        topPanel.add(port);
-        topPanel.add(disconnect);
-        topPanel.add(ArduinoStatusImage.getArduinoStatus());
+        setLayout(new FlowLayout());
+        add(portSelection);
+        add(portBaudrate);
+        add(port);
 
-
-        final JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new GridLayout(0, 1));
-        final JButton about = new JButton("about");
-        about.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                new AboutFrame();
-            }
-        });
-        final JButton send = new JButton("Send to Arduino");
-
-        send.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                arduinoConnection.send(sendField.getText());
-            }
-        });
-        final JPanel pan1 = new JPanel();
-        pan1.setLayout(new FlowLayout());
-        sendField.setColumns(25);
-        pan1.add(sendField);
-        pan1.add(send);
-        final JPanel pan2 = new JPanel();
-        pan2.setLayout(new FlowLayout());
-        pan2.add(about);
-
-        bottomPanel.add(pan1);
-        bottomPanel.add(pan2);
-
-
-        final JScrollPane scrollPane = new JScrollPane(textArea);
-        getContentPane().setLayout(new BorderLayout());
-        this.getContentPane().add(topPanel, BorderLayout.NORTH);
-        this.getContentPane().add(scrollPane, BorderLayout.CENTER);
-        this.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
         LOGGER.info("booting up");
 

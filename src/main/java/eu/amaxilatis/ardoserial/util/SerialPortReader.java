@@ -1,11 +1,10 @@
 package eu.amaxilatis.ardoserial.util;
 
 import eu.amaxilatis.ardoserial.ConnectionManager;
+import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
 import jssc.SerialPortException;
-
-import javax.swing.JTextArea;
 
 /**
  * A class that handles the serial port output.
@@ -18,7 +17,7 @@ public class SerialPortReader implements SerialPortEventListener {
     /**
      * the JTextArea to append output.
      */
-    private final transient JTextArea jTextArea;
+    private final transient PortOutputViewerFrame jTextArea;
     private ConnectionManager connectionManager;
 
     /**
@@ -26,7 +25,7 @@ public class SerialPortReader implements SerialPortEventListener {
      *
      * @param jTextArea1 a JTextArea object.
      */
-    public SerialPortReader(final ConnectionManager m, final JTextArea jTextArea1) {
+    public SerialPortReader(final ConnectionManager m, final PortOutputViewerFrame jTextArea1) {
         this.connectionManager = m;
         this.jTextArea = jTextArea1;
     }
@@ -45,10 +44,9 @@ public class SerialPortReader implements SerialPortEventListener {
 
                 final byte buffer[] = connectionManager.getSerialPort().readBytes(1);
                 LOGGER.info("|" + (char) buffer[0] + "|");
-                jTextArea.append(String.valueOf((char) buffer[0]));
-                jTextArea.setCaretPosition(jTextArea.getDocument().getLength());
+                jTextArea.appendText(String.valueOf((char) buffer[0]));
             } catch (SerialPortException ex) {
-                jTextArea.append(ex.getExceptionType());
+                jTextArea.appendText(ex.getExceptionType());
             }
         } else {
             LOGGER.info(event.isBREAK());

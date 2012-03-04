@@ -1,11 +1,10 @@
 package eu.amaxilatis.ardoserial;
 
 import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
+import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.ardoserial.util.SerialPortReader;
 import jssc.SerialPort;
 import jssc.SerialPortException;
-
-import javax.swing.JTextArea;
 
 /**
  * This is the Class Responsible for connecting to the arduino.
@@ -27,11 +26,13 @@ public class ConnectionManager implements Runnable {
     /**
      * the text area to append output of the serial port.
      */
-    private final transient JTextArea jTextArea;
+    private final transient PortOutputViewerFrame jTextArea;
     /**
      * Initialization sleep time.
      */
     private static final long SLEEP_TIME = 5000;
+
+    private static int baudRate;
 
     /**
      * basic constructor.
@@ -39,8 +40,9 @@ public class ConnectionManager implements Runnable {
      *
      * @param jTextArea the JTextArea to append to.
      */
-    public ConnectionManager(final JTextArea jTextArea) {
+    public ConnectionManager(final PortOutputViewerFrame jTextArea) {
         this.jTextArea = jTextArea;
+        jTextArea.setConnectionManager(this);
     }
 
     public SerialPort getSerialPort() {
@@ -61,8 +63,9 @@ public class ConnectionManager implements Runnable {
      *
      * @param port the new port name.
      */
-    public final void setPort(final String port) {
+    public final void setPort(final String port, final String baudRate) {
         ConnectionManager.port = port;
+        ConnectionManager.baudRate = Integer.parseInt(baudRate);
     }
 
     /**
@@ -85,10 +88,10 @@ public class ConnectionManager implements Runnable {
             LOGGER.fatal(e);
         }
         serialPort = new SerialPort(port);
-        jTextArea.append(serialPort.getPortName());
+        jTextArea.appendText(serialPort.getPortName());
         try {
             serialPort.openPort();
-            serialPort.setParams(SerialPort.BAUDRATE_9600, SerialPort.DATABITS_8,
+            serialPort.setParams(baudRate, SerialPort.DATABITS_8,
                     SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
             //Preparing a mask. In a mask, we need to specify the types of events that we want to track.
             //Well, for example, we need to know what came some data, thus in the mask must have the
@@ -101,8 +104,24 @@ public class ConnectionManager implements Runnable {
             serialPort.addEventListener(new SerialPortReader(this, jTextArea));
             ArduinoStatusImage.setConnected();
         } catch (SerialPortException ex) {
-            jTextArea.append(ex.getExceptionType());
+            try {
+                serialPort.openPort();
+                serialPort.setParams(baudRate, SerialPort.DATABITS_8,
+                        SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+                //Preparing a mask. In a mask, we need to specify the types of events that we want to track.
+                //Well, for example, we need to know what came some data, thus in the mask must have the
+                //following value: MASK_RXCHAR. If we, for example, still need to know about changes in states
+                //of lines CTS and DSR, the mask has to look like this:
+                // SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR
+                //Set the prepared mask
+                serialPort.setEventsMask(SerialPort.MASK_RXCHAR);
+                //Add an interface through which we will receive information about events
+                serialPort.addEventListener(new SerialPortReader(this, jTextArea));
+                ArduinoStatusImage.setConnected();
+            } catch (SerialPortException ex2) {
+                jTextArea.appendText(ex2.getExceptionType());
 
+            }
         }
     }
 
@@ -124,10 +143,10 @@ public class ConnectionManager implements Runnable {
             if (serialPort.isOpened()) {
                 try {
                     serialPort.closePort();
-                    jTextArea.setText("Port closed");
+                    LOGGER.info("Port closed");
                     ArduinoStatusImage.setDisconnected();
                 } catch (final SerialPortException e) {
-                    jTextArea.setText("Cannot close port");
+                    LOGGER.error("Cannot close port");
                 }
             }
         }
@@ -148,8 +167,7 @@ public class ConnectionManager implements Runnable {
         try {
             serialPort.writeBytes(inputString.getBytes());
         } catch (SerialPortException e) {
-            jTextArea.append(e.getExceptionType());
-            jTextArea.setCaretPosition(jTextArea.getDocument().getLength());
+            jTextArea.appendText(e.getExceptionType());
         }
     }
 
