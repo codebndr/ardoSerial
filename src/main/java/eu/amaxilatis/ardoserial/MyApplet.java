@@ -4,7 +4,6 @@ import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
 import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.ardoserial.util.SerialPortList;
 import jssc.SerialPort;
-import netscape.javascript.JSObject;
 import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.JApplet;
@@ -76,11 +75,6 @@ public class MyApplet extends JApplet {
         rates[9] = new String(String.valueOf(SerialPort.BAUDRATE_115200));
         rates[10] = new String(String.valueOf(SerialPort.BAUDRATE_128000));
         rates[11] = new String(String.valueOf(SerialPort.BAUDRATE_256000));
-
-
-        JSObject window = JSObject.getWindow(this);
-        Object ratesObj = window.getMember("rates");
-
 
     }
 
