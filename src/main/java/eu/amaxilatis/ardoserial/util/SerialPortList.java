@@ -63,7 +63,9 @@ public class SerialPortList {
 
         List<String> ports = new ArrayList<String>();
         for (int i = 0; i < 10; i++) {
-            if (serialInterface.openPort("COM" + i) != -1) {
+            final int handle = serialInterface.openPort("COM" + i);
+            if (handle != -1) {
+                serialInterface.closePort(handle);
                 ports.add("COM" + i);
             }
         }
