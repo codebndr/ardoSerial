@@ -104,24 +104,7 @@ public class ConnectionManager implements Runnable {
             serialPort.addEventListener(new SerialPortReader(this, jTextArea));
             ArduinoStatusImage.setConnected();
         } catch (SerialPortException ex) {
-            try {
-                serialPort.openPort();
-                serialPort.setParams(baudRate, SerialPort.DATABITS_8,
-                        SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
-                //Preparing a mask. In a mask, we need to specify the types of events that we want to track.
-                //Well, for example, we need to know what came some data, thus in the mask must have the
-                //following value: MASK_RXCHAR. If we, for example, still need to know about changes in states
-                //of lines CTS and DSR, the mask has to look like this:
-                // SerialPort.MASK_RXCHAR + SerialPort.MASK_CTS + SerialPort.MASK_DSR
-                //Set the prepared mask
-                serialPort.setEventsMask(SerialPort.MASK_RXCHAR);
-                //Add an interface through which we will receive information about events
-                serialPort.addEventListener(new SerialPortReader(this, jTextArea));
-                ArduinoStatusImage.setConnected();
-            } catch (SerialPortException ex2) {
-                jTextArea.appendText(ex2.getExceptionType());
-
-            }
+            jTextArea.appendText(ex.getExceptionType());
         }
     }
 

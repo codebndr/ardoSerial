@@ -4,6 +4,7 @@ import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
 import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.ardoserial.util.SerialPortList;
 import jssc.SerialPort;
+import netscape.javascript.JSObject;
 import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.JApplet;
@@ -37,6 +38,8 @@ public class MyApplet extends JApplet {
      */
     private transient ConnectionManager arduinoConnection;
     private Thread serialPortThread;
+    private final String[] rates = new String[12];
+    private String[] detectedPorts;
 
 
     @Override
@@ -55,26 +58,47 @@ public class MyApplet extends JApplet {
         portSelection = new JComboBox();
         portBaudrate = new JComboBox();
         initBaudrates(portBaudrate);
-        for (final String detectedPort : SerialPortList.getPortNames()) {
+        detectedPorts = SerialPortList.getPortNames();
+        for (final String detectedPort : detectedPorts) {
             portSelection.addItem(detectedPort);
         }
+
+
+        rates[0] = new String(String.valueOf(SerialPort.BAUDRATE_110));
+        rates[1] = new String(String.valueOf(SerialPort.BAUDRATE_300));
+        rates[2] = new String(String.valueOf(SerialPort.BAUDRATE_600));
+        rates[3] = new String(String.valueOf(SerialPort.BAUDRATE_1200));
+        rates[4] = new String(String.valueOf(SerialPort.BAUDRATE_4800));
+        rates[5] = new String(String.valueOf(SerialPort.BAUDRATE_9600));
+        rates[6] = new String(String.valueOf(SerialPort.BAUDRATE_14400));
+        rates[7] = new String(String.valueOf(SerialPort.BAUDRATE_19200));
+        rates[8] = new String(String.valueOf(SerialPort.BAUDRATE_38400));
+        rates[9] = new String(String.valueOf(SerialPort.BAUDRATE_115200));
+        rates[10] = new String(String.valueOf(SerialPort.BAUDRATE_128000));
+        rates[11] = new String(String.valueOf(SerialPort.BAUDRATE_256000));
+
+
+        JSObject window = JSObject.getWindow(this);
+        Object ratesObj = window.getMember("rates");
+
 
     }
 
     private void initBaudrates(final JComboBox portBaudrate) {
-        portBaudrate.addItem(SerialPort.BAUDRATE_110);
-        portBaudrate.addItem(SerialPort.BAUDRATE_300);
-        portBaudrate.addItem(SerialPort.BAUDRATE_600);
-        portBaudrate.addItem(SerialPort.BAUDRATE_1200);
-        portBaudrate.addItem(SerialPort.BAUDRATE_4800);
-        portBaudrate.addItem(SerialPort.BAUDRATE_9600);
-        portBaudrate.addItem(SerialPort.BAUDRATE_14400);
-        portBaudrate.addItem(SerialPort.BAUDRATE_19200);
-        portBaudrate.addItem(SerialPort.BAUDRATE_38400);
-        portBaudrate.addItem(SerialPort.BAUDRATE_115200);
-        portBaudrate.addItem(SerialPort.BAUDRATE_128000);
-        portBaudrate.addItem(SerialPort.BAUDRATE_256000);
+
+        for (final String rate : rates) {
+            portBaudrate.addItem(rate);
+        }
         portBaudrate.setSelectedIndex(5);
+    }
+
+    public String getRates() {
+        return rates.toString();
+    }
+
+    public String[] getDetectedPorts() {
+
+        return detectedPorts;
     }
 
     @Override
@@ -111,11 +135,12 @@ public class MyApplet extends JApplet {
                 arduinoConnection = new ConnectionManager(new PortOutputViewerFrame());
                 serialPortThread = new Thread(arduinoConnection);
                 serialPortThread.start();
-                arduinoConnection.setPort(portSelection.getSelectedItem().toString(),portBaudrate.getSelectedItem().toString());
+                arduinoConnection.setPort(portSelection.getSelectedItem().toString(), portBaudrate.getSelectedItem().toString());
                 arduinoConnection.connect();
 //                arduinoConnection.reconnect(portSelection.getSelectedItem().toString());
             }
         });
+
 
 //        disconnect.addActionListener(new ActionListener() {
 //            @Override
@@ -137,6 +162,14 @@ public class MyApplet extends JApplet {
         LOGGER.info("booting up");
 
 
+    }
+
+    public void overrideConnect() {
+        arduinoConnection = new ConnectionManager(new PortOutputViewerFrame());
+        serialPortThread = new Thread(arduinoConnection);
+        serialPortThread.start();
+        arduinoConnection.setPort(portSelection.getSelectedItem().toString(), portBaudrate.getSelectedItem().toString());
+        arduinoConnection.connect();
     }
 
 
