@@ -67,6 +67,10 @@ public class SerialPortList {
                 ports.add("COM" + i);
             }
         }
+        String[] portsString = new String[ports.size()];
+        for (int i = 0; i < ports.size(); i++) {
+            portsString[i] = ports.get(i);
+        }
         return (String[]) ports.toArray();
     }
 
