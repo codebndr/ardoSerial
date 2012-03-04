@@ -8,7 +8,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.TreeSet;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -59,11 +61,13 @@ public class SerialPortList {
             return getMacOSXPortNames();
         }//<-since 0.9.0
 
-        String[] portNames = serialInterface.getSerialPortNames();
-        if (portNames == null) {
-            return new String[]{};
+        List<String> ports = new ArrayList<String>();
+        for (int i = 0; i < 10; i++) {
+            if (serialInterface.openPort("COM" + i) != -1) {
+                ports.add("COM" + i);
+            }
         }
-        return portNames;
+        return (String[]) ports.toArray();
     }
 
     public static String[] getLinuxPortNames() {
