@@ -20,7 +20,7 @@ import java.util.TreeSet;
  */
 public class SerialPortList {
 
-    private static SerialNativeInterface serialInterface;
+    private static SerialNativeInterface serialInterface = new SerialNativeInterface();
 
     private static SerialPortList ourInstance = new SerialPortList();
 
