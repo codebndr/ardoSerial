@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.TreeSet;
 
 /**
@@ -28,6 +29,26 @@ public class SerialPortList {
     private SerialPortList() {
     }
 
+    private static Comparator<String> comparator = new Comparator<String>() {
+        @Override
+        public int compare(String valueA, String valueB) {
+            int result = 0;
+            if (valueA.toLowerCase().contains("com") && valueB.toLowerCase().contains("com")) {
+                try {
+                    int index1 = Integer.valueOf(valueA.toLowerCase().replace("com", ""));
+                    int index2 = Integer.valueOf(valueB.toLowerCase().replace("com", ""));
+                    result = index1 - index2;
+                } catch (Exception ex) {
+                    result = valueA.compareToIgnoreCase(valueB);
+                }
+            } else {
+                result = valueA.compareToIgnoreCase(valueB);
+            }
+            return result;
+        }
+    };
+
+
     public static String[] getPortNames() {
         System.out.println("getPortNames");
         if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_LINUX) {
@@ -37,14 +58,12 @@ public class SerialPortList {
         } else if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_MAC_OS_X) {
             return getMacOSXPortNames();
         }//<-since 0.9.0
-//        String[] portNames = serialInterface.getSerialPortNames();
-//        if (portNames == null) {
-//            return new String[]{};
-//        }
-//        TreeSet<String> ports = new TreeSet<String>(comparator);
-//        ports.addAll(Arrays.asList(portNames));
-//        return ports.toArray(new String[ports.size()]);
-        return null;
+
+        String[] portNames = serialInterface.getSerialPortNames();
+        if (portNames == null) {
+            return new String[]{};
+        }
+        return portNames;
     }
 
     public static String[] getLinuxPortNames() {
