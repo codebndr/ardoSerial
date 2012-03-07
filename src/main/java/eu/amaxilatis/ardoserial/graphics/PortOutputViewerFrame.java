@@ -1,9 +1,11 @@
 package eu.amaxilatis.ardoserial.graphics;
 
 import eu.amaxilatis.ardoserial.ConnectionManager;
+import eu.amaxilatis.ardoserial.MyApplet;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,6 +19,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,15 +35,21 @@ public class PortOutputViewerFrame extends JFrame {
     /**
      * the textArea that contains output from the arduino.
      */
-    private final transient JTextArea textArea;
+    private transient JTextArea textArea;
     /**
      * a new command to the arduino.
      */
-    private final transient JTextField sendField;
+    private transient JTextField sendField;
 
     private ConnectionManager connectionManager;
+    private MyApplet applet;
 
     public PortOutputViewerFrame() {
+
+    }
+
+    public PortOutputViewerFrame(final MyApplet applet) {
+        this.applet = applet;
 
         this.setLayout(new BorderLayout());
         textArea = new JTextArea();
@@ -122,7 +131,7 @@ public class PortOutputViewerFrame extends JFrame {
         save2file.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                saveText(textArea.getText());
+                applet.saveText(textArea.getText());
             }
         });
         bottomPanel.add(save2file);
@@ -132,10 +141,6 @@ public class PortOutputViewerFrame extends JFrame {
         this.setMinimumSize(new Dimension(700, 400));
     }
 
-    private void saveText(final String text) {
-        LOGGER.debug("saving to file");
-        //TODO: implement the save to file behaviour
-    }
 
     public void appendText(final String text) {
 

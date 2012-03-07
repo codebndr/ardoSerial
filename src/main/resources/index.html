@@ -1,11 +1,21 @@
 <head>
     <title>@@NAME@@ (Version:@@VERSION@@, Build:@@BUILD@@)</title>
+    <script type="text/javascript">
+        function connect(){
+            //alert('called connect ');
+            var applet = document.getElementById('myapplet');
+            applet.overrideConnect();
+        }
+    </script>
 </head>
 <body>
 <applet width="400" height="300"
         code="eu.amaxilatis.ardoserial.MyApplet.class"
         archive="./ardoSerial-0.1-jar-with-dependencies.jar">
 </applet>
+<form>
+ <input type="button" onclick='connect()' value='Connect..'/>
+</form>
 
 
 </body>

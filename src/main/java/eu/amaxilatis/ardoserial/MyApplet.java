@@ -9,11 +9,14 @@ import org.apache.log4j.BasicConfigurator;
 import javax.swing.JApplet;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * A JApplet class.
@@ -62,6 +65,9 @@ public class MyApplet extends JApplet {
             portSelection.addItem(detectedPort);
         }
 
+    }
+
+    private void initBaudrates(final JComboBox portBaudrate) {
 
         rates[0] = new String(String.valueOf(SerialPort.BAUDRATE_110));
         rates[1] = new String(String.valueOf(SerialPort.BAUDRATE_300));
@@ -76,14 +82,11 @@ public class MyApplet extends JApplet {
         rates[10] = new String(String.valueOf(SerialPort.BAUDRATE_128000));
         rates[11] = new String(String.valueOf(SerialPort.BAUDRATE_256000));
 
-    }
-
-    private void initBaudrates(final JComboBox portBaudrate) {
-
         for (final String rate : rates) {
             portBaudrate.addItem(rate);
         }
         portBaudrate.setSelectedIndex(5);
+
     }
 
     public String getRates() {
@@ -123,17 +126,17 @@ public class MyApplet extends JApplet {
         final JButton port = new JButton("Connect");
 //        final JButton disconnect = new JButton("Disconnect");
 
-        port.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent actionEvent) {
-                arduinoConnection = new ConnectionManager(new PortOutputViewerFrame());
-                serialPortThread = new Thread(arduinoConnection);
-                serialPortThread.start();
-                arduinoConnection.setPort(portSelection.getSelectedItem().toString(), portBaudrate.getSelectedItem().toString());
-                arduinoConnection.connect();
-//                arduinoConnection.reconnect(portSelection.getSelectedItem().toString());
-            }
-        });
+//        port.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(final ActionEvent actionEvent) {
+////                arduinoConnection = new ConnectionManager(new PortOutputViewerFrame());
+////                serialPortThread = new Thread(arduinoConnection);
+////                serialPortThread.start();
+////                arduinoConnection.setPort(portSelection.getSelectedItem().toString(), portBaudrate.getSelectedItem().toString());
+////                arduinoConnection.connect();
+////                arduinoConnection.reconnect(portSelection.getSelectedItem().toString());
+//            }
+//        });
 
 
 //        disconnect.addActionListener(new ActionListener() {
@@ -150,7 +153,7 @@ public class MyApplet extends JApplet {
         setLayout(new FlowLayout());
         add(portSelection);
         add(portBaudrate);
-        add(port);
+//        add(port);
 
 
         LOGGER.info("booting up");
@@ -159,12 +162,34 @@ public class MyApplet extends JApplet {
     }
 
     public void overrideConnect() {
-        arduinoConnection = new ConnectionManager(new PortOutputViewerFrame());
+        arduinoConnection = new ConnectionManager(new PortOutputViewerFrame(this));
         serialPortThread = new Thread(arduinoConnection);
         serialPortThread.start();
         arduinoConnection.setPort(portSelection.getSelectedItem().toString(), portBaudrate.getSelectedItem().toString());
         arduinoConnection.connect();
     }
 
+    public void saveText(final String text) {
+        LOGGER.debug("saving to file");
+
+        JFileChooser fileChooser = new JFileChooser();
+        int returnVal = fileChooser.showSaveDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            final File file = fileChooser.getSelectedFile();
+            try {
+                final BufferedWriter bw = new BufferedWriter(new FileWriter(file));
+                bw.write(text);
+                bw.close();
+            } catch (IOException e) {
+                LOGGER.error(e);
+            }
+            //This is where a real application would open the file.
+            LOGGER.info("Saving to file: " + file.getName() + ".");
+        } else {
+            LOGGER.info("Save command cancelled by user.");
+        }
+
+
+    }
 
 }
