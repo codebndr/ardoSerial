@@ -1,6 +1,5 @@
 package eu.amaxilatis.ardoserial;
 
-import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
 import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.ardoserial.util.SerialPortReader;
 import jssc.SerialPort;
@@ -23,10 +22,15 @@ public class ConnectionManager implements Runnable {
      * the name of the serial port.
      */
     private static String port;
+
+    public void setjTextArea(final PortOutputViewerFrame jTextArea) {
+        this.jTextArea = jTextArea;
+    }
+
     /**
      * the text area to append output of the serial port.
      */
-    private final transient PortOutputViewerFrame jTextArea;
+    private transient PortOutputViewerFrame jTextArea;
     /**
      * Initialization sleep time.
      */
@@ -34,15 +38,20 @@ public class ConnectionManager implements Runnable {
 
     private static int baudRate;
 
+    private static ConnectionManager instance = null;
+
     /**
      * basic constructor.
      * appends all output to a JTextArea.
-     *
-     * @param jTextArea the JTextArea to append to.
      */
-    public ConnectionManager(final PortOutputViewerFrame jTextArea) {
-        this.jTextArea = jTextArea;
-        jTextArea.setConnectionManager(this);
+    public ConnectionManager() {
+    }
+
+    public static ConnectionManager getInstance() {
+        if (instance == null) {
+            instance = new ConnectionManager();
+        }
+        return instance;
     }
 
     public SerialPort getSerialPort() {
@@ -88,7 +97,7 @@ public class ConnectionManager implements Runnable {
             LOGGER.fatal(e);
         }
         serialPort = new SerialPort(port);
-        jTextArea.appendText(serialPort.getPortName());
+        jTextArea.appendText(serialPort.getPortName() + "\n");
         try {
             serialPort.openPort();
             serialPort.setParams(baudRate, SerialPort.DATABITS_8,
@@ -102,9 +111,10 @@ public class ConnectionManager implements Runnable {
             serialPort.setEventsMask(SerialPort.MASK_RXCHAR);
             //Add an interface through which we will receive information about events
             serialPort.addEventListener(new SerialPortReader(this, jTextArea));
-            ArduinoStatusImage.setConnected();
+//            ArduinoStatusImage.setConnected();
         } catch (SerialPortException ex) {
-            jTextArea.appendText(ex.getExceptionType());
+            jTextArea.appendText(ex.getExceptionType() + " Reconnecting...\n");
+            connect();
         }
     }
 
@@ -127,7 +137,7 @@ public class ConnectionManager implements Runnable {
                 try {
                     serialPort.closePort();
                     LOGGER.info("Port closed");
-                    ArduinoStatusImage.setDisconnected();
+//                    ArduinoStatusImage.setDisconnected();
                 } catch (final SerialPortException e) {
                     LOGGER.error("Cannot close port");
                 }

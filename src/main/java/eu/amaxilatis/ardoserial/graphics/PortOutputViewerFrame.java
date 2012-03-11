@@ -1,25 +1,14 @@
 package eu.amaxilatis.ardoserial.graphics;
 
 import eu.amaxilatis.ardoserial.ConnectionManager;
-import eu.amaxilatis.ardoserial.MyApplet;
+import eu.amaxilatis.ardoserial.MyActionListener;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
 
 /**
  * Created by IntelliJ IDEA.
@@ -41,28 +30,26 @@ public class PortOutputViewerFrame extends JFrame {
      */
     private transient JTextField sendField;
 
-    private ConnectionManager connectionManager;
-    private MyApplet applet;
-
+    /**
+     * Constructor that Generates a new JFrame to listen to the arduino output.
+     */
     public PortOutputViewerFrame() {
-
-    }
-
-    public PortOutputViewerFrame(final MyApplet applet) {
-        this.applet = applet;
-
         this.setLayout(new BorderLayout());
+
         textArea = new JTextArea();
         sendField = new JTextField("");
+
         final JButton send = new JButton("Send to Arduino");
+        final JButton disconnect = new JButton("Disconnect & Close");
 
         send.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                connectionManager.send(sendField.getText());
+                ConnectionManager.getInstance().send(sendField.getText());
             }
         });
 
+        disconnect.addActionListener(new MyActionListener(this));
 
         this.addWindowListener(new WindowListener() {
             @Override
@@ -72,14 +59,14 @@ public class PortOutputViewerFrame extends JFrame {
 
             @Override
             public void windowClosing(WindowEvent windowEvent) {
+                ConnectionManager.getInstance().disconnect();
                 LOGGER.info("windowClosing");
-                connectionManager.disconnect();
             }
 
             @Override
             public void windowClosed(WindowEvent windowEvent) {
-                LOGGER.info("windowClosing");
-                connectionManager.disconnect();
+                ConnectionManager.getInstance().disconnect();
+                LOGGER.info("windowClosed");
             }
 
             @Override
@@ -108,6 +95,7 @@ public class PortOutputViewerFrame extends JFrame {
         sendField.setColumns(25);
         pan1.add(sendField);
         pan1.add(send);
+        pan1.add(disconnect);
 
         getContentPane().setLayout(new BorderLayout());
 
@@ -115,7 +103,7 @@ public class PortOutputViewerFrame extends JFrame {
         topPanel.setLayout(new GridLayout(0, 1));
         topPanel.add(pan1);
         this.getContentPane().add(topPanel, BorderLayout.NORTH);
-        topPanel.add(ArduinoStatusImage.getArduinoStatus());
+        //topPanel.add(ArduinoStatusImage.getArduinoStatus());
 
 
         final JScrollPane middlePanel = new JScrollPane(textArea);
@@ -129,9 +117,10 @@ public class PortOutputViewerFrame extends JFrame {
         bottomPanel.add(followText);
         final JButton save2file = new JButton("Save output...");
         save2file.addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                applet.saveText(textArea.getText());
+                //TODO: not implemented yet
             }
         });
         bottomPanel.add(save2file);
@@ -141,7 +130,11 @@ public class PortOutputViewerFrame extends JFrame {
         this.setMinimumSize(new Dimension(700, 400));
     }
 
-
+    /**
+     * Adds a text string to the JTextArea.
+     *
+     * @param text the String to add.
+     */
     public void appendText(final String text) {
 
         textArea.append(text);
@@ -149,11 +142,14 @@ public class PortOutputViewerFrame extends JFrame {
         textArea.setCaretPosition(textArea.getDocument().getLength());
     }
 
+    /**
+     * Sets the JTextArea to the text given.
+     *
+     * @param text the String to use.
+     */
     public void setText(final String text) {
         textArea.setText(text);
     }
 
-    public void setConnectionManager(ConnectionManager connectionManager) {
-        this.connectionManager = connectionManager;
-    }
+
 }
