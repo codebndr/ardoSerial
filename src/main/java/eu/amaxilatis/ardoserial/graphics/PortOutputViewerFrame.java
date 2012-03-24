@@ -123,7 +123,7 @@ public class PortOutputViewerFrame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                //TODO: not implemented yet
+//                AccessController.doPrivileged(new SaveOutputPrivilegedAction(textArea.getText(), this));
             }
         });
         bottomPanel.add(save2file);

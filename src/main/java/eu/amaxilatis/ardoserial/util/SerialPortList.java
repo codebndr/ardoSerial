@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
 import java.util.TreeSet;
 
 
@@ -30,6 +29,7 @@ public class SerialPortList {
 
     private SerialPortList() {
     }
+
 
     private static Comparator<String> comparator = new Comparator<String>() {
         @Override
@@ -61,7 +61,7 @@ public class SerialPortList {
             return getMacOSXPortNames();
         }//<-since 0.9.0
 
-        List<String> ports = new ArrayList<String>();
+        java.util.List<String> ports = new ArrayList<String>();
         for (int i = 0; i < 10; i++) {
             final int handle = serialInterface.openPort("COM" + i);
             if (handle < 0) {
@@ -117,7 +117,8 @@ public class SerialPortList {
                 ArrayList<String> portsList = new ArrayList<String>();
                 for (File file : files) {
                     System.out.println("cheching " + file.getName());
-                    if (!file.isDirectory() && !file.isFile() && (file.getName().contains("tty.") || file.getName().contains("cu."))) {
+                    if (!file.isDirectory() && !file.isFile() && file.getName().contains("cu.")) {
+//                    if (!file.isDirectory() && !file.isFile() && (file.getName().contains("tty.") || file.getName().contains("cu."))) {
                         System.out.println("adding " + file.getName());
                         portsTree.add("/dev/" + file.getName());
                     }
@@ -130,4 +131,5 @@ public class SerialPortList {
         }
         return returnArray;
     }
+
 }

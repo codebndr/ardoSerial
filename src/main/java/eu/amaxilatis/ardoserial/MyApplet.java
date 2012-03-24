@@ -3,10 +3,14 @@ package eu.amaxilatis.ardoserial;
 import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
 import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.ardoserial.util.SerialPortList;
+import jssc.SerialNativeInterface;
 import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.InvocationTargetException;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * A JApplet class.
@@ -18,6 +22,8 @@ public class MyApplet extends JApplet {
      */
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(MyApplet.class);
 
+    private static SerialNativeInterface serialInterface = new SerialNativeInterface();
+
     /**
      * a connection handler.
      */
@@ -25,6 +31,7 @@ public class MyApplet extends JApplet {
     private final String[] rates = new String[12];
     private String[] detectedPorts;
     private String[] ports;
+    private boolean started = false;
 
 
     @Override
@@ -40,8 +47,6 @@ public class MyApplet extends JApplet {
      */
     public MyApplet() {
         BasicConfigurator.configure();
-        initBaudRates();
-        ports = SerialPortList.getPortNames();
     }
 
     /**
@@ -62,18 +67,6 @@ public class MyApplet extends JApplet {
     @Override
     public final void init() {
         LOGGER.info("MyApplet called Init");
-
-        //Execute a job on the event-dispatching thread:
-        //creating this applet's GUI.
-        try {
-            javax.swing.SwingUtilities.invokeAndWait(new Runnable() {
-                public void run() {
-                    createGUI();
-                }
-            });
-        } catch (Exception e) {
-            LOGGER.error("createGUI didn't successfully complete");
-        }
     }
 
     /**
@@ -95,6 +88,24 @@ public class MyApplet extends JApplet {
      * @return a comma separated list of all available usb ports.
      */
     public String getFire2() {
+        AccessController.doPrivileged(new PrivilegedAction() {
+            public Object run() {
+                try {
+                    SwingUtilities.invokeAndWait(new Runnable() {
+                        public void run() {
+                            ports = SerialPortList.getInstance().getPortNames();
+                            LOGGER.info(ports);
+                        }
+                    });
+                } catch (InterruptedException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                } catch (InvocationTargetException e) {
+                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                }
+                return 0;
+            }
+        });
+
         final StringBuilder protsAvail = new StringBuilder();
         LOGGER.info(ports);
         for (int i = 0; i < ports.length; i++) {
@@ -117,4 +128,5 @@ public class MyApplet extends JApplet {
         ConnectionManager.getInstance().setPort(ports[port], rate);
         ConnectionManager.getInstance().connect();
     }
+
 }

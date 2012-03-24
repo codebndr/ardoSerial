@@ -12,6 +12,7 @@ public class ArduinoStatusImage {
     /**
      * Logger.
      */
+
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ArduinoStatusImage.class);
 
     private static final JLabel arduinoStatus = new JLabel();
