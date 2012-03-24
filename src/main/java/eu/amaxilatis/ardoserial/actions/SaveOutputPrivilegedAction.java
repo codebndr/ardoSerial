@@ -1,7 +1,5 @@
 package eu.amaxilatis.ardoserial.actions;
 
-import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
-
 import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
@@ -17,16 +15,14 @@ import java.security.PrivilegedAction;
  */
 public class SaveOutputPrivilegedAction implements PrivilegedAction {
     private final String text;
-    private final PortOutputViewerFrame frame;
 
-    public SaveOutputPrivilegedAction(String text, PortOutputViewerFrame frame) {
+    public SaveOutputPrivilegedAction(String text) {
         this.text = text;
-        this.frame = frame;
     }
 
     public Object run() {
         final JFileChooser fileChooser = new JFileChooser();
-        fileChooser.showSaveDialog(frame);
+        fileChooser.showSaveDialog(fileChooser);
         final File file = fileChooser.getSelectedFile();
         try {
 

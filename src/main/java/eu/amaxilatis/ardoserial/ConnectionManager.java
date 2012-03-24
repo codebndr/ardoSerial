@@ -96,11 +96,11 @@ public class ConnectionManager implements Runnable {
      */
     public final void connect() {
 
-        try {
-            Thread.sleep(SLEEP_TIME);
-        } catch (InterruptedException e) {
-            LOGGER.fatal(e);
-        }
+//        try {
+//            Thread.sleep(SLEEP_TIME);
+//        } catch (InterruptedException e) {
+//            LOGGER.fatal(e);
+//        }
         serialPort = new SerialPort(port);
         jTextArea.appendText(port + "@" + baudRate + "\n");
         try {
@@ -125,12 +125,7 @@ public class ConnectionManager implements Runnable {
 
     @Override
     public final void run() {
-        while (true) {
-            try {
-                Thread.sleep(SLEEP_TIME);
-            } catch (InterruptedException e) {
-            }
-        }
+
     }
 
     /**

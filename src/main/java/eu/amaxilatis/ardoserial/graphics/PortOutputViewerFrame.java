@@ -2,6 +2,7 @@ package eu.amaxilatis.ardoserial.graphics;
 
 import eu.amaxilatis.ardoserial.ConnectionManager;
 import eu.amaxilatis.ardoserial.MyActionListener;
+import eu.amaxilatis.ardoserial.actions.SaveOutputPrivilegedAction;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.security.AccessController;
 
 /**
  * Created by IntelliJ IDEA.
@@ -123,7 +125,7 @@ public class PortOutputViewerFrame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-//                AccessController.doPrivileged(new SaveOutputPrivilegedAction(textArea.getText(), this));
+                AccessController.doPrivileged(new SaveOutputPrivilegedAction(textArea.getText()));
             }
         });
         bottomPanel.add(save2file);
