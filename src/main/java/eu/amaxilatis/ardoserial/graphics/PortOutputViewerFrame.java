@@ -114,7 +114,10 @@ public class PortOutputViewerFrame extends JFrame {
         final JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout());
         final JCheckBox followText = new JCheckBox("Autoscroll");
+        followText.setEnabled(false);
+        followText.setSelected(true);
         bottomPanel.add(followText);
+
         final JButton save2file = new JButton("Save output...");
         save2file.addActionListener(new ActionListener() {
 

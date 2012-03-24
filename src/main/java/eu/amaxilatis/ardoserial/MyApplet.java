@@ -3,7 +3,6 @@ package eu.amaxilatis.ardoserial;
 import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
 import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.ardoserial.util.SerialPortList;
-import jssc.SerialPort;
 import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.*;
@@ -50,18 +49,6 @@ public class MyApplet extends JApplet {
      */
     private void initBaudRates() {
 
-        rates[0] = new String(String.valueOf(SerialPort.BAUDRATE_110));
-        rates[1] = new String(String.valueOf(SerialPort.BAUDRATE_300));
-        rates[2] = new String(String.valueOf(SerialPort.BAUDRATE_600));
-        rates[3] = new String(String.valueOf(SerialPort.BAUDRATE_1200));
-        rates[4] = new String(String.valueOf(SerialPort.BAUDRATE_4800));
-        rates[5] = new String(String.valueOf(SerialPort.BAUDRATE_9600));
-        rates[6] = new String(String.valueOf(SerialPort.BAUDRATE_14400));
-        rates[7] = new String(String.valueOf(SerialPort.BAUDRATE_19200));
-        rates[8] = new String(String.valueOf(SerialPort.BAUDRATE_38400));
-        rates[9] = new String(String.valueOf(SerialPort.BAUDRATE_115200));
-        rates[10] = new String(String.valueOf(SerialPort.BAUDRATE_128000));
-        rates[11] = new String(String.valueOf(SerialPort.BAUDRATE_256000));
     }
 
     public String getRates() {
@@ -69,12 +56,7 @@ public class MyApplet extends JApplet {
     }
 
     public String getFireRates() {
-        final StringBuilder rateString = new StringBuilder();
-        for (int i = 0; i < rates.length; i++) {
-            rateString.append(",").append(rates[i]);
-
-        }
-        return (rateString.toString()).substring(1);
+        return ConnectionManager.getInstance().getBaudrates();
     }
 
     @Override
@@ -132,7 +114,7 @@ public class MyApplet extends JApplet {
     public void overrideConnect(final int port, final int rate) {
         ConnectionManager.getInstance().setjTextArea(new PortOutputViewerFrame());
 
-        ConnectionManager.getInstance().setPort(ports[port], rates[rate]);
+        ConnectionManager.getInstance().setPort(ports[port], rate);
         ConnectionManager.getInstance().connect();
     }
 }

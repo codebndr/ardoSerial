@@ -22,6 +22,7 @@ public class ConnectionManager implements Runnable {
      * the name of the serial port.
      */
     private static String port;
+    private static final String baudrates = "300,1200,2400,4800,9600,14400,19200,19200,28800,38400,57600,115200";
 
     public void setjTextArea(final PortOutputViewerFrame jTextArea) {
         this.jTextArea = jTextArea;
@@ -67,14 +68,18 @@ public class ConnectionManager implements Runnable {
         return port;
     }
 
+    public static String getBaudrates() {
+        return baudrates;
+    }
+
     /**
      * sets the port name to the given string.
      *
      * @param port the new port name.
      */
-    public final void setPort(final String port, final String baudRate) {
+    public final void setPort(final String port, final int baudRate) {
         ConnectionManager.port = port;
-        ConnectionManager.baudRate = Integer.parseInt(baudRate);
+        ConnectionManager.baudRate = Integer.parseInt(baudrates.split(",")[baudRate]);
     }
 
     /**
@@ -97,7 +102,7 @@ public class ConnectionManager implements Runnable {
             LOGGER.fatal(e);
         }
         serialPort = new SerialPort(port);
-        jTextArea.appendText(serialPort.getPortName() + "\n");
+        jTextArea.appendText(port + "@" + baudRate + "\n");
         try {
             serialPort.openPort();
             serialPort.setParams(baudRate, SerialPort.DATABITS_8,
