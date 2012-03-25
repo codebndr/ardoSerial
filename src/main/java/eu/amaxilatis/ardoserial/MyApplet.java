@@ -1,5 +1,6 @@
 package eu.amaxilatis.ardoserial;
 
+import eu.amaxilatis.ardoserial.actions.FlashPrivilegedAction;
 import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
 import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.ardoserial.util.SerialPortList;
@@ -127,6 +128,10 @@ public class MyApplet extends JApplet {
 
         ConnectionManager.getInstance().setPort(ports[port], rate);
         ConnectionManager.getInstance().connect();
+    }
+
+    public void flash(final int port, final String filename) {
+        AccessController.doPrivileged(new FlashPrivilegedAction(ports[port], filename));
     }
 
 }
