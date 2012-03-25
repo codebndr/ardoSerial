@@ -22,7 +22,7 @@ public class ConnectionManager implements Runnable {
      * the name of the serial port.
      */
     private static String port;
-    private static final String baudrates = "300,1200,2400,4800,14400,19200,28800,38400,57600,115200,9600";
+    private static final String baudrates = "300,1200,2400,4800,9600,14400,19200,28800,38400,57600,115200";
 
     public void setjTextArea(final PortOutputViewerFrame jTextArea) {
         this.jTextArea = jTextArea;
