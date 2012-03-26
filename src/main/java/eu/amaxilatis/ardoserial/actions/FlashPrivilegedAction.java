@@ -50,8 +50,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
         StringBuilder flashCommand = new StringBuilder();
 
-        flashCommand.append("avrdude ")
-//                .append(" -C /Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/etc/avrdude.conf ")
+        flashCommand.append("/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avrdude ")
+                .append(" -C /Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/etc/avrdude.conf ")
                 .append(" -P ").append(port)
                 .append(" -c stk500v1 ")
                 .append(" -p m328p ")
