@@ -62,6 +62,11 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         try {
             System.out.println("running : " + flashCommand.toString());
             Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
+            try {
+                flashProc.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
             System.out.println("flashed");
         } catch (IOException e) {
             e.printStackTrace();
@@ -94,6 +99,11 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         try {
             System.out.println("running : " + flashCommand.toString());
             Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
+            try {
+                flashProc.waitFor();
+            } catch (InterruptedException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
             System.out.println("flashed");
         } catch (IOException e) {
             e.printStackTrace();
