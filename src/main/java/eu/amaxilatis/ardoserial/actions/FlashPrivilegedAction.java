@@ -219,11 +219,12 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                     LOGGER.error(e);
                     return -1;
                 }
+
                 byte[] contents = new byte[bytes];
 
-                input.read(contents);
-                output.write(contents);
-
+                int bsize = input.available();
+                input.read(contents, 0, bsize);
+                output.write(contents, 0, bsize);
                 input.close();
                 output.close();
                 Process chmodProcess = Runtime.getRuntime().exec("chmod u+x /tmp/avrdude");
