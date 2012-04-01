@@ -2,8 +2,7 @@ package eu.amaxilatis.ardoserial.actions;
 
 import jssc.SerialNativeInterface;
 
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.security.PrivilegedAction;
 
 /**
@@ -75,6 +74,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private Object flashLinux() {
+        checkAvrdudeConfLinux();
         try {
             FileWriter fileWriter = null;
             fileWriter = new FileWriter("/tmp/file.hex");
@@ -88,7 +88,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         StringBuilder flashCommand = new StringBuilder();
 
         flashCommand.append("avrdude ")
-//                .append(" -C /usr/share/arduino/hardware/tools/avrdude.conf ")
+                .append(" -C /tmp/avrdude.conf ")
                 .append(" -P ").append(port)
                 .append(" -c stk500v1 ")
                 .append(" -p m328p ")
@@ -110,5 +110,33 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         }
         return null;
 
+    }
+
+
+    public void checkAvrdudeConfLinux() {
+        File avrdudeConf = new File("/tmp/avrdude.conf");
+        if (!avrdudeConf.exists()) {
+            System.out.println("avrdude.conf does not exist");
+            InputStream input = this.getClass().getResourceAsStream("/avrdude.conf.linux");
+            InputStreamReader reader = new InputStreamReader(input);
+            BufferedWriter writer = null;
+
+            try {
+                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(avrdudeConf)));
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+            final BufferedReader bufferedReader = new BufferedReader(reader);
+            try {
+                String line = bufferedReader.readLine();
+                while (line != null) {
+                    writer.write(line + "\n");
+                    line = bufferedReader.readLine();
+                }
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            }
+        }
     }
 }
