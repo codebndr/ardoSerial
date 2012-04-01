@@ -9,9 +9,11 @@ import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
+import java.util.Properties;
 
 /**
  * A JApplet class.
@@ -48,6 +50,14 @@ public class MyApplet extends JApplet {
      */
     public MyApplet() {
         BasicConfigurator.configure();
+        Properties properties = new Properties();
+        try {
+            properties.load(this.getClass().getResourceAsStream("version.properties"));
+            LOGGER.info("Version:" + properties.get("version"));
+            LOGGER.info("Build:" + properties.get("build"));
+        } catch (IOException e) {
+            LOGGER.error(e);
+        }
     }
 
     /**

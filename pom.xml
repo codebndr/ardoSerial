@@ -67,6 +67,7 @@
                     <includes>
                         <include>
                             target/classes/index.html
+                            target/classes/version.properties
                         </include>
                     </includes>
                     <replacements>
