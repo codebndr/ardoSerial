@@ -106,17 +106,17 @@ public class SerialPortList {
        String[] returnArray = new String[]{};
         File dir = new File("/dev");
         if (dir.exists() && dir.isDirectory()) {
-            System.out.println("found /dev");
+//            System.out.println("found /dev");
             File[] files = dir.listFiles();
-            System.out.println("contains " + files.length + " files");
+//            System.out.println("contains " + files.length + " files");
             if (files.length > 0) {
                 TreeSet<String> portsTree = new TreeSet<String>();
                 ArrayList<String> portsList = new ArrayList<String>();
                 for (File file : files) {
-                    System.out.println("checking " + file.getName());
+//                    System.out.println("checking " + file.getName());
                     if (!file.isDirectory() && !file.isFile() && file.getName().contains("cu.")) {
 //                    if (!file.isDirectory() && !file.isFile() && (file.getName().contains("tty.") || file.getName().contains("cu."))) {
-                        System.out.println("adding " + file.getName());
+//                        System.out.println("adding " + file.getName());
                         portsTree.add("/dev/" + file.getName());
                     }
                 }
