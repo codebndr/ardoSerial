@@ -39,6 +39,13 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private Object flashMacOSX() {
+        int retval = checkAvrdudeMac();
+        String avrdudePath;
+        if (retval > 0) {
+            avrdudePath = "/tmp/avrdude ";
+        } else {
+            return null;
+        }
         if (!checkAvrdudeConfMac()) {
             return null;
         }
@@ -81,7 +88,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     private Object flashLinux() {
         int retval = checkAvrdudeLinux();
         String avrdudePath;
-        if (retval >0) {
+        if (retval > 0) {
             avrdudePath = "/tmp/avrdude ";
         } else {
             return null;
@@ -204,6 +211,46 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             String line = reader.readLine();
             if (line == null) {
                 InputStream input = this.getClass().getResourceAsStream("/avrdude.linux");
+                FileOutputStream output;
+                try {
+                    output = new FileOutputStream(new File("/tmp/avrdude"));
+                } catch (FileNotFoundException e) {
+                    LOGGER.error(e);
+                    return -1;
+                }
+                int c;
+
+                while ((c = input.read()) != -1) {
+                    output.write(c);
+                }
+                input.close();
+                output.close();
+                Process chmodProcess = Runtime.getRuntime().exec("chmod u+x /tmp/avrdude");
+
+            } else {
+                return 2;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return 1;
+    }
+
+    public int checkAvrdudeMac() {
+        try {
+            Process checkProcess = Runtime.getRuntime().exec("ls /tmp/avrdude");
+            try {
+                checkProcess.waitFor();
+            } catch (InterruptedException e) {
+                LOGGER.error(e);
+            }
+            InputStreamReader stream = new InputStreamReader(checkProcess.getInputStream());
+            final BufferedReader reader = new BufferedReader(stream);
+            String line = reader.readLine();
+            if (line == null) {
+                InputStream input = this.getClass().getResourceAsStream("/avrdude.mac");
                 FileOutputStream output;
                 try {
                     output = new FileOutputStream(new File("/tmp/avrdude"));
