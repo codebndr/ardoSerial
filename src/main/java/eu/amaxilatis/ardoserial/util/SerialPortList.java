@@ -52,7 +52,6 @@ public class SerialPortList {
 
 
     public static String[] getPortNames() {
-        System.out.println("getPortNames");
         if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_LINUX) {
             return getLinuxPortNames();
         } else if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_SOLARIS) {//since 0.9.0 ->
@@ -77,7 +76,6 @@ public class SerialPortList {
     }
 
     public static String[] getLinuxPortNames() {
-        System.out.println("getLinuxPortNames");
         String[] returnArray = new String[]{};
         try {
             Process dmesgProcess = Runtime.getRuntime().exec("ls /dev/");
@@ -105,8 +103,7 @@ public class SerialPortList {
     }
 
     public static String[] getMacOSXPortNames() {
-        System.out.println("getMacOSXPortNames");
-        String[] returnArray = new String[]{};
+       String[] returnArray = new String[]{};
         File dir = new File("/dev");
         if (dir.exists() && dir.isDirectory()) {
             System.out.println("found /dev");

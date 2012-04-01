@@ -106,7 +106,7 @@ public class MyApplet extends JApplet {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         public void run() {
                             ports = SerialPortList.getInstance().getPortNames();
-                            LOGGER.info(ports);
+//                            LOGGER.info(ports);
                         }
                     });
                 } catch (InterruptedException e) {
@@ -119,7 +119,7 @@ public class MyApplet extends JApplet {
         });
 
         final StringBuilder protsAvail = new StringBuilder();
-        LOGGER.info(ports);
+//        LOGGER.info(ports);
         for (int i = 0; i < ports.length; i++) {
             protsAvail.append(",");
             protsAvail.append(ports[i]);
