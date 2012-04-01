@@ -81,10 +81,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     private Object flashLinux() {
         int retval = checkAvrdudeLinux();
         String avrdudePath;
-        if (retval == 1) {
+        if (retval >0) {
             avrdudePath = "/tmp/avrdude ";
-        } else if (retval == 2) {
-            avrdudePath = "avrdude ";
         } else {
             return null;
         }
