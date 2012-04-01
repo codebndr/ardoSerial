@@ -39,6 +39,9 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private Object flashMacOSX() {
+        if (!checkAvrdudeConfMac()) {
+            return null;
+        }
         try {
             FileWriter fileWriter = null;
             fileWriter = new FileWriter("/tmp/file.hex");
@@ -52,7 +55,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         StringBuilder flashCommand = new StringBuilder();
 
         flashCommand.append("/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avrdude ")
-                .append(" -C /Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/etc/avrdude.conf ")
+                .append(" -C /tmp/avrdude.conf ")
                 .append(" -P ").append(port)
                 .append(" -c stk500v1 ")
                 .append(" -p m328p ")
@@ -132,6 +135,38 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         if (!avrdudeConf.exists()) {
             LOGGER.info("avrdude.conf does not exist");
             InputStream input = this.getClass().getResourceAsStream("/avrdude.conf.linux");
+            InputStreamReader reader = new InputStreamReader(input);
+            BufferedWriter writer = null;
+
+            try {
+                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(avrdudeConf)));
+            } catch (FileNotFoundException e) {
+                LOGGER.error(e);
+                return false;
+            }
+            final BufferedReader bufferedReader = new BufferedReader(reader);
+            try {
+                String line = bufferedReader.readLine();
+                while (line != null) {
+                    writer.write(line + "\n");
+                    line = bufferedReader.readLine();
+                }
+                writer.close();
+            } catch (IOException e) {
+                LOGGER.error(e);
+                return false;
+            }
+
+        }
+        return true;
+    }
+
+
+    public boolean checkAvrdudeConfMac() {
+        File avrdudeConf = new File("/tmp/avrdude.conf");
+        if (!avrdudeConf.exists()) {
+            LOGGER.info("avrdude.conf does not exist");
+            InputStream input = this.getClass().getResourceAsStream("/avrdude.conf.mac");
             InputStreamReader reader = new InputStreamReader(input);
             BufferedWriter writer = null;
 

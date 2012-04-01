@@ -44,32 +44,6 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jarsigner-plugin</artifactId>
-                <version>1.2</version>
-                <executions>
-                    <execution>
-                        <configuration>
-                            <alias>MyApplet</alias>
-                            <keypass>123456</keypass>
-                            <storepass>123456</storepass>
-                            <archive>./target/ardoSerial-0.1-jar-with-dependencies.jar</archive>
-                        </configuration>
-                        <id>sign</id>
-                        <phase>deploy</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                    <!--<execution>-->
-                    <!--<id>verify</id>-->
-                    <!--<goals>-->
-                    <!--<goal>verify</goal>-->
-                    <!--</goals>-->
-                    <!--</execution>-->
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.0.2</version>
                 <configuration>
@@ -129,12 +103,6 @@
             <!--<scope>system</scope>-->
             <!--<systemPath>${project.basedir}/lib/jSSC-0.9.0-Release/jssc.jar</systemPath>-->
         </dependency>
-        <dependency>
-            <groupId>com.caucho</groupId>
-            <artifactId>resin-javaee16</artifactId>
-            <version>4.0.23</version>
-        </dependency>
-
     </dependencies>
     <reporting>
         <plugins>
