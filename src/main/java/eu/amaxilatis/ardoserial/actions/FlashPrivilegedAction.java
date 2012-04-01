@@ -210,7 +210,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             final BufferedReader reader = new BufferedReader(stream);
             String line = reader.readLine();
             if (line == null) {
-                FileInputStream input = new FileInputStream("/avrdude.linux");
+                InputStream input = this.getClass().getResourceAsStream("/avrdude.linux");
                 int bytes = input.available();
                 FileOutputStream output;
                 try {
