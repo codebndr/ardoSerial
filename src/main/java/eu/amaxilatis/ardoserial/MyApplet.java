@@ -34,6 +34,8 @@ public class MyApplet extends JApplet {
     private String[] detectedPorts;
     private String[] ports;
     private boolean started = false;
+    public static String version;
+    public static String buildNum;
 
 
     @Override
@@ -53,9 +55,10 @@ public class MyApplet extends JApplet {
         try {
 
             properties.load(this.getClass().getResourceAsStream("/version.properties"));
-
-            LOGGER.info("Version:" + properties.get("version"));
-            LOGGER.info("Build:" + properties.get("build"));
+            version = (String) properties.get("version");
+            buildNum = (String) properties.get("build");
+            LOGGER.info("Version:" + version);
+            LOGGER.info("Build:" + buildNum);
         } catch (Exception e) {
             LOGGER.error(e);
         }

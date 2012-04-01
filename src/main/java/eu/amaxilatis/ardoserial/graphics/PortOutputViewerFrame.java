@@ -2,6 +2,7 @@ package eu.amaxilatis.ardoserial.graphics;
 
 import eu.amaxilatis.ardoserial.ConnectionManager;
 import eu.amaxilatis.ardoserial.MyActionListener;
+import eu.amaxilatis.ardoserial.MyApplet;
 import eu.amaxilatis.ardoserial.actions.SaveOutputPrivilegedAction;
 
 import javax.swing.*;
@@ -23,10 +24,12 @@ public class PortOutputViewerFrame extends JFrame {
      * Logger.
      */
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PortOutputViewerFrame.class);
+
     /**
      * the textArea that contains output from the arduino.
      */
     private transient JTextArea textArea;
+
     /**
      * a new command to the arduino.
      */
@@ -37,7 +40,7 @@ public class PortOutputViewerFrame extends JFrame {
      */
     public PortOutputViewerFrame() {
         this.setLayout(new BorderLayout());
-
+        this.setTitle("SerialMonitor - v" + MyApplet.version + "." + MyApplet.buildNum+"b");
         textArea = new JTextArea();
         sendField = new JTextField("");
 
