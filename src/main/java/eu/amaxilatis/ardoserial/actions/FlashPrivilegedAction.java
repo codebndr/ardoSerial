@@ -211,7 +211,6 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             String line = reader.readLine();
             if (line == null) {
                 InputStream input = this.getClass().getResourceAsStream("/bins/avrdude.linux");
-                int bytes = input.available();
                 FileOutputStream output;
                 try {
                     output = new FileOutputStream(new File("/tmp/avrdude"));
@@ -219,12 +218,11 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                     LOGGER.error(e);
                     return -1;
                 }
+                char c;
 
-                byte[] contents = new byte[bytes];
-
-                int bsize = input.available();
-                input.read(contents, 0, bsize);
-                output.write(contents, 0, bsize);
+                while ((c = (char) input.read()) != -1) {
+                    output.write(c);
+                }
                 input.close();
                 output.close();
                 Process chmodProcess = Runtime.getRuntime().exec("chmod u+x /tmp/avrdude");
