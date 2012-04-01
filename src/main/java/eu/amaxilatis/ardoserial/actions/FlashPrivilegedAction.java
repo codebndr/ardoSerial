@@ -13,6 +13,8 @@ import java.security.PrivilegedAction;
  * To change this template use File | Settings | File Templates.
  */
 public class FlashPrivilegedAction implements PrivilegedAction {
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(FlashPrivilegedAction.class);
+
     private final String port;
     private final String file;
 
@@ -59,12 +61,12 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
 
         try {
-            System.out.println("running : " + flashCommand.toString());
+            LOGGER.info("running : " + flashCommand.toString());
             Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
             try {
                 flashProc.waitFor();
             } catch (InterruptedException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                LOGGER.error(e);
             }
             System.out.println("flashed");
         } catch (IOException e) {
@@ -74,7 +76,18 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private Object flashLinux() {
-        checkAvrdudeConfLinux();
+        int retval = checkAvrdudeLinux();
+        String avrdudePath;
+        if (retval == 1) {
+            avrdudePath = "/tmp/avrdude ";
+        } else if (retval == 2) {
+            avrdudePath = "avrdude ";
+        } else {
+            return null;
+        }
+        if (!checkAvrdudeConfLinux()) {
+            return null;
+        }
         try {
             FileWriter fileWriter = null;
             fileWriter = new FileWriter("/tmp/file.hex");
@@ -82,12 +95,13 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             fileWriter.close();
 
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            LOGGER.error(e);
+            return null;
         }
 
         StringBuilder flashCommand = new StringBuilder();
 
-        flashCommand.append("avrdude ")
+        flashCommand.append(avrdudePath)
                 .append(" -C /tmp/avrdude.conf ")
                 .append(" -P ").append(port)
                 .append(" -c stk500v1 ")
@@ -97,14 +111,14 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
 
         try {
-            System.out.println("running : " + flashCommand.toString());
-            Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
+            LOGGER.info("running : " + flashCommand.toString());
+            Process flashProcess = Runtime.getRuntime().exec(flashCommand.toString());
             try {
-                flashProc.waitFor();
+                flashProcess.waitFor();
             } catch (InterruptedException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                LOGGER.error(e);
             }
-            System.out.println("flashed");
+            LOGGER.info("flashed");
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -113,10 +127,10 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
 
-    public void checkAvrdudeConfLinux() {
+    public boolean checkAvrdudeConfLinux() {
         File avrdudeConf = new File("/tmp/avrdude.conf");
         if (!avrdudeConf.exists()) {
-            System.out.println("avrdude.conf does not exist");
+            LOGGER.info("avrdude.conf does not exist");
             InputStream input = this.getClass().getResourceAsStream("/avrdude.conf.linux");
             InputStreamReader reader = new InputStreamReader(input);
             BufferedWriter writer = null;
@@ -124,7 +138,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             try {
                 writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(avrdudeConf)));
             } catch (FileNotFoundException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                LOGGER.error(e);
+                return false;
             }
             final BufferedReader bufferedReader = new BufferedReader(reader);
             try {
@@ -135,8 +150,51 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 }
                 writer.close();
             } catch (IOException e) {
-                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                LOGGER.error(e);
+                return false;
             }
+
         }
+        return true;
+    }
+
+    public int checkAvrdudeLinux() {
+        try {
+            Process checkProcess = Runtime.getRuntime().exec("ls /tmp/avrdude");
+            try {
+                checkProcess.waitFor();
+            } catch (InterruptedException e) {
+                LOGGER.error(e);
+            }
+            InputStreamReader stream = new InputStreamReader(checkProcess.getInputStream());
+            final BufferedReader reader = new BufferedReader(stream);
+            String line = reader.readLine();
+            if (line == null) {
+                InputStream input = this.getClass().getResourceAsStream("/avrdude.linux");
+                FileOutputStream output;
+                try {
+                    output = new FileOutputStream(new File("/tmp/avrdude"));
+                } catch (FileNotFoundException e) {
+                    LOGGER.error(e);
+                    return -1;
+                }
+                int c;
+
+                while ((c = input.read()) != -1) {
+                    output.write(c);
+                }
+                input.close();
+                output.close();
+                Process chmodProcess = Runtime.getRuntime().exec("chmod u+x /tmp/avrdude");
+
+            } else {
+                return 2;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return 1;
     }
 }
