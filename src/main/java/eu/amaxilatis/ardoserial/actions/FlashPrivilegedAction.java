@@ -220,10 +220,9 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                     return -1;
                 }
                 byte[] contents = new byte[bytes];
+
                 input.read(contents);
-                for (int i = 0; i < contents.length; i++) {
-                    output.write(contents[i]);
-                }
+                output.write(contents);
 
                 input.close();
                 output.close();
