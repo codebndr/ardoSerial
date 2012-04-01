@@ -258,9 +258,9 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                     LOGGER.error(e);
                     return -1;
                 }
-                int c;
+                char c;
 
-                while ((c = input.read()) != -1) {
+                while ((c = (char) input.read()) != -1) {
                     output.write(c);
                 }
                 input.close();
