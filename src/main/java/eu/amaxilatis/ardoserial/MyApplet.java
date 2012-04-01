@@ -54,7 +54,7 @@ public class MyApplet extends JApplet {
         Properties properties = new Properties();
         try {
 
-            properties.load(this.getClass().getResourceAsStream("/version.properties"));
+            properties.load(this.getClass().getResourceAsStream("/props/version.properties"));
             version = (String) properties.get("version");
             buildNum = (String) properties.get("build");
             LOGGER.info("Version:" + version);
