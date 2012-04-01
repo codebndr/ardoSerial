@@ -116,7 +116,7 @@ public class SerialPortList {
                 TreeSet<String> portsTree = new TreeSet<String>();
                 ArrayList<String> portsList = new ArrayList<String>();
                 for (File file : files) {
-                    System.out.println("cheching " + file.getName());
+                    System.out.println("checking " + file.getName());
                     if (!file.isDirectory() && !file.isFile() && file.getName().contains("cu.")) {
 //                    if (!file.isDirectory() && !file.isFile() && (file.getName().contains("tty.") || file.getName().contains("cu."))) {
                         System.out.println("adding " + file.getName());
