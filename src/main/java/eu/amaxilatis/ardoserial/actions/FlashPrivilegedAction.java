@@ -17,10 +17,12 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
     private final String port;
     private final String file;
+    private final String baudRate;
 
-    public FlashPrivilegedAction(String port, String file) {
+    public FlashPrivilegedAction(String port, String file, String baudRate) {
         this.port = port;
         this.file = file;
+        this.baudRate = baudRate;
     }
 
     public Object run() {
@@ -67,7 +69,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 .append(" -c stk500v1 ")
                 .append(" -p m328p ")
                 .append(" -u -U flash:w:").append("/tmp/file.hex")
-                .append(" -b 115200 -F");
+                .append(" -b ").append(baudRate)
+                .append(" -F");
 
 
         try {
@@ -115,7 +118,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 .append(" -c stk500v1 ")
                 .append(" -p m328p ")
                 .append(" -u -U flash:w:").append("/tmp/file.hex")
-                .append(" -b 115200 -F");
+                .append(" -b ").append(baudRate)
+                .append(" -F");
 
 
         try {

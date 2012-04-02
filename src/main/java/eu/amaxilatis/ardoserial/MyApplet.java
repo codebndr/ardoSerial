@@ -144,8 +144,9 @@ public class MyApplet extends JApplet {
         ConnectionManager.getInstance().connect();
     }
 
-    public void flash(final int port, final String filename) {
-        AccessController.doPrivileged(new FlashPrivilegedAction(ports[port], filename));
+    public void flash(final int port, final String filename, final String baudrate) {
+
+        AccessController.doPrivileged(new FlashPrivilegedAction(ports[port], filename, baudrate));
     }
 
 }
