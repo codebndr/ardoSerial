@@ -18,11 +18,11 @@ import java.util.Properties;
  * A JApplet class.
  * Provides user interface to connecto to an arduino using a usb connection.
  */
-public class CodeBenderApplet extends JApplet {
+public class MyApplet extends JApplet {
     /**
      * Logger.
      */
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(CodeBenderApplet.class);
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(MyApplet.class);
 
     private static SerialNativeInterface serialInterface = new SerialNativeInterface();
 
@@ -40,7 +40,7 @@ public class CodeBenderApplet extends JApplet {
 
     @Override
     public final void destroy() {
-        LOGGER.info("CodeBenderApplet called Destroy");
+        LOGGER.info("MyApplet called Destroy");
         ConnectionManager.getInstance().disconnect();
     }
 
@@ -49,7 +49,7 @@ public class CodeBenderApplet extends JApplet {
      *
      * @throws HeadlessException an exception.
      */
-    public CodeBenderApplet() {
+    public MyApplet() {
         BasicConfigurator.configure();
         Properties properties = new Properties();
         try {
@@ -81,14 +81,14 @@ public class CodeBenderApplet extends JApplet {
 
     @Override
     public final void init() {
-        LOGGER.info("CodeBenderApplet called Init");
+        LOGGER.info("MyApplet called Init");
     }
 
     /**
      * Build the default user interface.
      */
     private void createGUI() {
-        LOGGER.info("CodeBenderApplet called CreateGUI");
+        LOGGER.info("MyApplet called CreateGUI");
 
         this.setBackground(Color.white);
 
