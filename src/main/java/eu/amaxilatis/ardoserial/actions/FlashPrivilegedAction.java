@@ -184,7 +184,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
     private void writeToDisk(final String inputFile, final String destinationFile) {
         File file = new File(destinationFile);
-        InputStream input = this.getClass().getResourceAsStream(inputFile);
+
+        InputStream input = ClassLoader.getSystemResourceAsStream(inputFile);
         InputStreamReader reader = new InputStreamReader(input);
         BufferedWriter writer;
 
@@ -237,7 +238,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
     private void writeBinaryToDisk(final String inputFile, final String destinationFile) {
         try {
-            InputStream input = this.getClass().getResourceAsStream(inputFile);
+            InputStream input = ClassLoader.getSystemResourceAsStream(inputFile);
             FileOutputStream output;
             try {
                 output = new FileOutputStream(new File(destinationFile));
