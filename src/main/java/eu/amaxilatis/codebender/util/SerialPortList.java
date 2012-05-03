@@ -1,4 +1,4 @@
-package eu.amaxilatis.ardoserial.util;
+package eu.amaxilatis.codebender.util;
 
 import jssc.SerialNativeInterface;
 

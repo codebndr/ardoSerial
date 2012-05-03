@@ -1,6 +1,6 @@
-package eu.amaxilatis.ardoserial;
+package eu.amaxilatis.codebender;
 
-import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
+import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

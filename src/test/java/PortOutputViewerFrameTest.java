@@ -1,4 +1,4 @@
-import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
+import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 import org.apache.log4j.BasicConfigurator;
 
 /**

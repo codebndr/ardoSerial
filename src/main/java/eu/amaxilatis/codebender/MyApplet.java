@@ -1,9 +1,9 @@
-package eu.amaxilatis.ardoserial;
+package eu.amaxilatis.codebender;
 
-import eu.amaxilatis.ardoserial.actions.FlashPrivilegedAction;
-import eu.amaxilatis.ardoserial.graphics.ArduinoStatusImage;
-import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
-import eu.amaxilatis.ardoserial.util.SerialPortList;
+import eu.amaxilatis.codebender.actions.FlashPrivilegedAction;
+import eu.amaxilatis.codebender.graphics.ArduinoStatusImage;
+import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
+import eu.amaxilatis.codebender.util.SerialPortList;
 import jssc.SerialNativeInterface;
 import org.apache.log4j.BasicConfigurator;
 

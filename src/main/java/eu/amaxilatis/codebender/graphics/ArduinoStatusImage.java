@@ -1,4 +1,4 @@
-package eu.amaxilatis.ardoserial.graphics;
+package eu.amaxilatis.codebender.graphics;
 
 import javax.swing.*;
 

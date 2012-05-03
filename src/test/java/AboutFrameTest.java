@@ -1,4 +1,4 @@
-import eu.amaxilatis.ardoserial.AboutFrame;
+import eu.amaxilatis.codebender.AboutFrame;
 
 /**
  * Created by IntelliJ IDEA.

@@ -1,4 +1,4 @@
-import eu.amaxilatis.ardoserial.util.SerialPortList;
+import eu.amaxilatis.codebender.util.SerialPortList;
 
 /**
  * Created by IntelliJ IDEA.

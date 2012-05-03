@@ -1,9 +1,9 @@
-package eu.amaxilatis.ardoserial.graphics;
+package eu.amaxilatis.codebender.graphics;
 
-import eu.amaxilatis.ardoserial.ConnectionManager;
-import eu.amaxilatis.ardoserial.MyActionListener;
-import eu.amaxilatis.ardoserial.MyApplet;
-import eu.amaxilatis.ardoserial.actions.SaveOutputPrivilegedAction;
+import eu.amaxilatis.codebender.ConnectionManager;
+import eu.amaxilatis.codebender.MyActionListener;
+import eu.amaxilatis.codebender.MyApplet;
+import eu.amaxilatis.codebender.actions.SaveOutputPrivilegedAction;
 
 import javax.swing.*;
 import java.awt.*;

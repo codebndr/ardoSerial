@@ -1,7 +1,7 @@
-package eu.amaxilatis.ardoserial;
+package eu.amaxilatis.codebender;
 
-import eu.amaxilatis.ardoserial.graphics.PortOutputViewerFrame;
-import eu.amaxilatis.ardoserial.util.SerialPortReader;
+import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
+import eu.amaxilatis.codebender.util.SerialPortReader;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 

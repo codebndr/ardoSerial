@@ -1,4 +1,4 @@
-package eu.amaxilatis.ardoserial;
+package eu.amaxilatis.codebender;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
