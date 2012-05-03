@@ -27,16 +27,16 @@ public class ArduinoStatusImage {
 
     public static void setConnected() {
         LOGGER.info("setConnected");
-        arduinoStatus.setIcon(new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("img/green.jpg")));
+
     }
 
     public static void setDisconnected() {
         LOGGER.info("setDisconnected");
-        arduinoStatus.setIcon(new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("img/orange.jpg")));
+
     }
 
     public static void setError() {
         LOGGER.info("setError");
-        arduinoStatus.setIcon(new ImageIcon(Thread.currentThread().getContextClassLoader().getResource("img/red.jpg")));
+
     }
 }
