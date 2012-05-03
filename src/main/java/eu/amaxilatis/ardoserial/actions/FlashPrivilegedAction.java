@@ -182,217 +182,112 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
     }
 
+    private void writeToDisk(final String inputFile, final String destinationFile) {
+        File file = new File(destinationFile);
+        InputStream input = this.getClass().getResourceAsStream(inputFile);
+        InputStreamReader reader = new InputStreamReader(input);
+        BufferedWriter writer;
+
+        try {
+            writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(file)));
+        } catch (FileNotFoundException e) {
+            LOGGER.error(e);
+            return;
+        }
+        final BufferedReader bufferedReader = new BufferedReader(reader);
+        try {
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                writer.write(line + "\n");
+                line = bufferedReader.readLine();
+            }
+            writer.close();
+        } catch (IOException e) {
+            LOGGER.error("writeToDisk", e);
+            return;
+        }
+    }
 
     public boolean checkAvrdudeConfLinux() {
-        File avrdudeConf = new File("/tmp/avrdude.conf");
-        if (!avrdudeConf.exists()) {
+        File confFile = new File("/tmp/avrdude.conf");
+        if (!confFile.exists()) {
             LOGGER.info("avrdude.conf does not exist");
-            InputStream input = this.getClass().getResourceAsStream("/avrdude.conf.linux");
-            InputStreamReader reader = new InputStreamReader(input);
-            BufferedWriter writer = null;
-
-            try {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(avrdudeConf)));
-            } catch (FileNotFoundException e) {
-                LOGGER.error(e);
-                return false;
-            }
-            final BufferedReader bufferedReader = new BufferedReader(reader);
-            try {
-                String line = bufferedReader.readLine();
-                while (line != null) {
-                    writer.write(line + "\n");
-                    line = bufferedReader.readLine();
-                }
-                writer.close();
-            } catch (IOException e) {
-                LOGGER.error(e);
-                return false;
-            }
-
+            writeToDisk("/avrdude.conf.linux", "/tmp/avrdude.conf");
         }
         return true;
     }
 
     public boolean checkAvrdudeConfWindows() {
-        File avrdudeConf = new File("C:\\Temp\\avrdude.conf");
-        if (!avrdudeConf.exists()) {
+        File confFile = new File("C:\\Temp\\avrdude.conf");
+        if (!confFile.exists()) {
             LOGGER.info("avrdude.conf does not exist");
-            InputStream input = this.getClass().getResourceAsStream("/avrdude.conf.linux");
-            InputStreamReader reader = new InputStreamReader(input);
-            BufferedWriter writer = null;
-
-            try {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(avrdudeConf)));
-            } catch (FileNotFoundException e) {
-                LOGGER.error(e);
-                return false;
-            }
-            final BufferedReader bufferedReader = new BufferedReader(reader);
-            try {
-                String line = bufferedReader.readLine();
-                while (line != null) {
-                    writer.write(line + "\n");
-                    line = bufferedReader.readLine();
-                }
-                writer.close();
-            } catch (IOException e) {
-                LOGGER.error(e);
-                return false;
-            }
-
+            writeToDisk("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
         }
         return true;
     }
 
     public boolean checkAvrdudeConfMac() {
-        File avrdudeConf = new File("/tmp/avrdude.conf");
-        if (!avrdudeConf.exists()) {
+        File confFile = new File("/tmp/avrdude.conf");
+        if (!confFile.exists()) {
             LOGGER.info("avrdude.conf does not exist");
-            InputStream input = this.getClass().getResourceAsStream("/avrdude.conf.mac");
-            InputStreamReader reader = new InputStreamReader(input);
-            BufferedWriter writer = null;
-
-            try {
-                writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(avrdudeConf)));
-            } catch (FileNotFoundException e) {
-                LOGGER.error(e);
-                return false;
-            }
-            final BufferedReader bufferedReader = new BufferedReader(reader);
-            try {
-                String line = bufferedReader.readLine();
-                while (line != null) {
-                    writer.write(line + "\n");
-                    line = bufferedReader.readLine();
-                }
-                writer.close();
-            } catch (IOException e) {
-                LOGGER.error(e);
-                return false;
-            }
-
+            writeToDisk("/avrdude.conf.mac", "/tmp/avrdude.conf");
         }
         return true;
     }
 
-    public int checkAvrdudeLinux() {
+    private void writeBinaryToDisk(final String inputFile, final String destinationFile) {
         try {
-            Process checkProcess = Runtime.getRuntime().exec("ls /tmp/avrdude");
+            InputStream input = this.getClass().getResourceAsStream(inputFile);
+            FileOutputStream output;
             try {
-                checkProcess.waitFor();
-            } catch (InterruptedException e) {
+                output = new FileOutputStream(new File(destinationFile));
+            } catch (FileNotFoundException e) {
                 LOGGER.error(e);
+                return;
             }
-            InputStreamReader stream = new InputStreamReader(checkProcess.getInputStream());
-            final BufferedReader reader = new BufferedReader(stream);
-            String line = reader.readLine();
-            if (line == null) {
-                InputStream input = this.getClass().getResourceAsStream("/bins/avrdude.linux");
-                FileOutputStream output;
-                try {
-                    output = new FileOutputStream(new File("/tmp/avrdude"));
-                } catch (FileNotFoundException e) {
-                    LOGGER.error(e);
-                    return -1;
-                }
-                int c;
-
-                while ((c = input.read()) != -1) {
-                    output.write(c);
-                }
-                input.close();
-                output.close();
-                Process chmodProcess = Runtime.getRuntime().exec("chmod u+x /tmp/avrdude");
-
-            } else {
-                return 2;
+            int c;
+            while ((c = input.read()) != -1) {
+                output.write(c);
             }
-
+            input.close();
+            output.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.error("writeBinaryToDisk", e);
         }
-
-        return 1;
     }
 
-    public int checkAvrdudeWindows() {
-        try {
-            Process checkProcess = Runtime.getRuntime().exec("dir C:\\Temp\\avrdude.exe");
-            try {
-                checkProcess.waitFor();
-            } catch (InterruptedException e) {
-                LOGGER.error(e);
-            }
-            InputStreamReader stream = new InputStreamReader(checkProcess.getInputStream());
-            final BufferedReader reader = new BufferedReader(stream);
-            String line = reader.readLine();
-            if (line == null) {
-                InputStream input = this.getClass().getResourceAsStream("/bins/avrdude.exe");
-                FileOutputStream output;
-                try {
-                    output = new FileOutputStream(new File("C:\\Temp\\avrdude.exe"));
-                } catch (FileNotFoundException e) {
-                    LOGGER.error(e);
-                    return -1;
-                }
-                int c;
+    private void makeExecutable(String filename) {
+        File dudeFile = new File(filename);
+        dudeFile.setExecutable(true);
+    }
 
-                while ((c = input.read()) != -1) {
-                    output.write(c);
-                }
-                input.close();
-                output.close();
-                Process chmodProcess = Runtime.getRuntime().exec("CACLS /p /e %USERNAME%:f ");
-
-            } else {
-                return 2;
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+    public int checkAvrdudeLinux() {
+        File dudeFile = new File("/tmp/avrdude");
+        if (!dudeFile.exists()) {
+            writeBinaryToDisk("/bins/avrdude.linux", "/tmp/avrdude");
+            makeExecutable("/tmp/avrdude");
         }
-
         return 1;
     }
 
     public int checkAvrdudeMac() {
-        try {
-            Process checkProcess = Runtime.getRuntime().exec("ls /tmp/avrdude");
-            try {
-                checkProcess.waitFor();
-            } catch (InterruptedException e) {
-                LOGGER.error(e);
-            }
-            InputStreamReader stream = new InputStreamReader(checkProcess.getInputStream());
-            final BufferedReader reader = new BufferedReader(stream);
-            String line = reader.readLine();
-            if (line == null) {
-                InputStream input = this.getClass().getResourceAsStream("/bins/avrdude.mac");
-                FileOutputStream output;
-                try {
-                    output = new FileOutputStream(new File("/tmp/avrdude"));
-                } catch (FileNotFoundException e) {
-                    LOGGER.error(e);
-                    return -1;
-                }
-                int c;
-
-                while ((c = input.read()) != -1) {
-                    output.write(c);
-                }
-                input.close();
-                output.close();
-                Process chmodProcess = Runtime.getRuntime().exec("chmod u+x /tmp/avrdude");
-
-            } else {
-                return 2;
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        File dudeFile = new File("/tmp/avrdude");
+        if (!dudeFile.exists()) {
+            writeBinaryToDisk("/bins/avrdude.mac", "/tmp/avrdude");
+            makeExecutable("/tmp/avrdude");
         }
-
         return 1;
     }
+
+
+    public int checkAvrdudeWindows() {
+        File dudeFile = new File("C:\\Temp\\avrdude.exe");
+        if (!dudeFile.exists()) {
+            writeBinaryToDisk("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe");
+            makeExecutable("C:\\Temp\\avrdude.exe");
+        }
+        return 1;
+    }
+
+
 }
