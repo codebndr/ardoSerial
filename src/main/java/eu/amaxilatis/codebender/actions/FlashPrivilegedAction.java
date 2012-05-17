@@ -213,7 +213,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         File confFile = new File("/tmp/avrdude.conf");
         if (!confFile.exists()) {
             LOGGER.info("avrdude.conf does not exist");
-            writeToDisk("avrdude.conf.linux", "/tmp/avrdude.conf");
+            writeBinaryToDisk("avrdude.conf.linux", "/tmp/avrdude.conf");
         }
         return true;
     }
@@ -222,7 +222,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         File confFile = new File("C:\\Temp\\avrdude.conf");
         if (!confFile.exists()) {
             LOGGER.info("avrdude.conf does not exist");
-            writeToDisk("avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
+            writeBinaryToDisk("avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
         }
         return true;
     }
@@ -231,7 +231,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         File confFile = new File("/tmp/avrdude.conf");
         if (!confFile.exists()) {
             LOGGER.info("avrdude.conf does not exist");
-            writeToDisk("avrdude.conf.mac", "/tmp/avrdude.conf");
+            writeBinaryToDisk("avrdude.conf.mac", "/tmp/avrdude.conf");
         }
         return true;
     }
