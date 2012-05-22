@@ -1,5 +1,6 @@
 package eu.amaxilatis.codebender.actions;
 
+import eu.amaxilatis.codebender.CodeBenderApplet;
 import jssc.SerialNativeInterface;
 
 import java.io.*;
@@ -279,7 +280,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
     private void writeBinaryToDisk(final String inputFile, final String destinationFile) {
         try {
-            InputStream input = this.getClass().getResourceAsStream(inputFile);
+            InputStream input = CodeBenderApplet.class.getResourceAsStream(inputFile);
             FileOutputStream output;
             try {
                 output = new FileOutputStream(new File(destinationFile));
