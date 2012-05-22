@@ -37,15 +37,16 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private Object flashWindows() {
+        int result = 0;
         int retval = checkAvrdudeWindows();
         String avrdudePath;
         if (retval > 0) {
             avrdudePath = "C:\\Temp\\ ";
         } else {
-            return null;
+            return 1;
         }
         if (!checkAvrdudeConfWindows()) {
-            return null;
+            return 2;
         }
         try {
             FileWriter fileWriter = null;
@@ -54,7 +55,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             fileWriter.close();
 
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            LOGGER.error(e);
+            return 3;
         }
 
         StringBuilder flashCommand = new StringBuilder();
@@ -74,6 +76,18 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
             try {
                 flashProc.waitFor();
+                InputStream is = flashProc.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    LOGGER.info(line);
+                    if (line.contains("flash verified")) {
+                        result = 0;
+                    }
+                }
+
             } catch (InterruptedException e) {
                 LOGGER.error(e);
             }
@@ -81,19 +95,20 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
     private Object flashMacOSX() {
+        int result = 0;
         int retval = checkAvrdudeMac();
         String avrdudePath;
         if (retval > 0) {
             avrdudePath = "/tmp/avrdude ";
         } else {
-            return null;
+            return 1;
         }
         if (!checkAvrdudeConfMac()) {
-            return null;
+            return 2;
         }
         try {
             FileWriter fileWriter = null;
@@ -102,7 +117,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             fileWriter.close();
 
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            LOGGER.error(e);
+            return 3;
         }
 
         StringBuilder flashCommand = new StringBuilder();
@@ -122,6 +138,18 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
             try {
                 flashProc.waitFor();
+                InputStream is = flashProc.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    LOGGER.info(line);
+                    if (line.contains("flash verified")) {
+                        result = 0;
+                    }
+                }
+
             } catch (InterruptedException e) {
                 LOGGER.error(e);
             }
@@ -129,19 +157,20 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return result;
     }
 
     private Object flashLinux() {
+        int result = 0;
         int retval = checkAvrdudeLinux();
         String avrdudePath;
         if (retval > 0) {
             avrdudePath = "/tmp/avrdude ";
         } else {
-            return null;
+            return 1;
         }
         if (!checkAvrdudeConfLinux()) {
-            return null;
+            return 2;
         }
         try {
             FileWriter fileWriter = null;
@@ -151,7 +180,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
         } catch (IOException e) {
             LOGGER.error(e);
-            return null;
+            return 3;
         }
 
         StringBuilder flashCommand = new StringBuilder();
@@ -171,6 +200,18 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             Process flashProcess = Runtime.getRuntime().exec(flashCommand.toString());
             try {
                 flashProcess.waitFor();
+                InputStream is = flashProcess.getInputStream();
+                InputStreamReader isr = new InputStreamReader(is);
+                BufferedReader br = new BufferedReader(isr);
+                String line;
+
+                while ((line = br.readLine()) != null) {
+                    LOGGER.info(line);
+                    if (line.contains("flash verified")) {
+                        result = 0;
+                    }
+                }
+
             } catch (InterruptedException e) {
                 LOGGER.error(e);
             }
@@ -178,7 +219,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return null;
+        return result;
 
     }
 

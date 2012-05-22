@@ -144,9 +144,10 @@ public class CodeBenderApplet extends JApplet {
         ConnectionManager.getInstance().connect();
     }
 
-    public void flash(final int port, final String filename, final String baudrate) {
-
-        AccessController.doPrivileged(new FlashPrivilegedAction(ports[port], filename, baudrate));
+    public int flash(final int port, final String filename, final String baudrate) {
+        FlashPrivilegedAction action = new FlashPrivilegedAction(ports[port], filename, baudrate);
+        int response = (Integer) AccessController.doPrivileged(action);
+        return response;
     }
 
 }
