@@ -70,7 +70,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
                 .append(" -p m328p ")
-                .append(" -U flash:w:").append("C:\\Temp\\file.hex:i");
+                .append(" -U flash:w:\"").append("C:\\Temp\\file.hex\":i");
 
 
         try {
