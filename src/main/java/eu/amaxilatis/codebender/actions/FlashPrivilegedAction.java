@@ -43,7 +43,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         int retval = checkAvrdudeWindows();
         String avrdudePath;
         if (retval > 0) {
-            avrdudePath = "C:\\Temp\\ ";
+            avrdudePath = "avrdude.exe ";
         } else {
             return 1;
         }
@@ -63,19 +63,20 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
         StringBuilder flashCommand = new StringBuilder();
         //avrdude -b 57600 -c arduino -p m168 -P usb -U flash:w:
-        flashCommand.append(avrdudePath)
-                .append(" -C C:\\Temp\\avrdude.conf ")
+        flashCommand.append("cd C:\\Temp\\ & ")
+                .append("avrdude.exe ")
+                .append(" -C avrdude.conf ")
                 .append(" -b ").append(baudRate)
                 .append(" -P ").append(port)
                 .append(" -c arduino ")
                 .append(" -p m328p ")
-                .append(" -U flash:w:").append("C:\\Temp\\file.hex")
-                .append(" ");
+                .append(" -U flash:w:").append("file.hex");
 
 
         try {
             LOGGER.info("running : " + flashCommand.toString());
             Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
+
             try {
                 flashProc.waitFor();
                 InputStream is = flashProc.getInputStream();
