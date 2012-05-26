@@ -235,7 +235,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
         try {
             LOGGER.info("running : " + flashCommand.toString());
-
+            System.out.println(System.getProperty("user.home"));
             Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
             try {
                 Thread.sleep(3000);
