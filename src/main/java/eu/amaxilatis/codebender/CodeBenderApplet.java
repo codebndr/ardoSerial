@@ -280,7 +280,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
     private int checkLibUsb0Windows() {
         File dudeFile = new File("C:\\Temp\\libusb0.dll");
         if (!dudeFile.exists()) {
-//            writeBinaryToDisk("/libusb0.dll", "C:\\Temp\\libusb0.dll");
+            writeBinaryToDisk("/libusb0.dll", "C:\\Temp\\libusb0.dll");
             makeExecutable("C:\\Temp\\libusb0.dll");
         }
         return 1;
@@ -443,7 +443,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
         File confFile = new File("/tmp/avrdude.conf");
         if (!confFile.exists()) {
             LOGGER.info("avrdude.conf does not exist");
-//            writeBinaryToDisk("/avrdude.conf.linux", "/tmp/avrdude.conf");
+            writeBinaryToDisk("/avrdude.conf.linux", "/tmp/avrdude.conf");
         }
         return true;
     }
@@ -452,7 +452,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
         File confFile = new File("C:\\Temp\\avrdude.conf");
         if (!confFile.exists()) {
             LOGGER.info("avrdude.conf does not exist");
-//            writeBinaryToDisk("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
+            writeBinaryToDisk("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
         }
         return true;
     }
@@ -461,34 +461,34 @@ class FlashPrivilegedAction implements PrivilegedAction {
         File confFile = new File("/tmp/avrdude.conf");
         if (!confFile.exists()) {
             LOGGER.info("avrdude.conf does not exist");
-//            writeBinaryToDisk("/avrdude.conf.mac", "/tmp/avrdude.conf");
+            writeBinaryToDisk("/avrdude.conf.mac", "/tmp/avrdude.conf");
         }
         return true;
     }
 
-//    private void writeBinaryToDisk(final String inputFile, final String destinationFile) {
-//        try {
-//            System.out.println(inputFile.substring(1));
-////            InputStream input =  ClassLoader.getSystemClassLoader().getResourceAsStream(inputFile);
-//            InputStream input = getClass().getResourceAsStream(inputFile);
-//            FileOutputStream output;
-//            try {
-//                output = new FileOutputStream(new File(destinationFile));
-//            } catch (FileNotFoundException e) {
-//                LOGGER.error(e);
-//                return;
-//            }
-//            int c;
-//            while ((c = input.read()) != -1) {
-//                output.write(c);
-//            }
-//            output.flush();
-//            input.close();
-//            output.close();
-//        } catch (IOException e) {
-//            LOGGER.error("writeBinaryToDisk", e);
-//        }
-//    }
+    private void writeBinaryToDisk(final String inputFile, final String destinationFile) {
+        try {
+            System.out.println(inputFile.substring(1));
+//            InputStream input =  ClassLoader.getSystemClassLoader().getResourceAsStream(inputFile);
+            InputStream input = getClass().getResourceAsStream(inputFile);
+            FileOutputStream output;
+            try {
+                output = new FileOutputStream(new File(destinationFile));
+            } catch (FileNotFoundException e) {
+                LOGGER.error(e);
+                return;
+            }
+            int c;
+            while ((c = input.read()) != -1) {
+                output.write(c);
+            }
+            output.flush();
+            input.close();
+            output.close();
+        } catch (IOException e) {
+            LOGGER.error("writeBinaryToDisk", e);
+        }
+    }
 
     private void makeExecutable(String filename) {
         File dudeFile = new File(filename);
@@ -498,7 +498,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
     public int checkAvrdudeLinux() {
         File dudeFile = new File("/tmp/avrdude");
         if (!dudeFile.exists()) {
-//            writeBinaryToDisk("/bins/avrdude.linux", "/tmp/avrdude");
+            writeBinaryToDisk("/bins/avrdude.linux", "/tmp/avrdude");
             makeExecutable("/tmp/avrdude");
         }
         return 1;
@@ -507,7 +507,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
     public int checkAvrdudeMac() {
         File dudeFile = new File("/tmp/avrdude");
         if (!dudeFile.exists()) {
-//            writeBinaryToDisk("/bins/avrdude.mac", "/tmp/avrdude");
+            writeBinaryToDisk("/bins/avrdude.mac", "/tmp/avrdude");
             makeExecutable("/tmp/avrdude");
         }
         return 1;
@@ -517,7 +517,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
     public int checkAvrdudeWindows() {
         File dudeFile = new File("C:\\Temp\\avrdude.exe");
         if (!dudeFile.exists()) {
-//            writeBinaryToDisk("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe");
+            writeBinaryToDisk("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe");
             makeExecutable("C:\\Temp\\avrdude.exe");
         }
         return 1;
