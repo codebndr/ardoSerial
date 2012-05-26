@@ -67,7 +67,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 .append("avrdude.exe ")
                 .append(" -C avrdude.conf ")
                 .append(" -b ").append(baudRate)
-                .append(" -P ").append(port)
+                .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
                 .append(" -p m328p ")
                 .append(" -U flash:w:").append("file.hex");
