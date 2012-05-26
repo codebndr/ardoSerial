@@ -255,11 +255,18 @@ class FlashPrivilegedAction implements PrivilegedAction {
 //            LOGGER.error("writeBinaryToDisk", e);
 //        }
 //
+        Process flashProc1 = null;
         try {
-            Process flashProc1 = Runtime.getRuntime().exec(flashCommand.toString());
+            flashProc1 = Runtime.getRuntime().exec(flashCommand.toString());
         } catch (IOException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+        flashProc1.destroy();
 //            try {
 //                Thread.sleep(3000);
 //            } catch (InterruptedException e) {
