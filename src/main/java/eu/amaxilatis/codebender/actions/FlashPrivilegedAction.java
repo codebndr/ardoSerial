@@ -76,7 +76,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         try {
             LOGGER.info("running : " + flashCommand.toString());
 
-            Process flashProc = Runtime.getRuntime().exec(new String[]{"cd C:\\Temp\\ ", flashCommand.toString()});
+            Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
 
             try {
                 flashProc.waitFor();
