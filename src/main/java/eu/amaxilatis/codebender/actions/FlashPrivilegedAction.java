@@ -96,7 +96,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 System.out.println(e.getMessage());
                 LOGGER.error(e);
             }
-            System.out.println("flashed");
+            System.out.println("flashed " + flashProc.exitValue());
         } catch (IOException e) {
             e.printStackTrace();
         }
