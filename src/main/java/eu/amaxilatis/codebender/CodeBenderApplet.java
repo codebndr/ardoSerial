@@ -224,7 +224,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
         StringBuilder flashCommand = new StringBuilder();
         //avrdude -b 57600 -c arduino -p m168 -P usb -U flash:w:
 
-        flashCommand.append("cmd /s /c \"C:\\Temp\\avrdude.exe ")
+        flashCommand.append("cmd /s /c \"avrdude ")
                 .append(" -C C:\\Temp\\avrdude.conf ")
                 .append(" -b ").append(baudRate)
                 .append(" -P \\\\.\\").append(port)
@@ -236,9 +236,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
         try {
             LOGGER.info("running : " + flashCommand.toString());
 
-            File afile = new File("C:\\Users\\amaxilatis\\test.bat");
-            afile.setExecutable(true, true);
-            Process flashProc = Runtime.getRuntime().exec("cmd /s /c \"C:\\Users\\amaxilatis\\test.bat\"");
+            Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
