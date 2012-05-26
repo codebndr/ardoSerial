@@ -3,6 +3,7 @@ package eu.amaxilatis.codebender.graphics;
 import eu.amaxilatis.codebender.CodeBenderApplet;
 import eu.amaxilatis.codebender.ConnectionManager;
 import eu.amaxilatis.codebender.MyActionListener;
+import eu.amaxilatis.codebender.actions.SaveOutputPrivilegedAction;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -19,6 +20,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.security.AccessController;
 
 /**
  * Created by IntelliJ IDEA.
@@ -47,7 +49,7 @@ public class PortOutputViewerFrame extends JFrame {
      */
     public PortOutputViewerFrame() {
         this.setLayout(new BorderLayout());
-        this.setTitle("SerialMonitor - v" + CodeBenderApplet.version + "." + CodeBenderApplet.buildNum+"b");
+        this.setTitle("SerialMonitor - v" + CodeBenderApplet.version + "." + CodeBenderApplet.buildNum + "b");
         textArea = new JTextArea();
         sendField = new JTextField("");
 
@@ -135,7 +137,7 @@ public class PortOutputViewerFrame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-//                AccessController.doPrivileged(new SaveOutputPrivilegedAction(textArea.getText()));
+                AccessController.doPrivileged(new SaveOutputPrivilegedAction(textArea.getText()));
             }
         });
         bottomPanel.add(save2file);
