@@ -62,11 +62,11 @@ public class SerialPortList {
 
         java.util.List<String> ports = new ArrayList<String>();
         for (int i = 0; i < 10; i++) {
-            final int handle = serialInterface.openPort("COM" + i);
-            if (handle < 0) {
-                serialInterface.closePort(handle);
+//            final int handle = serialInterface.openPort("COM" + i);
+//            if (handle < 0) {
+//                serialInterface.closePort(handle);
                 ports.add("COM" + i);
-            }
+//            }
         }
         String[] portsString = new String[ports.size()];
         for (int i = 0; i < ports.size(); i++) {
