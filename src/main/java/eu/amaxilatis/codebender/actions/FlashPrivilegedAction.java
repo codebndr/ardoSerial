@@ -64,7 +64,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         StringBuilder flashCommand = new StringBuilder();
         //avrdude -b 57600 -c arduino -p m168 -P usb -U flash:w:
 
-        flashCommand.append("C:\\Temp\\avrdude.exe ")
+        flashCommand.append("cmd /c C:\\Temp\\avrdude.exe ")
                 .append(" -C C:\\Temp\\avrdude.conf ")
                 .append(" -b ").append(baudRate)
                 .append(" -P \\\\.\\").append(port)
