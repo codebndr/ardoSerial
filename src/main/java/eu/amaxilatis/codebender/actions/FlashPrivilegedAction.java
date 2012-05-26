@@ -62,6 +62,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         }
         System.out.println("Memory?" + Runtime.getRuntime().freeMemory());
 
+
         StringBuilder flashCommand = new StringBuilder();
         //avrdude -b 57600 -c arduino -p m168 -P usb -U flash:w:
 
@@ -71,13 +72,25 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
                 .append(" -p m328p ")
-                .append(" -U flash:w:\"").append("C:\\Temp\\file.hex\":i \"");
+                .append(" -U flash:w:\"").append("C:\\Temp\\file.hex\":i\"");
 
 
         try {
             LOGGER.info("running : " + flashCommand.toString());
 
-            Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
+            Process flashProc = Runtime.getRuntime().exec("cmd /s /c \"mkdir C:\\Temp\\mdir\"");
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+
+            }
+
+            Process flashProc1 = Runtime.getRuntime().exec(flashCommand.toString());
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException e) {
+
+            }
 //
 //            try {
 //                flashProc.waitFor();
