@@ -38,6 +38,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
     private Object flashWindows() {
         int result = 0;
+
+        int retval1 = checkLibUsb0Windows();
         int retval = checkAvrdudeWindows();
         String avrdudePath;
         if (retval > 0) {
@@ -96,6 +98,16 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             e.printStackTrace();
         }
         return result;
+    }
+
+    private int checkLibUsb0Windows() {
+        File dudeFile = new File("C:\\Temp\\libusb0.dll");
+        if (!dudeFile.exists()) {
+            writeBinaryToDisk("/libusb0.dll", "C:\\Temp\\libusb0.dll");
+            makeExecutable("C:\\Temp\\libusb0.dll");
+        }
+        return 1;
+
     }
 
     private Object flashMacOSX() {
