@@ -60,6 +60,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             LOGGER.error(e);
             return 3;
         }
+        System.out.println("Memory?" + Runtime.getRuntime().freeMemory());
 
         StringBuilder flashCommand = new StringBuilder();
         //avrdude -b 57600 -c arduino -p m168 -P usb -U flash:w:
@@ -77,25 +78,25 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             LOGGER.info("running : " + flashCommand.toString());
 
             Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
-
-            try {
-                flashProc.waitFor();
-                InputStream is = flashProc.getInputStream();
-                InputStreamReader isr = new InputStreamReader(is);
-                BufferedReader br = new BufferedReader(isr);
-                String line;
-
-                while ((line = br.readLine()) != null) {
-                    LOGGER.info(line);
-                    if (line.contains("flash verified")) {
-                        result = 0;
-                    }
-                }
-
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-                LOGGER.error(e);
-            }
+//
+//            try {
+//                flashProc.waitFor();
+//                InputStream is = flashProc.getInputStream();
+//                InputStreamReader isr = new InputStreamReader(is);
+//                BufferedReader br = new BufferedReader(isr);
+//                String line;
+//
+//                while ((line = br.readLine()) != null) {
+//                    LOGGER.info(line);
+//                    if (line.contains("flash verified")) {
+//                        result = 0;
+//                    }
+//                }
+//
+//            } catch (InterruptedException e) {
+//                System.out.println(e.getMessage());
+//                LOGGER.error(e);
+//            }
             System.out.println("flashed " + flashProc.exitValue());
         } catch (IOException e) {
             e.printStackTrace();
