@@ -3,15 +3,22 @@ package eu.amaxilatis.codebender.graphics;
 import eu.amaxilatis.codebender.CodeBenderApplet;
 import eu.amaxilatis.codebender.ConnectionManager;
 import eu.amaxilatis.codebender.MyActionListener;
-import eu.amaxilatis.codebender.actions.SaveOutputPrivilegedAction;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.security.AccessController;
 
 /**
  * Created by IntelliJ IDEA.
@@ -128,7 +135,7 @@ public class PortOutputViewerFrame extends JFrame {
 
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                AccessController.doPrivileged(new SaveOutputPrivilegedAction(textArea.getText()));
+//                AccessController.doPrivileged(new SaveOutputPrivilegedAction(textArea.getText()));
             }
         });
         bottomPanel.add(save2file);
