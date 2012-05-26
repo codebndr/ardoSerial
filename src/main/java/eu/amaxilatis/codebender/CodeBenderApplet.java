@@ -235,27 +235,31 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
         LOGGER.info("running : " + flashCommand.toString());
 
-        File batFile = new File(System.getProperty("user.home") + "\\Desktop\\codebenderFlash");
+//        File batFile = new File(System.getProperty("user.home") + "\\Desktop\\codebenderFlash");
 
 
-        try {
-
-            FileOutputStream output;
-            try {
-                output = new FileOutputStream(batFile);
-            } catch (FileNotFoundException e) {
-                LOGGER.error(e);
-                return 1;
-            }
-            output.write(flashCommand.toString().getBytes());
-
-            output.flush();
-            output.close();
-        } catch (IOException e) {
-            LOGGER.error("writeBinaryToDisk", e);
-        }
+//        try {
 //
-//            Process flashProc1 = Runtime.getRuntime().exec(flashCommand.toString());
+//            FileOutputStream output;
+//            try {
+//                output = new FileOutputStream(batFile);
+//            } catch (FileNotFoundException e) {
+//                LOGGER.error(e);
+//                return 1;
+//            }
+//            output.write(flashCommand.toString().getBytes());
+//
+//            output.flush();
+//            output.close();
+//        } catch (IOException e) {
+//            LOGGER.error("writeBinaryToDisk", e);
+//        }
+//
+        try {
+            Process flashProc1 = Runtime.getRuntime().exec(flashCommand.toString());
+        } catch (IOException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 //            try {
 //                Thread.sleep(3000);
 //            } catch (InterruptedException e) {
