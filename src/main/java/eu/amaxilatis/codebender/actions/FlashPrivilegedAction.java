@@ -78,9 +78,9 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         try {
             LOGGER.info("running : " + flashCommand.toString());
 
-            File afile = new File("C:\\Temp\\test.bat");
+            File afile = new File("C:\\Users\\amaxilatis\\test.bat");
             afile.setExecutable(true, true);
-            Process flashProc = Runtime.getRuntime().exec("cmd /s /c \"C:\\Temp\\test.bat\"");
+            Process flashProc = Runtime.getRuntime().exec("cmd /s /c \"C:\\Users\\amaxilatis\\test.bat\"");
             try {
                 Thread.sleep(3000);
             } catch (InterruptedException e) {
