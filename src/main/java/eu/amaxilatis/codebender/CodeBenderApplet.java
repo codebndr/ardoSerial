@@ -224,24 +224,36 @@ class FlashPrivilegedAction implements PrivilegedAction {
         StringBuilder flashCommand = new StringBuilder();
         //avrdude -b 57600 -c arduino -p m168 -P usb -U flash:w:
 
-        flashCommand.append("avrdude ")
+        flashCommand.append("cmd /s /c \"C:\\Temp\\avrdude.exe ")
                 .append(" -C C:\\Temp\\avrdude.conf ")
                 .append(" -b ").append(baudRate)
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
                 .append(" -p m328p ")
-                .append(" -U flash:w:\"").append("C:\\Temp\\file.hex\":i ");
+                .append(" -U flash:w:\"").append("C:\\Temp\\file.hex\":i \"");
+
+
+        LOGGER.info("running : " + flashCommand.toString());
+
+        File batFile = new File(System.getProperty("user.home") + "\\Desktop\\codebenderFlash");
 
 
         try {
-            LOGGER.info("running : " + flashCommand.toString());
-            System.out.println(System.getProperty("user.home"));
-            Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
 
+            FileOutputStream output;
+            try {
+                output = new FileOutputStream(batFile);
+            } catch (FileNotFoundException e) {
+                LOGGER.error(e);
+                return 1;
             }
+            output.write(flashCommand.toString().getBytes());
+
+            output.flush();
+            output.close();
+        } catch (IOException e) {
+            LOGGER.error("writeBinaryToDisk", e);
+        }
 //
 //            Process flashProc1 = Runtime.getRuntime().exec(flashCommand.toString());
 //            try {
@@ -268,10 +280,6 @@ class FlashPrivilegedAction implements PrivilegedAction {
 //                System.out.println(e.getMessage());
 //                LOGGER.error(e);
 //            }
-            System.out.println("flashed " + flashProc.exitValue());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
         return result;
     }
 
