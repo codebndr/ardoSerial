@@ -44,13 +44,13 @@ public class CodeBenderApplet extends JApplet {
     public static String version;
     public static String buildNum;
 
-    protected static int FLASH_OK = 0;
-    protected static int LIBUSB_ERROR = 1;
-    protected static final int AVRDUDE_ERROR = 2;
-    protected static final int CONF_ERROR = 3;
-    protected static final int HEX_ERROR = 4;
-    protected static final int PROCESS_ERROR = 5;
-    protected static final int INTERUPTED_ERROR = 6;
+    public static final int FLASH_OK = 0;
+    public static final int LIBUSB_ERROR = 1;
+    public static final int AVRDUDE_ERROR = 2;
+    public static final int CONF_ERROR = 3;
+    public static final int HEX_ERROR = 4;
+    public static final int PROCESS_ERROR = 5;
+    public static final int INTERUPTED_ERROR = 6;
 
     @Override
     public final void destroy() {
