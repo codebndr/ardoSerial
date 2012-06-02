@@ -51,6 +51,7 @@ public class CodeBenderApplet extends JApplet {
     public static final int HEX_ERROR = 4;
     public static final int PROCESS_ERROR = 5;
     public static final int INTERUPTED_ERROR = 6;
+    public static final int PORT_ERROR=7;
 
     @Override
     public final void destroy() {
@@ -345,6 +346,9 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
                 while ((line = br.readLine()) != null) {
                     LOGGER.info(line);
+                    if (line.contains("can't open device")){
+                        return CodeBenderApplet.PORT_ERROR;
+                    }
                     if (line.contains("flash verified")) {
                         return CodeBenderApplet.FLASH_OK;
                     }
@@ -411,11 +415,14 @@ class FlashPrivilegedAction implements PrivilegedAction {
                 String line;
                 while ((line = br.readLine()) != null) {
                     LOGGER.info(line);
+		    if (line.contains("can't open device")){
+			return CodeBenderApplet.PORT_ERROR;
+		    }
                     if (line.contains("flash verified")) {
                         System.out.println(flashProcess.exitValue());
                         LOGGER.info(flashProcess.exitValue());
                         return CodeBenderApplet.FLASH_OK;
-                    }
+	            }
                 }
 
             } catch (InterruptedException e) {
