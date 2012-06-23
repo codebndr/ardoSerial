@@ -343,28 +343,28 @@ class FlashPrivilegedAction implements PrivilegedAction {
                 final InputStream is = flashProc.getInputStream();
                 final InputStreamReader isr = new InputStreamReader(is);
                 final BufferedReader br = new BufferedReader(isr);
-                String line;
-
-                while ((line = br.readLine()) != null) {
-                    LOGGER.info(line);
-                    if (line.contains("can't open device")) {
-                        return CodeBenderApplet.PORT_ERROR;
-                    }
-                    if (line.contains("flash verified")) {
-                        return CodeBenderApplet.FLASH_OK;
-                    }
-                }
+                LOGGER.info("flashed=" + flashProc.exitValue());
+                return flashProc.exitValue();
+//                String line;
+//
+//                while ((line = br.readLine()) != null) {
+//                    LOGGER.info(line);
+//                    if (line.contains("can't open device")) {
+//                        return CodeBenderApplet.PORT_ERROR;
+//                    }
+//                    if (line.contains("flash verified")) {
+//                        return CodeBenderApplet.FLASH_OK;
+//                    }
+//                }
 
             } catch (InterruptedException e) {
                 LOGGER.error(e);
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
-            System.out.println("flashed");
         } catch (IOException e) {
             e.printStackTrace();
             return CodeBenderApplet.PROCESS_ERROR;
         }
-        return CodeBenderApplet.FLASH_OK;
     }
 
     private Object flashLinux() {
@@ -412,30 +412,29 @@ class FlashPrivilegedAction implements PrivilegedAction {
                 final InputStream is = flashProcess.getInputStream();
                 final InputStreamReader isr = new InputStreamReader(is);
                 final BufferedReader br = new BufferedReader(isr);
-                LOGGER.info("Exit Value=" + flashProcess.exitValue());
-                String line;
-                while ((line = br.readLine()) != null) {
-                    LOGGER.info(line);
-                    if (line.contains("can't open device")) {
-                        return CodeBenderApplet.PORT_ERROR;
-                    }
-                    if (line.contains("flash verified")) {
-                        System.out.println(flashProcess.exitValue());
-                        LOGGER.info(flashProcess.exitValue());
-                        return CodeBenderApplet.FLASH_OK;
-                    }
-                }
+                LOGGER.info("flashed=" + flashProcess.exitValue());
+                return flashProcess.exitValue();
+//                String line;
+//                while ((line = br.readLine()) != null) {
+//                    LOGGER.info(line);
+//                    if (line.contains("can't open device")) {
+//                        return CodeBenderApplet.PORT_ERROR;
+//                    }
+//                    if (line.contains("flash verified")) {
+//                        System.out.println(flashProcess.exitValue());
+//                        LOGGER.info(flashProcess.exitValue());
+//                        return CodeBenderApplet.FLASH_OK;
+//                    }
+//                }
 
             } catch (InterruptedException e) {
                 LOGGER.error(e);
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
-            LOGGER.info("flashed");
         } catch (IOException e) {
             e.printStackTrace();
             return CodeBenderApplet.PROCESS_ERROR;
         }
-        return CodeBenderApplet.FLASH_OK;
 
     }
 
