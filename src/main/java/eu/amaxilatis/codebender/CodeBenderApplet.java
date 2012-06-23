@@ -3,7 +3,6 @@ package eu.amaxilatis.codebender;
 import eu.amaxilatis.codebender.actions.FlashPrivilegedAction;
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.codebender.util.SerialPortList;
-import jssc.SerialNativeInterface;
 import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.*;
@@ -23,18 +22,10 @@ public class CodeBenderApplet extends JApplet {
      */
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(CodeBenderApplet.class);
 
-    private static SerialNativeInterface serialInterface = new SerialNativeInterface();
-
-    /**
-     * a connection handler.
-     */
-    private Thread serialPortThread;
-    private final String[] rates = new String[12];
-    private String[] detectedPorts;
-    private String[] ports;
-    private boolean started = false;
-    public static String version;
-    public static String buildNum;
+    private final transient String[] rates = new String[12];
+    private transient String[] ports;
+    public static transient String version;
+    public static transient String buildNum;
 
     public static final int FLASH_OK = 0;
     public static final int LIBUSB_ERROR = 1;
@@ -58,7 +49,7 @@ public class CodeBenderApplet extends JApplet {
      */
     public CodeBenderApplet() {
         BasicConfigurator.configure();
-        Properties properties = new Properties();
+        final Properties properties = new Properties();
         try {
 
             properties.load(this.getClass().getResourceAsStream("/props/version.properties"));
@@ -69,13 +60,6 @@ public class CodeBenderApplet extends JApplet {
         } catch (Exception e) {
             LOGGER.error(e);
         }
-    }
-
-    /**
-     * Initialize the baudrates array.
-     */
-    private void initBaudRates() {
-
     }
 
     public String getRates() {
@@ -89,17 +73,6 @@ public class CodeBenderApplet extends JApplet {
     @Override
     public final void init() {
         LOGGER.info("CodeBenderApplet called Init");
-    }
-
-    /**
-     * Build the default user interface.
-     */
-    private void createGUI() {
-        LOGGER.info("CodeBenderApplet called CreateGUI");
-
-        this.setBackground(Color.white);
-
-        LOGGER.info("booting up");
     }
 
     /**
@@ -118,9 +91,9 @@ public class CodeBenderApplet extends JApplet {
                         }
                     });
                 } catch (InterruptedException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    LOGGER.error(e, e);
                 } catch (InvocationTargetException e) {
-                    e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                    LOGGER.error(e, e);
                 }
                 return 0;
             }
@@ -150,9 +123,9 @@ public class CodeBenderApplet extends JApplet {
     }
 
     public int flash(final int port, final String filename, final String baudrate) {
-        FlashPrivilegedAction action = new FlashPrivilegedAction(ports[port], filename, baudrate);
-        int response = (Integer) AccessController.doPrivileged(action);
-        System.out.println("Returing value : " + response);
+        final FlashPrivilegedAction action = new FlashPrivilegedAction(ports[port], filename, baudrate);
+        final int response = (Integer) AccessController.doPrivileged(action);
+        LOGGER.info("Returing value : " + response);
         return response;
     }
 
