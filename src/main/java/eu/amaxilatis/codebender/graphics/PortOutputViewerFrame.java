@@ -5,17 +5,8 @@ import eu.amaxilatis.codebender.ConnectionManager;
 import eu.amaxilatis.codebender.MyActionListener;
 import eu.amaxilatis.codebender.actions.SaveOutputPrivilegedAction;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -37,13 +28,13 @@ public class PortOutputViewerFrame extends JFrame {
     /**
      * the textArea that contains output from the arduino.
      */
-    private transient JTextArea textArea;
+    private final transient JTextArea textArea;
 
     /**
      * a new command to the arduino.
      */
-    private transient JTextField sendField;
-    private JCheckBox followText;
+    private final transient JTextField sendField;
+    private final transient JCheckBox followText;
 
     /**
      * Constructor that Generates a new JFrame to listen to the arduino output.
@@ -60,7 +51,7 @@ public class PortOutputViewerFrame extends JFrame {
 
         send.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            public void actionPerformed(final ActionEvent actionEvent) {
                 ConnectionManager.getInstance().send(sendField.getText());
             }
         });
@@ -69,39 +60,39 @@ public class PortOutputViewerFrame extends JFrame {
 
         this.addWindowListener(new WindowListener() {
             @Override
-            public void windowOpened(WindowEvent windowEvent) {
+            public void windowOpened(final WindowEvent windowEvent) {
                 //nothing
             }
 
             @Override
-            public void windowClosing(WindowEvent windowEvent) {
+            public void windowClosing(final WindowEvent windowEvent) {
                 ConnectionManager.getInstance().disconnect();
                 LOGGER.info("windowClosing");
             }
 
             @Override
-            public void windowClosed(WindowEvent windowEvent) {
+            public void windowClosed(final WindowEvent windowEvent) {
                 ConnectionManager.getInstance().disconnect();
                 LOGGER.info("windowClosed");
             }
 
             @Override
-            public void windowIconified(WindowEvent windowEvent) {
+            public void windowIconified(final WindowEvent windowEvent) {
                 //nothing
             }
 
             @Override
-            public void windowDeiconified(WindowEvent windowEvent) {
+            public void windowDeiconified(final WindowEvent windowEvent) {
                 //nothing
             }
 
             @Override
-            public void windowActivated(WindowEvent windowEvent) {
+            public void windowActivated(final WindowEvent windowEvent) {
                 //nothing
             }
 
             @Override
-            public void windowDeactivated(WindowEvent windowEvent) {
+            public void windowDeactivated(final WindowEvent windowEvent) {
                 //nothing
             }
         });
@@ -137,7 +128,7 @@ public class PortOutputViewerFrame extends JFrame {
         save2file.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent actionEvent) {
+            public void actionPerformed(final ActionEvent actionEvent) {
                 AccessController.doPrivileged(new SaveOutputPrivilegedAction(textArea.getText()));
             }
         });
