@@ -93,32 +93,13 @@ public final class SerialPortList {
 //            LOGGER.error(ex, ex);
 //        }
 //        return returnArray;
-        String[] returnArray = new String[]{};
-        final File dir = new File("/dev");
-        if (dir.exists() && dir.isDirectory()) {
-//            System.out.println("found /dev");
-            final File[] files = dir.listFiles();
-//            System.out.println("contains " + files.length + " files");
-            if (files.length > 0) {
-                final TreeSet<String> portsTree = new TreeSet<String>();
-                final ArrayList<String> portsList = new ArrayList<String>();
-                for (File file : files) {
-//                    System.out.println("checking " + file.getName());
-                    if (!file.isDirectory() && !file.isFile()) {
-                        if (file.getName().contains("ttyUSB")) {
-                            portsTree.add("/dev/" + file.getName());
-                        } else if (file.getName().contains("ttyACM")) {
-                            portsTree.add("/dev/" + file.getName());
-                        }
-                    }
-                }
-                for (String portName : portsTree) {
-                    portsList.add(portName);
-                }
-                returnArray = portsList.toArray(returnArray);
-            }
-        }
-        return returnArray;
+
+
+        ArrayList<String> portsList = new ArrayList<String>();
+        portsList.addAll(seachSerialPorts("ttyACM"));
+        portsList.addAll(seachSerialPorts("ttyUSB"));
+
+        return (String[]) portsList.toArray();
     }
 
     public static String[] getSolarisPortNames() {
@@ -126,30 +107,37 @@ public final class SerialPortList {
     }
 
     public static String[] getMacOSXPortNames() {
-        String[] returnArray = new String[]{};
+
+        ArrayList<String> portsList = new ArrayList<String>();
+        portsList.addAll(seachSerialPorts("cu."));
+        return (String[]) portsList.toArray();
+
+    }
+
+    private static ArrayList<String> seachSerialPorts(final String key) {
         final File dir = new File("/dev");
+        ArrayList<String> portsList = new ArrayList<String>();
         if (dir.exists() && dir.isDirectory()) {
 //            System.out.println("found /dev");
             final File[] files = dir.listFiles();
 //            System.out.println("contains " + files.length + " files");
             if (files.length > 0) {
                 final TreeSet<String> portsTree = new TreeSet<String>();
-                final ArrayList<String> portsList = new ArrayList<String>();
+                portsList = new ArrayList<String>();
                 for (File file : files) {
 //                    System.out.println("checking " + file.getName());
-                    if (!file.isDirectory() && !file.isFile() && file.getName().contains("cu.")) {
-//                    if (!file.isDirectory() && !file.isFile() && (file.getName().contains("tty.") || file.getName().contains("cu."))) {
-//                        System.out.println("adding " + file.getName());
-                        portsTree.add("/dev/" + file.getName());
+                    if (!file.isDirectory() && !file.isFile()) {
+                        if (file.getName().contains(key)) {
+                            portsTree.add("/dev/" + file.getName());
+                        }
                     }
                 }
                 for (String portName : portsTree) {
                     portsList.add(portName);
                 }
-                returnArray = portsList.toArray(returnArray);
             }
         }
-        return returnArray;
+        return portsList;
     }
 
 }
