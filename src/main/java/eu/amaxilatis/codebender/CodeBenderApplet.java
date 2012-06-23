@@ -412,7 +412,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
                 final InputStream is = flashProcess.getInputStream();
                 final InputStreamReader isr = new InputStreamReader(is);
                 final BufferedReader br = new BufferedReader(isr);
-
+                LOGGER.info("Exit Value=" + flashProcess.exitValue());
                 String line;
                 while ((line = br.readLine()) != null) {
                     LOGGER.info(line);
@@ -510,7 +510,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 //        final File dudeFile = new File("/tmp/avrdude");
 //        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.mac", "/tmp/avrdude")) {
         downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.mac", "/tmp/avrdude");
- makeExecutable("/tmp/avrdude");
+        makeExecutable("/tmp/avrdude");
 //        }
     }
 
@@ -518,7 +518,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
     public void checkAvrdudeWindows() throws IOException {
 //        final File dudeFile = new File("C:\\Temp\\avrdude.exe");
 //        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe")) {
-downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.exe", "/tmp/avrdude");
+        downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.exe", "/tmp/avrdude");
 
         makeExecutable("C:\\Temp\\avrdude.exe");
 //        }
