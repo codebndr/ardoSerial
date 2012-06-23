@@ -442,7 +442,8 @@ class FlashPrivilegedAction implements PrivilegedAction {
     private void checkLibUsb0Windows() throws IOException {
 //        File dudeFile = new File("C:\\Temp\\libusb0.dll");
 //        if (!dudeFile.exists() || filesDiffer("/libusb0.dll", "C:\\Temp\\libusb0.dll")) {
-        writeBinaryToDisk("/libusb0.dll", "C:\\Temp\\libusb0.dll");
+        downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/libusb0.dll", "C:\\Temp\\libusb0.dll");
+//        writeBinaryToDisk("/libusb0.dll", "C:\\Temp\\libusb0.dll");
         makeExecutable("C:\\Temp\\libusb0.dll");
 //        }
     }
@@ -451,7 +452,9 @@ class FlashPrivilegedAction implements PrivilegedAction {
 //        File confFile = new File("/tmp/avrdude.conf");
 //        if (!confFile.exists() || filesDiffer("/avrdude.conf.linux", "/tmp/avrdude.conf")) {
 //            LOGGER.info("avrdude.conf does not exist");
-        writeBinaryToDisk("/avrdude.conf.linux", "/tmp/avrdude.conf");
+
+        downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.conf.linux", "/tmp/avrdude.conf");
+//        writeBinaryToDisk("/avrdude.conf.linux", "/tmp/avrdude.conf");
 //        }
     }
 
@@ -459,7 +462,8 @@ class FlashPrivilegedAction implements PrivilegedAction {
 //        File confFile = new File("C:\\Temp\\avrdude.conf");
 //        if (!confFile.exists() || filesDiffer("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf")) {
 //            LOGGER.info("avrdude.conf does not exist");
-        writeBinaryToDisk("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
+        downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
+//        writeBinaryToDisk("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
 //        }
     }
 
@@ -467,7 +471,8 @@ class FlashPrivilegedAction implements PrivilegedAction {
 //        File confFile = new File("/tmp/avrdude.conf");
 //        if (!confFile.exists() || filesDiffer("/avrdude.conf.mac", "/tmp/avrdude.conf")) {
 //            LOGGER.info("avrdude.conf does not exist");
-        writeBinaryToDisk("/avrdude.conf.mac", "/tmp/avrdude.conf");
+        downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.conf.mac", "/tmp/avrdude.conf");
+//        writeBinaryToDisk("/avrdude.conf.mac", "/tmp/avrdude.conf");
 //        }
     }
 
@@ -496,7 +501,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 //        final File dudeFile = new File("/tmp/avrdude");
 //        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.linux", "/tmp/avrdude")) {
 //        writeBinaryToDisk("/bins/avrdude.linux", "/tmp/avrdude");
-        downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/avrdude.linux", "/tmp/avrdude");
+        downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.linux", "/tmp/avrdude");
         makeExecutable("/tmp/avrdude");
 //        }
     }
@@ -504,8 +509,8 @@ class FlashPrivilegedAction implements PrivilegedAction {
     public void checkAvrdudeMac() throws IOException {
 //        final File dudeFile = new File("/tmp/avrdude");
 //        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.mac", "/tmp/avrdude")) {
-        writeBinaryToDisk("/bins/avrdude.mac", "/tmp/avrdude");
-        makeExecutable("/tmp/avrdude");
+        downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.mac", "/tmp/avrdude");
+ makeExecutable("/tmp/avrdude");
 //        }
     }
 
@@ -513,7 +518,8 @@ class FlashPrivilegedAction implements PrivilegedAction {
     public void checkAvrdudeWindows() throws IOException {
 //        final File dudeFile = new File("C:\\Temp\\avrdude.exe");
 //        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe")) {
-        writeBinaryToDisk("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe");
+downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.exe", "/tmp/avrdude");
+
         makeExecutable("C:\\Temp\\avrdude.exe");
 //        }
     }
