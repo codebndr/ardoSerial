@@ -439,52 +439,35 @@ class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private void checkLibUsb0Windows() throws IOException {
-        File dudeFile = new File("C:\\Temp\\libusb0.dll");
-        if (!dudeFile.exists() || filesDiffer("/libusb0.dll", "C:\\Temp\\libusb0.dll")) {
-            writeBinaryToDisk("/libusb0.dll", "C:\\Temp\\libusb0.dll");
-            makeExecutable("C:\\Temp\\libusb0.dll");
-        }
+//        File dudeFile = new File("C:\\Temp\\libusb0.dll");
+//        if (!dudeFile.exists() || filesDiffer("/libusb0.dll", "C:\\Temp\\libusb0.dll")) {
+        writeBinaryToDisk("/libusb0.dll", "C:\\Temp\\libusb0.dll");
+        makeExecutable("C:\\Temp\\libusb0.dll");
+//        }
     }
 
     public void checkAvrdudeConfLinux() throws IOException {
-        File confFile = new File("/tmp/avrdude.conf");
-        if (!confFile.exists() || filesDiffer("/avrdude.conf.linux", "/tmp/avrdude.conf")) {
-            LOGGER.info("avrdude.conf does not exist");
-            writeBinaryToDisk("/avrdude.conf.linux", "/tmp/avrdude.conf");
-        }
+//        File confFile = new File("/tmp/avrdude.conf");
+//        if (!confFile.exists() || filesDiffer("/avrdude.conf.linux", "/tmp/avrdude.conf")) {
+//            LOGGER.info("avrdude.conf does not exist");
+        writeBinaryToDisk("/avrdude.conf.linux", "/tmp/avrdude.conf");
+//        }
     }
 
     public void checkAvrdudeConfWindows() throws IOException {
-        File confFile = new File("C:\\Temp\\avrdude.conf");
-        if (!confFile.exists() || filesDiffer("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf")) {
-            LOGGER.info("avrdude.conf does not exist");
-            writeBinaryToDisk("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
-        }
+//        File confFile = new File("C:\\Temp\\avrdude.conf");
+//        if (!confFile.exists() || filesDiffer("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf")) {
+//            LOGGER.info("avrdude.conf does not exist");
+        writeBinaryToDisk("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
+//        }
     }
 
     public void checkAvrdudeConfMac() throws IOException {
-        File confFile = new File("/tmp/avrdude.conf");
-
-        if (!confFile.exists() || filesDiffer("/avrdude.conf.mac", "/tmp/avrdude.conf")) {
-            LOGGER.info("avrdude.conf does not exist");
-            writeBinaryToDisk("/avrdude.conf.mac", "/tmp/avrdude.conf");
-        }
-    }
-
-    private boolean filesDiffer(final String inputFile, final String destinationFile) {
-        File file1 = null;
-        file1 = new File(inputFile.substring(1));
-        final File file2 = new File(destinationFile);
-
-        try {
-            LOGGER.info("filesDiffer-" + inputFile + "," + destinationFile);
-            final boolean state = (Files.getChecksum(file1, new java.util.zip.CRC32()) != Files.getChecksum(file2, new java.util.zip.CRC32()));
-            LOGGER.info("Diff is : " + state);
-            return state;
-        } catch (IOException e) {
-            LOGGER.error(e, e);
-            return true;
-        }
+//        File confFile = new File("/tmp/avrdude.conf");
+//        if (!confFile.exists() || filesDiffer("/avrdude.conf.mac", "/tmp/avrdude.conf")) {
+//            LOGGER.info("avrdude.conf does not exist");
+        writeBinaryToDisk("/avrdude.conf.mac", "/tmp/avrdude.conf");
+//        }
     }
 
     private void writeBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
@@ -492,20 +475,6 @@ class FlashPrivilegedAction implements PrivilegedAction {
         final InputStream input = getClass().getResourceAsStream(inputFile);
         byte[] barr = ByteStreams.toByteArray(input);
         Files.write(barr, new File(destinationFile));
-//        FileOutputStream output;
-//        try {
-//            output = new FileOutputStream(new File(destinationFile));
-//        } catch (FileNotFoundException e) {
-//            LOGGER.error(e);
-//            throw new IOException();
-//        }
-//        int c;
-//        while ((c = input.read()) != -1) {
-//            output.write(c);
-//        }
-//        output.flush();
-//        input.close();
-//        output.close();
     }
 
     private void makeExecutable(final String filename) {
@@ -514,28 +483,28 @@ class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     public void checkAvrdudeLinux() throws IOException {
-        final File dudeFile = new File("/tmp/avrdude");
-        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.linux", "/tmp/avrdude")) {
-            writeBinaryToDisk("/bins/avrdude.linux", "/tmp/avrdude");
-            makeExecutable("/tmp/avrdude");
-        }
+//        final File dudeFile = new File("/tmp/avrdude");
+//        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.linux", "/tmp/avrdude")) {
+        writeBinaryToDisk("/bins/avrdude.linux", "/tmp/avrdude");
+        makeExecutable("/tmp/avrdude");
+//        }
     }
 
     public void checkAvrdudeMac() throws IOException {
-        final File dudeFile = new File("/tmp/avrdude");
-        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.mac", "/tmp/avrdude")) {
-            writeBinaryToDisk("/bins/avrdude.mac", "/tmp/avrdude");
-            makeExecutable("/tmp/avrdude");
-        }
+//        final File dudeFile = new File("/tmp/avrdude");
+//        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.mac", "/tmp/avrdude")) {
+        writeBinaryToDisk("/bins/avrdude.mac", "/tmp/avrdude");
+        makeExecutable("/tmp/avrdude");
+//        }
     }
 
 
     public void checkAvrdudeWindows() throws IOException {
-        final File dudeFile = new File("C:\\Temp\\avrdude.exe");
-        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe")) {
-            writeBinaryToDisk("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe");
-            makeExecutable("C:\\Temp\\avrdude.exe");
-        }
+//        final File dudeFile = new File("C:\\Temp\\avrdude.exe");
+//        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe")) {
+        writeBinaryToDisk("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe");
+        makeExecutable("C:\\Temp\\avrdude.exe");
+//        }
     }
 
 
