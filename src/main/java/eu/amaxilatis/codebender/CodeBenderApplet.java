@@ -1,5 +1,6 @@
 package eu.amaxilatis.codebender;
 
+import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 import eu.amaxilatis.codebender.graphics.ArduinoStatusImage;
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
@@ -11,8 +12,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -491,20 +490,22 @@ class FlashPrivilegedAction implements PrivilegedAction {
     private void writeBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
         LOGGER.info("writing to disk " + inputFile);
         final InputStream input = getClass().getResourceAsStream(inputFile);
-        FileOutputStream output;
-        try {
-            output = new FileOutputStream(new File(destinationFile));
-        } catch (FileNotFoundException e) {
-            LOGGER.error(e);
-            throw new IOException();
-        }
-        int c;
-        while ((c = input.read()) != -1) {
-            output.write(c);
-        }
-        output.flush();
-        input.close();
-        output.close();
+        byte[] barr = ByteStreams.toByteArray(input);
+        Files.write(barr, new File(destinationFile));
+//        FileOutputStream output;
+//        try {
+//            output = new FileOutputStream(new File(destinationFile));
+//        } catch (FileNotFoundException e) {
+//            LOGGER.error(e);
+//            throw new IOException();
+//        }
+//        int c;
+//        while ((c = input.read()) != -1) {
+//            output.write(c);
+//        }
+//        output.flush();
+//        input.close();
+//        output.close();
     }
 
     private void makeExecutable(final String filename) {
