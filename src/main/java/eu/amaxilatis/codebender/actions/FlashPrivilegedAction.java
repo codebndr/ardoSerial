@@ -85,8 +85,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             return CodeBenderApplet.CONF_ERROR;
         }
 
+        FileWriter fileWriter = null;
         try {
-            FileWriter fileWriter = null;
             fileWriter = new FileWriter("C:\\Temp\\file.hex");
             fileWriter.write(file);
             fileWriter.close();
@@ -94,6 +94,12 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         } catch (IOException e) {
             LOGGER.error(e);
             return CodeBenderApplet.HEX_ERROR;
+        } finally {
+            try {
+                fileWriter.close();
+            } catch (IOException e) {
+                LOGGER.error(e, e);
+            }
         }
 
         final StringBuilder flashCommand = (new StringBuilder()).append("C:\\Temp\\avrdude.exe ")

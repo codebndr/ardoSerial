@@ -21,6 +21,7 @@ public final class SerialPortList {
     private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SerialPortList.class);
 
     private static SerialPortList ourInstance = new SerialPortList();
+    private static final String DEVICES_PATH = "/dev";
 
     public static SerialPortList getInstance() {
         return ourInstance;
@@ -117,7 +118,7 @@ public final class SerialPortList {
     }
 
     private static List<String> seachSerialPorts(final String key) {
-        final File dir = new File("/dev");
+        final File dir = new File(DEVICES_PATH);
         ArrayList<String> portsList = new ArrayList<String>();
         if (dir.exists() && dir.isDirectory()) {
 //            System.out.println("found /dev");
