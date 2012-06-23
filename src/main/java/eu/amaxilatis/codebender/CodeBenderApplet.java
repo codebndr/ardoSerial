@@ -482,6 +482,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
             LOGGER.info("Diff is : " + state);
             return state;
         } catch (IOException e) {
+            LOGGER.error(e,e);
             return true;
         }
     }
