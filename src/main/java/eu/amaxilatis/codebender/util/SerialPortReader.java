@@ -18,15 +18,15 @@ public class SerialPortReader implements SerialPortEventListener {
      * the JTextArea to append output.
      */
     private final transient PortOutputViewerFrame jTextArea;
-    private ConnectionManager connectionManager;
+    private final transient ConnectionManager connectionManager;
 
     /**
      * basic constructor.
      *
      * @param jTextArea1 a JTextArea object.
      */
-    public SerialPortReader(final ConnectionManager m, final PortOutputViewerFrame jTextArea1) {
-        this.connectionManager = m;
+    public SerialPortReader(final ConnectionManager manager, final PortOutputViewerFrame jTextArea1) {
+        this.connectionManager = manager;
         this.jTextArea = jTextArea1;
     }
 
