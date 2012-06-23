@@ -466,6 +466,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private boolean filesDiffer(final String inputFile, final String destinationFile) {
+        LOGGER.info("filesDiffer");
         final File file1 = new File(getClass().getResource(inputFile).getFile());
         final File file2 = new File(destinationFile);
 
