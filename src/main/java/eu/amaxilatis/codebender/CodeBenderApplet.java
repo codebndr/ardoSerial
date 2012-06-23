@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Properties;
@@ -473,7 +474,12 @@ class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private boolean filesDiffer(final String inputFile, final String destinationFile) {
-        final File file1 = new File(getClass().getResource(inputFile).getFile());
+        File file1 = null;
+        try {
+            file1 = new File(getClass().getResource(inputFile).toURI());
+        } catch (URISyntaxException e) {
+            LOGGER.error(e, e);
+        }
         final File file2 = new File(destinationFile);
 
         try {
@@ -482,13 +488,13 @@ class FlashPrivilegedAction implements PrivilegedAction {
             LOGGER.info("Diff is : " + state);
             return state;
         } catch (IOException e) {
-            LOGGER.error(e,e);
+            LOGGER.error(e, e);
             return true;
         }
     }
 
     private void writeBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
-        LOGGER.info("writing to disk "+inputFile);
+        LOGGER.info("writing to disk " + inputFile);
         final InputStream input = getClass().getResourceAsStream(inputFile);
         FileOutputStream output;
         try {
