@@ -201,7 +201,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             return CodeBenderApplet.HEX_ERROR;
         }
 
-        StringBuilder flashCommand = new StringBuilder();
+        final StringBuilder flashCommand = new StringBuilder();
 
         flashCommand.append("/tmp/avrdude ")
                 .append(" -C /tmp/avrdude.conf ")
@@ -244,7 +244,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         final URL url = new URL(inputFile);
         url.openConnection();
         final InputStream input = url.openStream();
-        byte[] barr = ByteStreams.toByteArray(input);
+        final byte[] barr = ByteStreams.toByteArray(input);
         Files.write(barr, new File(destinationFile));
     }
 

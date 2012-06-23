@@ -22,7 +22,7 @@ public class ConnectionManager implements Runnable {
      * the name of the serial port.
      */
     private static String port;
-    private static final String baudrates = "300,1200,2400,4800,9600,14400,19200,28800,38400,57600,115200";
+    private static final String BAUDRATES = "300,1200,2400,4800,9600,14400,19200,28800,38400,57600,115200";
 
     public void setjTextArea(final PortOutputViewerFrame jTextArea) {
         this.jTextArea = jTextArea;
@@ -46,11 +46,14 @@ public class ConnectionManager implements Runnable {
      * appends all output to a JTextArea.
      */
     public ConnectionManager() {
+        //empty
     }
 
     public static ConnectionManager getInstance() {
-        if (instance == null) {
-            instance = new ConnectionManager();
+        synchronized (ConnectionManager.class) {
+            if (instance == null) {
+                instance = new ConnectionManager();
+            }
         }
         return instance;
     }
@@ -69,7 +72,7 @@ public class ConnectionManager implements Runnable {
     }
 
     public static String getBaudrates() {
-        return baudrates;
+        return BAUDRATES;
     }
 
     /**
@@ -79,7 +82,7 @@ public class ConnectionManager implements Runnable {
      */
     public final void setPort(final String port, final int baudRate) {
         ConnectionManager.port = port;
-        ConnectionManager.baudRate = Integer.parseInt(baudrates.split(",")[baudRate]);
+        ConnectionManager.baudRate = Integer.parseInt(BAUDRATES.split(",")[baudRate]);
     }
 
     /**
@@ -124,21 +127,19 @@ public class ConnectionManager implements Runnable {
 
     @Override
     public final void run() {
-
+        //empty
     }
 
     /**
      * called to disconnect form the port.
      */
     public final void disconnect() {
-        if (serialPort != null) {
-            if (serialPort.isOpened()) {
-                try {
-                    serialPort.closePort();
-                    LOGGER.info("Port closed");
-                } catch (final SerialPortException e) {
-                    LOGGER.error("Cannot close port");
-                }
+        if ((serialPort != null) && (serialPort.isOpened())) {
+            try {
+                serialPort.closePort();
+                LOGGER.info("Port closed");
+            } catch (final SerialPortException e) {
+                LOGGER.error("Cannot close port");
             }
         }
     }

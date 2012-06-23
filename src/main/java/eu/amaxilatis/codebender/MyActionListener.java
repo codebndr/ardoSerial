@@ -7,18 +7,18 @@ import java.awt.event.ActionListener;
 
 public class MyActionListener implements ActionListener {
 
-    private PortOutputViewerFrame portOutputViewerFrame;
+    private final transient PortOutputViewerFrame viewerFrame;
 
-    public MyActionListener(PortOutputViewerFrame portOutputViewerFrame) {
-        this.portOutputViewerFrame = portOutputViewerFrame;
+    public MyActionListener(final PortOutputViewerFrame viewerFrame) {
+        this.viewerFrame = viewerFrame;
     }
 
 
     @Override
-    public void actionPerformed(ActionEvent actionEvent) {
+    public void actionPerformed(final ActionEvent actionEvent) {
 
         ConnectionManager.getInstance().disconnect();
-        portOutputViewerFrame.dispose();
+        viewerFrame.dispose();
 
     }
 }
