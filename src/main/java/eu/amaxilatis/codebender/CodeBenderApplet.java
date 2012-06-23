@@ -487,6 +487,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private void writeBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
+        LOGGER.info("writing to disk "+inputFile);
         final InputStream input = getClass().getResourceAsStream(inputFile);
         FileOutputStream output;
         try {
