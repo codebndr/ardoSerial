@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URISyntaxException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Properties;
@@ -475,11 +474,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
     private boolean filesDiffer(final String inputFile, final String destinationFile) {
         File file1 = null;
-        try {
-            file1 = new File(getClass().getResource(inputFile).toURI());
-        } catch (URISyntaxException e) {
-            LOGGER.error(e, e);
-        }
+        file1 = new File(inputFile.substring(1));
         final File file2 = new File(destinationFile);
 
         try {
