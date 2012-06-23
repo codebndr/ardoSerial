@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.TreeSet;
 
 
@@ -17,9 +16,11 @@ import java.util.TreeSet;
  * Date: 3/3/12
  * Time: 12:01 PM
  */
-public class SerialPortList {
-
-    private static SerialNativeInterface serialInterface = new SerialNativeInterface();
+public final class SerialPortList {
+    /**
+     * Logger.
+     */
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SerialPortList.class);
 
     private static SerialPortList ourInstance = new SerialPortList();
 
@@ -31,24 +32,24 @@ public class SerialPortList {
     }
 
 
-    private static Comparator<String> comparator = new Comparator<String>() {
-        @Override
-        public int compare(String valueA, String valueB) {
-            int result = 0;
-            if (valueA.toLowerCase().contains("com") && valueB.toLowerCase().contains("com")) {
-                try {
-                    int index1 = Integer.valueOf(valueA.toLowerCase().replace("com", ""));
-                    int index2 = Integer.valueOf(valueB.toLowerCase().replace("com", ""));
-                    result = index1 - index2;
-                } catch (Exception ex) {
-                    result = valueA.compareToIgnoreCase(valueB);
-                }
-            } else {
-                result = valueA.compareToIgnoreCase(valueB);
-            }
-            return result;
-        }
-    };
+//    private static Comparator<String> comparator = new Comparator<String>() {
+//        @Override
+//        public int compare(String valueA, String valueB) {
+//            int result = 0;
+//            if (valueA.toLowerCase().contains("com") && valueB.toLowerCase().contains("com")) {
+//                try {
+//                    int index1 = Integer.valueOf(valueA.toLowerCase().replace("com", ""));
+//                    int index2 = Integer.valueOf(valueB.toLowerCase().replace("com", ""));
+//                    result = index1 - index2;
+//                } catch (Exception ex) {
+//                    result = valueA.compareToIgnoreCase(valueB);
+//                }
+//            } else {
+//                result = valueA.compareToIgnoreCase(valueB);
+//            }
+//            return result;
+//        }
+//    };
 
 
     public static String[] getPortNames() {
@@ -60,12 +61,12 @@ public class SerialPortList {
             return getMacOSXPortNames();
         }//<-since 0.9.0
 
-        java.util.List<String> ports = new ArrayList<String>();
+        final java.util.List<String> ports = new ArrayList<String>();
         for (int i = 0; i < 10; i++) {
 //            final int handle = serialInterface.openPort("COM" + i);
 //            if (handle < 0) {
 //                serialInterface.closePort(handle);
-                ports.add("COM" + i);
+            ports.add("COM" + i);
 //            }
         }
         String[] portsString = new String[ports.size()];
@@ -78,10 +79,9 @@ public class SerialPortList {
     public static String[] getLinuxPortNames() {
         String[] returnArray = new String[]{};
         try {
-            Process dmesgProcess = Runtime.getRuntime().exec("ls /dev/");
-            BufferedReader reader = new BufferedReader(new InputStreamReader(dmesgProcess.getInputStream()));
-            TreeSet<String> portsTree = new TreeSet<String>();
-            ArrayList<String> portsList = new ArrayList<String>();
+            final Process dmesgProcess = Runtime.getRuntime().exec("ls /dev/");
+            final BufferedReader reader = new BufferedReader(new InputStreamReader(dmesgProcess.getInputStream()));
+            final TreeSet<String> portsTree = new TreeSet<String>();
             String buffer = "";
             while ((buffer = reader.readLine()) != null && !buffer.isEmpty()) {
                 if (buffer.contains("ttyUSB")) {
@@ -93,25 +93,25 @@ public class SerialPortList {
             returnArray = portsTree.toArray(returnArray);
             reader.close();
         } catch (IOException ex) {
-            //Do nothing
+            LOGGER.error(ex, ex);
         }
         return returnArray;
     }
 
     public static String[] getSolarisPortNames() {
-        return null;
+        return (String[]) (new ArrayList<String>()).toArray();
     }
 
     public static String[] getMacOSXPortNames() {
-       String[] returnArray = new String[]{};
-        File dir = new File("/dev");
+        String[] returnArray = new String[]{};
+        final File dir = new File("/dev");
         if (dir.exists() && dir.isDirectory()) {
 //            System.out.println("found /dev");
-            File[] files = dir.listFiles();
+            final File[] files = dir.listFiles();
 //            System.out.println("contains " + files.length + " files");
             if (files.length > 0) {
-                TreeSet<String> portsTree = new TreeSet<String>();
-                ArrayList<String> portsList = new ArrayList<String>();
+                final TreeSet<String> portsTree = new TreeSet<String>();
+                final ArrayList<String> portsList = new ArrayList<String>();
                 for (File file : files) {
 //                    System.out.println("checking " + file.getName());
                     if (!file.isDirectory() && !file.isFile() && file.getName().contains("cu.")) {
