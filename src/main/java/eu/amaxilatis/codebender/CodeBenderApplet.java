@@ -9,7 +9,14 @@ import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -466,11 +473,11 @@ class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private boolean filesDiffer(final String inputFile, final String destinationFile) {
-        LOGGER.info("filesDiffer");
         final File file1 = new File(getClass().getResource(inputFile).getFile());
         final File file2 = new File(destinationFile);
 
         try {
+            LOGGER.info("filesDiffer-" + inputFile + "," + destinationFile);
             final boolean state = (Files.getChecksum(file1, new java.util.zip.CRC32()) != Files.getChecksum(file2, new java.util.zip.CRC32()));
             LOGGER.info("Diff is : " + state);
             return state;
