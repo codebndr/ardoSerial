@@ -116,7 +116,7 @@ public final class SerialPortList {
 
     }
 
-    private static ArrayList<String> seachSerialPorts(final String key) {
+    private static List<String> seachSerialPorts(final String key) {
         final File dir = new File("/dev");
         ArrayList<String> portsList = new ArrayList<String>();
         if (dir.exists() && dir.isDirectory()) {

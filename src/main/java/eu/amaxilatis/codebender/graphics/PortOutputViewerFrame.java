@@ -119,7 +119,6 @@ public class PortOutputViewerFrame extends JFrame {
         topPanel.setLayout(new GridLayout(0, 1));
         topPanel.add(pan1);
         this.getContentPane().add(topPanel, BorderLayout.NORTH);
-        //topPanel.add(ArduinoStatusImage.getArduinoStatus());
 
 
         final JScrollPane middlePanel = new JScrollPane(textArea);

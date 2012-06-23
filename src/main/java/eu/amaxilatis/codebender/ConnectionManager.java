@@ -116,7 +116,6 @@ public class ConnectionManager implements Runnable {
             serialPort.setEventsMask(SerialPort.MASK_RXCHAR);
             //Add an interface through which we will receive information about events
             serialPort.addEventListener(new SerialPortReader(this, jTextArea));
-//            ArduinoStatusImage.setConnected();
         } catch (SerialPortException ex) {
             jTextArea.appendText(ex.getExceptionType() + " Reconnecting...\n");
             connect();
@@ -137,7 +136,6 @@ public class ConnectionManager implements Runnable {
                 try {
                     serialPort.closePort();
                     LOGGER.info("Port closed");
-//                    ArduinoStatusImage.setDisconnected();
                 } catch (final SerialPortException e) {
                     LOGGER.error("Cannot close port");
                 }

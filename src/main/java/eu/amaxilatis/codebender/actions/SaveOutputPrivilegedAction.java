@@ -1,6 +1,6 @@
 package eu.amaxilatis.codebender.actions;
 
-import javax.swing.JFileChooser;
+import javax.swing.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -14,9 +14,14 @@ import java.security.PrivilegedAction;
  * To change this template use File | Settings | File Templates.
  */
 public class SaveOutputPrivilegedAction implements PrivilegedAction {
-    private final String text;
+    /**
+     * Logger.
+     */
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SaveOutputPrivilegedAction.class);
 
-    public SaveOutputPrivilegedAction(String text) {
+    private final transient String text;
+
+    public SaveOutputPrivilegedAction(final String text) {
         this.text = text;
     }
 
@@ -26,12 +31,12 @@ public class SaveOutputPrivilegedAction implements PrivilegedAction {
         final File file = fileChooser.getSelectedFile();
         try {
 
-            FileWriter fr = new FileWriter(file);
-            fr.write(text);
-            fr.close();
+            final FileWriter fileWriter = new FileWriter(file);
+            fileWriter.write(text);
+            fileWriter.close();
 
         } catch (IOException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            LOGGER.error(e, e);
         }
 
         return 0;
