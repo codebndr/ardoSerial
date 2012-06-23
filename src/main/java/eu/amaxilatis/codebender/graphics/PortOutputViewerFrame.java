@@ -42,7 +42,7 @@ public class PortOutputViewerFrame extends JFrame {
     public PortOutputViewerFrame() {
         this.setLayout(new BorderLayout());
         this.setTitle("Codebender.cc - ArduinoSerialMonitor - v" + CodeBenderApplet.version + "." + CodeBenderApplet.buildNum + "b");
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/codebender.jpg").getFile()));
+//        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/codebender.jpg").getFile()));
         textArea = new JTextArea();
         sendField = new JTextField("");
 
