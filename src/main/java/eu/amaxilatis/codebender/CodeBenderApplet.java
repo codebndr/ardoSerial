@@ -1,5 +1,6 @@
 package eu.amaxilatis.codebender;
 
+import com.google.common.io.Files;
 import eu.amaxilatis.codebender.graphics.ArduinoStatusImage;
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.codebender.util.SerialPortList;
@@ -8,14 +9,7 @@ import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -51,7 +45,7 @@ public class CodeBenderApplet extends JApplet {
     public static final int HEX_ERROR = 4;
     public static final int PROCESS_ERROR = 5;
     public static final int INTERUPTED_ERROR = 6;
-    public static final int PORT_ERROR=7;
+    public static final int PORT_ERROR = 7;
 
     @Override
     public final void destroy() {
@@ -346,7 +340,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
                 while ((line = br.readLine()) != null) {
                     LOGGER.info(line);
-                    if (line.contains("can't open device")){
+                    if (line.contains("can't open device")) {
                         return CodeBenderApplet.PORT_ERROR;
                     }
                     if (line.contains("flash verified")) {
@@ -415,14 +409,14 @@ class FlashPrivilegedAction implements PrivilegedAction {
                 String line;
                 while ((line = br.readLine()) != null) {
                     LOGGER.info(line);
-		    if (line.contains("can't open device")){
-			return CodeBenderApplet.PORT_ERROR;
-		    }
+                    if (line.contains("can't open device")) {
+                        return CodeBenderApplet.PORT_ERROR;
+                    }
                     if (line.contains("flash verified")) {
                         System.out.println(flashProcess.exitValue());
                         LOGGER.info(flashProcess.exitValue());
                         return CodeBenderApplet.FLASH_OK;
-	            }
+                    }
                 }
 
             } catch (InterruptedException e) {
@@ -440,7 +434,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
     private void checkLibUsb0Windows() throws IOException {
         File dudeFile = new File("C:\\Temp\\libusb0.dll");
-        if (!dudeFile.exists()) {
+        if (!dudeFile.exists() || filesDiffer("/libusb0.dll", "C:\\Temp\\libusb0.dll")) {
             writeBinaryToDisk("/libusb0.dll", "C:\\Temp\\libusb0.dll");
             makeExecutable("C:\\Temp\\libusb0.dll");
         }
@@ -448,7 +442,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
     public void checkAvrdudeConfLinux() throws IOException {
         File confFile = new File("/tmp/avrdude.conf");
-        if (!confFile.exists()) {
+        if (!confFile.exists() || filesDiffer("/avrdude.conf.linux", "/tmp/avrdude.conf")) {
             LOGGER.info("avrdude.conf does not exist");
             writeBinaryToDisk("/avrdude.conf.linux", "/tmp/avrdude.conf");
         }
@@ -456,7 +450,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
     public void checkAvrdudeConfWindows() throws IOException {
         File confFile = new File("C:\\Temp\\avrdude.conf");
-        if (!confFile.exists()) {
+        if (!confFile.exists() || filesDiffer("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf")) {
             LOGGER.info("avrdude.conf does not exist");
             writeBinaryToDisk("/avrdude.conf.windows", "C:\\Temp\\avrdude.conf");
         }
@@ -464,9 +458,23 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
     public void checkAvrdudeConfMac() throws IOException {
         File confFile = new File("/tmp/avrdude.conf");
-        if (!confFile.exists()) {
+
+        if (!confFile.exists() || filesDiffer("/avrdude.conf.mac", "/tmp/avrdude.conf")) {
             LOGGER.info("avrdude.conf does not exist");
             writeBinaryToDisk("/avrdude.conf.mac", "/tmp/avrdude.conf");
+        }
+    }
+
+    private boolean filesDiffer(final String inputFile, final String destinationFile) {
+        final File file1 = new File(getClass().getResource(inputFile).getFile());
+        final File file2 = new File(destinationFile);
+
+        try {
+            final boolean state = (Files.getChecksum(file1, new java.util.zip.CRC32()) != Files.getChecksum(file2, new java.util.zip.CRC32()));
+            LOGGER.info("Diff is : " + state);
+            return state;
+        } catch (IOException e) {
+            return true;
         }
     }
 
@@ -495,7 +503,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
     public void checkAvrdudeLinux() throws IOException {
         final File dudeFile = new File("/tmp/avrdude");
-        if (!dudeFile.exists()) {
+        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.linux", "/tmp/avrdude")) {
             writeBinaryToDisk("/bins/avrdude.linux", "/tmp/avrdude");
             makeExecutable("/tmp/avrdude");
         }
@@ -503,7 +511,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
     public void checkAvrdudeMac() throws IOException {
         final File dudeFile = new File("/tmp/avrdude");
-        if (!dudeFile.exists()) {
+        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.mac", "/tmp/avrdude")) {
             writeBinaryToDisk("/bins/avrdude.mac", "/tmp/avrdude");
             makeExecutable("/tmp/avrdude");
         }
@@ -512,7 +520,7 @@ class FlashPrivilegedAction implements PrivilegedAction {
 
     public void checkAvrdudeWindows() throws IOException {
         final File dudeFile = new File("C:\\Temp\\avrdude.exe");
-        if (!dudeFile.exists()) {
+        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe")) {
             writeBinaryToDisk("/bins/avrdude.exe", "C:\\Temp\\avrdude.exe");
             makeExecutable("C:\\Temp\\avrdude.exe");
         }
