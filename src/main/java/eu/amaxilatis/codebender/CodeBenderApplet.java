@@ -8,8 +8,10 @@ import eu.amaxilatis.codebender.util.SerialPortList;
 import jssc.SerialNativeInterface;
 import org.apache.log4j.BasicConfigurator;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JApplet;
+import javax.swing.SwingUtilities;
+import java.awt.Color;
+import java.awt.HeadlessException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;

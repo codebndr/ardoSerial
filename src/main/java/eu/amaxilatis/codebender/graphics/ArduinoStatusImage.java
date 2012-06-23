@@ -1,6 +1,6 @@
 package eu.amaxilatis.codebender.graphics;
 
-import javax.swing.*;
+import javax.swing.JLabel;
 
 /**
  * Created by IntelliJ IDEA.
