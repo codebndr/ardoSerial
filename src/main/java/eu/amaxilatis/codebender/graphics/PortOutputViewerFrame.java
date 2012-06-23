@@ -11,7 +11,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.image.BufferedImage;
 import java.security.AccessController;
 
 /**
@@ -43,7 +42,7 @@ public class PortOutputViewerFrame extends JFrame {
     public PortOutputViewerFrame() {
         this.setLayout(new BorderLayout());
         this.setTitle("Codebender.cc - ArduinoSerialMonitor - v" + CodeBenderApplet.version + "." + CodeBenderApplet.buildNum + "b");
-        this.setIconImage(Toolkit.getDefaultToolkit().getImage("/img/codebender.jpg"));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/codebender.jpg").getFile()));
         textArea = new JTextArea();
         sendField = new JTextField("");
 
