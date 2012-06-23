@@ -4,6 +4,7 @@ import jssc.SerialNativeInterface;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeSet;
 
 
@@ -26,6 +27,7 @@ public final class SerialPortList {
     }
 
     private SerialPortList() {
+        LOGGER.trace("SerialPortList");
     }
 
 
@@ -95,11 +97,11 @@ public final class SerialPortList {
 //        return returnArray;
 
 
-        ArrayList<String> portsList = new ArrayList<String>();
+        final List<String> portsList = new ArrayList<String>();
         portsList.addAll(seachSerialPorts("ttyACM"));
         portsList.addAll(seachSerialPorts("ttyUSB"));
 
-        return (String[]) portsList.toArray();
+        return (String[]) portsList.toArray(new String[portsList.size()]);
     }
 
     public static String[] getSolarisPortNames() {
@@ -108,9 +110,9 @@ public final class SerialPortList {
 
     public static String[] getMacOSXPortNames() {
 
-        ArrayList<String> portsList = new ArrayList<String>();
+        final List<String> portsList = new ArrayList<String>();
         portsList.addAll(seachSerialPorts("cu."));
-        return (String[]) portsList.toArray();
+        return (String[]) portsList.toArray(new String[portsList.size()]);
 
     }
 
@@ -126,10 +128,8 @@ public final class SerialPortList {
                 portsList = new ArrayList<String>();
                 for (File file : files) {
 //                    System.out.println("checking " + file.getName());
-                    if (!file.isDirectory() && !file.isFile()) {
-                        if (file.getName().contains(key)) {
-                            portsTree.add("/dev/" + file.getName());
-                        }
+                    if (!file.isDirectory() && !file.isFile() && file.getName().contains(key)) {
+                        portsTree.add("/dev/" + file.getName());
                     }
                 }
                 for (String portName : portsTree) {
@@ -137,6 +137,7 @@ public final class SerialPortList {
                 }
             }
         }
+
         return portsList;
     }
 
