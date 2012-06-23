@@ -2,10 +2,7 @@ package eu.amaxilatis.codebender.util;
 
 import jssc.SerialNativeInterface;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -77,23 +74,49 @@ public final class SerialPortList {
     }
 
     public static String[] getLinuxPortNames() {
+//        String[] returnArray = new String[]{};
+//        try {
+//            final Process dmesgProcess = Runtime.getRuntime().exec("ls /dev/");
+//            final BufferedReader reader = new BufferedReader(new InputStreamReader(dmesgProcess.getInputStream()));
+//            final TreeSet<String> portsTree = new TreeSet<String>();
+//            String buffer = "";
+//            while ((buffer = reader.readLine()) != null && !buffer.isEmpty()) {
+//                if (buffer.contains("ttyUSB")) {
+//                    portsTree.add("/dev/" + buffer);
+//                } else if (buffer.contains("ttyACM")) {
+//                    portsTree.add("/dev/" + buffer);
+//                }
+//            }
+//            returnArray = portsTree.toArray(returnArray);
+//            reader.close();
+//        } catch (IOException ex) {
+//            LOGGER.error(ex, ex);
+//        }
+//        return returnArray;
         String[] returnArray = new String[]{};
-        try {
-            final Process dmesgProcess = Runtime.getRuntime().exec("ls /dev/");
-            final BufferedReader reader = new BufferedReader(new InputStreamReader(dmesgProcess.getInputStream()));
-            final TreeSet<String> portsTree = new TreeSet<String>();
-            String buffer = "";
-            while ((buffer = reader.readLine()) != null && !buffer.isEmpty()) {
-                if (buffer.contains("ttyUSB")) {
-                    portsTree.add("/dev/" + buffer);
-                } else if (buffer.contains("ttyACM")) {
-                    portsTree.add("/dev/" + buffer);
+        final File dir = new File("/dev");
+        if (dir.exists() && dir.isDirectory()) {
+//            System.out.println("found /dev");
+            final File[] files = dir.listFiles();
+//            System.out.println("contains " + files.length + " files");
+            if (files.length > 0) {
+                final TreeSet<String> portsTree = new TreeSet<String>();
+                final ArrayList<String> portsList = new ArrayList<String>();
+                for (File file : files) {
+//                    System.out.println("checking " + file.getName());
+                    if (!file.isDirectory() && !file.isFile()) {
+                        if (file.getName().contains("ttyUSB")) {
+                            portsTree.add("/dev/" + file.getName());
+                        } else if (file.getName().contains("ttyACM")) {
+                            portsTree.add("/dev/" + file.getName());
+                        }
+                    }
                 }
+                for (String portName : portsTree) {
+                    portsList.add(portName);
+                }
+                returnArray = portsList.toArray(returnArray);
             }
-            returnArray = portsTree.toArray(returnArray);
-            reader.close();
-        } catch (IOException ex) {
-            LOGGER.error(ex, ex);
         }
         return returnArray;
     }
