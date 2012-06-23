@@ -5,21 +5,13 @@ import eu.amaxilatis.codebender.ConnectionManager;
 import eu.amaxilatis.codebender.MyActionListener;
 import eu.amaxilatis.codebender.actions.SaveOutputPrivilegedAction;
 
-import javax.swing.JButton;
-import javax.swing.JCheckBox;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.image.BufferedImage;
 import java.security.AccessController;
 
 /**
@@ -43,13 +35,15 @@ public class PortOutputViewerFrame extends JFrame {
      * a new command to the arduino.
      */
     private transient JTextField sendField;
+    private JCheckBox followText;
 
     /**
      * Constructor that Generates a new JFrame to listen to the arduino output.
      */
     public PortOutputViewerFrame() {
         this.setLayout(new BorderLayout());
-        this.setTitle("SerialMonitor - v" + CodeBenderApplet.version + "." + CodeBenderApplet.buildNum + "b");
+        this.setTitle("Codebender.cc - ArduinoSerialMonitor - v" + CodeBenderApplet.version + "." + CodeBenderApplet.buildNum + "b");
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage("/img/codebender.jpg"));
         textArea = new JTextArea();
         sendField = new JTextField("");
 
@@ -127,8 +121,8 @@ public class PortOutputViewerFrame extends JFrame {
 
         final JPanel bottomPanel = new JPanel();
         bottomPanel.setLayout(new FlowLayout());
-        final JCheckBox followText = new JCheckBox("Autoscroll");
-        followText.setEnabled(false);
+        followText = new JCheckBox("Autoscroll");
+        followText.setEnabled(true);
         followText.setSelected(true);
         bottomPanel.add(followText);
 
@@ -155,8 +149,9 @@ public class PortOutputViewerFrame extends JFrame {
     public void appendText(final String text) {
 
         textArea.append(text);
-
-        textArea.setCaretPosition(textArea.getDocument().getLength());
+        if (followText.isSelected()) {
+            textArea.setCaretPosition(textArea.getDocument().getLength());
+        }
     }
 
     /**

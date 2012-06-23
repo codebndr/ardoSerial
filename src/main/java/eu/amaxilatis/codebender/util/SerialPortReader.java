@@ -43,7 +43,7 @@ public class SerialPortReader implements SerialPortEventListener {
             try {
 
                 final byte buffer[] = connectionManager.getSerialPort().readBytes(1);
-                LOGGER.info("|" + (char) buffer[0] + "|");
+//                LOGGER.info("|" + (char) buffer[0] + "|");
                 jTextArea.appendText(String.valueOf((char) buffer[0]));
             } catch (SerialPortException ex) {
                 jTextArea.appendText(ex.getExceptionType());
