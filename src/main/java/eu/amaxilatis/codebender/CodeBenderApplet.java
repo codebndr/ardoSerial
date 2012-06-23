@@ -8,10 +8,8 @@ import eu.amaxilatis.codebender.util.SerialPortList;
 import jssc.SerialNativeInterface;
 import org.apache.log4j.BasicConfigurator;
 
-import javax.swing.JApplet;
-import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.HeadlessException;
+import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileWriter;
@@ -19,6 +17,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Properties;
@@ -479,6 +478,15 @@ class FlashPrivilegedAction implements PrivilegedAction {
         Files.write(barr, new File(destinationFile));
     }
 
+    private void downloadBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
+        LOGGER.info("downloading to disk " + inputFile);
+        URL url = new URL(inputFile);
+        url.openConnection();
+        final InputStream input = url.openStream();
+        byte[] barr = ByteStreams.toByteArray(input);
+        Files.write(barr, new File(destinationFile));
+    }
+
     private void makeExecutable(final String filename) {
         final File dudeFile = new File(filename);
         dudeFile.setExecutable(true);
@@ -487,7 +495,8 @@ class FlashPrivilegedAction implements PrivilegedAction {
     public void checkAvrdudeLinux() throws IOException {
 //        final File dudeFile = new File("/tmp/avrdude");
 //        if (!dudeFile.exists() || filesDiffer("/bins/avrdude.linux", "/tmp/avrdude")) {
-        writeBinaryToDisk("/bins/avrdude.linux", "/tmp/avrdude");
+//        writeBinaryToDisk("/bins/avrdude.linux", "/tmp/avrdude");
+        downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/avrdude.linux", "/tmp/avrdude");
         makeExecutable("/tmp/avrdude");
 //        }
     }
