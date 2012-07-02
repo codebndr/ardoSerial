@@ -73,7 +73,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         }
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.exe", AVRDUDE_PATH_UNIX);
+            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.exe", "C:\\Temp\\avrdude.exe");
             makeExecutable("C:\\Temp\\avrdude.exe");
         } catch (IOException e) {
             return CodeBenderApplet.AVRDUDE_ERROR;
