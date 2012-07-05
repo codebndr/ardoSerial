@@ -64,31 +64,31 @@ public class FlashPrivilegedAction implements PrivilegedAction {
      * @return The flash Status: 0 is OK , else an Error Code is returned.
      */
     private Object flashWindows() {
-        final String basepath = System.getProperty("user.home").substring(0, System.getProperty("user.home").indexOf('\\'));
+        final String basepath = System.getProperty("user.home");
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/libusb0.dll", basepath + "\\Temp\\libusb0.dll");
-            makeExecutable(basepath + "\\Temp\\libusb0.dll");
+            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/libusb0.dll", basepath + "\\libusb0.dll");
+            makeExecutable(basepath + "\\libusb0.dll");
         } catch (IOException e) {
             return CodeBenderApplet.LIBUSB_ERROR;
         }
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.exe", basepath + "\\Temp\\avrdude.exe");
-            makeExecutable(basepath + "\\Temp\\avrdude.exe");
+            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.exe", basepath + "\\avrdude.exe");
+            makeExecutable(basepath + "\\avrdude.exe");
         } catch (IOException e) {
             return CodeBenderApplet.AVRDUDE_ERROR;
         }
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.conf.windows", basepath + "\\Temp\\avrdude.conf");
+            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.conf.windows", basepath + "\\avrdude.conf");
         } catch (IOException e) {
             return CodeBenderApplet.CONF_ERROR;
         }
 
         FileWriter fileWriter = null;
         try {
-            fileWriter = new FileWriter(basepath + "\\Temp\\file.hex");
+            fileWriter = new FileWriter(basepath + "\\file.hex");
             fileWriter.write(file);
             fileWriter.close();
 
@@ -103,13 +103,13 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             }
         }
 
-        final StringBuilder flashCommand = (new StringBuilder()).append(basepath + "\\Temp\\avrdude.exe ")
-                .append(" -C " + basepath + "\\Temp\\avrdude.conf ")
+        final StringBuilder flashCommand = (new StringBuilder()).append(basepath + "\\avrdude.exe ")
+                .append(" -C " + basepath + "\\avrdude.conf ")
                 .append(" -b ").append(baudRate)
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
                 .append(" -p m328p ")
-                .append(" -U flash:w:\"").append(basepath+"\\Temp\\file.hex\":i -F");
+                .append(" -U flash:w:\"").append(basepath+"\\file.hex\":i -F");
 
         LOGGER.info("running : " + flashCommand.toString());
 
