@@ -35,6 +35,11 @@ public class CodeBenderApplet extends JApplet {
     public static final int PROCESS_ERROR = 5;
     public static final int INTERUPTED_ERROR = 6;
     public static final int PORT_ERROR = 7;
+    public static String errorMessage;
+
+    public static String getErrorMessage() {
+        return errorMessage;
+    }
 
     @Override
     public final void destroy() {

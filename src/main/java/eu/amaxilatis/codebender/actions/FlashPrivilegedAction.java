@@ -70,6 +70,11 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/libusb0.dll", basepath + "\\libusb0.dll");
             makeExecutable(basepath + "\\libusb0.dll");
         } catch (IOException e) {
+            StringBuilder sb = new StringBuilder();
+            for (StackTraceElement el : e.getStackTrace()) {
+                sb.append(el.toString()).append("\n");
+            }
+            CodeBenderApplet.errorMessage = sb.toString();
             return CodeBenderApplet.LIBUSB_ERROR;
         }
 
@@ -77,12 +82,22 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.exe", basepath + "\\avrdude.exe");
             makeExecutable(basepath + "\\avrdude.exe");
         } catch (IOException e) {
+            StringBuilder sb = new StringBuilder();
+            for (StackTraceElement el : e.getStackTrace()) {
+                sb.append(el.toString()).append("\n");
+            }
+            CodeBenderApplet.errorMessage = sb.toString();
             return CodeBenderApplet.AVRDUDE_ERROR;
         }
 
         try {
             downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.conf.windows", basepath + "\\avrdude.conf");
         } catch (IOException e) {
+            StringBuilder sb = new StringBuilder();
+            for (StackTraceElement el : e.getStackTrace()) {
+                sb.append(el.toString()).append("\n");
+            }
+            CodeBenderApplet.errorMessage = sb.toString();
             return CodeBenderApplet.CONF_ERROR;
         }
 
@@ -94,6 +109,11 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
         } catch (IOException e) {
             LOGGER.error(e);
+            StringBuilder sb = new StringBuilder();
+            for (StackTraceElement el : e.getStackTrace()) {
+                sb.append(el.toString()).append("\n");
+            }
+            CodeBenderApplet.errorMessage = sb.toString();
             return CodeBenderApplet.HEX_ERROR;
         } finally {
             try {
@@ -109,7 +129,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
                 .append(" -p m328p ")
-                .append(" -U flash:w:\"").append(basepath+"\\file.hex\":i -F");
+                .append(" -U flash:w:\"").append(basepath + "\\file.hex\":i -F");
 
         LOGGER.info("running : " + flashCommand.toString());
 
@@ -117,6 +137,11 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         try {
             flashProc1 = Runtime.getRuntime().exec(flashCommand.toString());
         } catch (IOException e) {
+            StringBuilder sb = new StringBuilder();
+            for (StackTraceElement el : e.getStackTrace()) {
+                sb.append(el.toString()).append("\n");
+            }
+            CodeBenderApplet.errorMessage = sb.toString();
             return CodeBenderApplet.PROCESS_ERROR;
         }
         try {
