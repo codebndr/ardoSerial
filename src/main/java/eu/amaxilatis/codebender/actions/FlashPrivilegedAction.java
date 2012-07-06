@@ -67,37 +67,25 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         final String basepath = System.getProperty("user.home");
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/libusb0.dll", basepath + "\\libusb0.dll");
+            downloadBinaryToDisk("http://codebender.cc/dudes/libusb0.dll", basepath + "\\libusb0.dll");
             makeExecutable(basepath + "\\libusb0.dll");
         } catch (IOException e) {
-            StringBuilder sb = new StringBuilder();
-            for (StackTraceElement el : e.getStackTrace()) {
-                sb.append(el.toString()).append("\n");
-            }
-            CodeBenderApplet.errorMessage = sb.toString();
+            reportError(e);
             return CodeBenderApplet.LIBUSB_ERROR;
         }
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.exe", basepath + "\\avrdude.exe");
+            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.exe", basepath + "\\avrdude.exe");
             makeExecutable(basepath + "\\avrdude.exe");
         } catch (IOException e) {
-            StringBuilder sb = new StringBuilder();
-            for (StackTraceElement el : e.getStackTrace()) {
-                sb.append(el.toString()).append("\n");
-            }
-            CodeBenderApplet.errorMessage = sb.toString();
+            reportError(e);
             return CodeBenderApplet.AVRDUDE_ERROR;
         }
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.conf.windows", basepath + "\\avrdude.conf");
+            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.conf.windows", basepath + "\\avrdude.conf");
         } catch (IOException e) {
-            StringBuilder sb = new StringBuilder();
-            for (StackTraceElement el : e.getStackTrace()) {
-                sb.append(el.toString()).append("\n");
-            }
-            CodeBenderApplet.errorMessage = sb.toString();
+            reportError(e);
             return CodeBenderApplet.CONF_ERROR;
         }
 
@@ -109,17 +97,14 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
         } catch (IOException e) {
             LOGGER.error(e);
-            StringBuilder sb = new StringBuilder();
-            for (StackTraceElement el : e.getStackTrace()) {
-                sb.append(el.toString()).append("\n");
-            }
-            CodeBenderApplet.errorMessage = sb.toString();
+            reportError(e);
             return CodeBenderApplet.HEX_ERROR;
         } finally {
             try {
                 fileWriter.close();
             } catch (IOException e) {
                 LOGGER.error(e, e);
+                reportError(e);
             }
         }
 
@@ -137,11 +122,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         try {
             flashProc1 = Runtime.getRuntime().exec(flashCommand.toString());
         } catch (IOException e) {
-            StringBuilder sb = new StringBuilder();
-            for (StackTraceElement el : e.getStackTrace()) {
-                sb.append(el.toString()).append("\n");
-            }
-            CodeBenderApplet.errorMessage = sb.toString();
+            reportError(e);
             return CodeBenderApplet.PROCESS_ERROR;
         }
         try {
@@ -154,18 +135,28 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         return CodeBenderApplet.FLASH_OK;
     }
 
+    private void reportError(Exception e) {
+        StringBuilder sb = new StringBuilder();
+        for (StackTraceElement el : e.getStackTrace()) {
+            sb.append(el.toString()).append("\n");
+        }
+        CodeBenderApplet.errorMessage = sb.toString();
+    }
+
     private Object flashMacOSX() {
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.mac", AVRDUDE_PATH_UNIX);
+            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.mac", AVRDUDE_PATH_UNIX);
             makeExecutable(AVRDUDE_PATH_UNIX);
         } catch (IOException e) {
+            reportError(e);
             return CodeBenderApplet.AVRDUDE_ERROR;
         }
 
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.conf.mac", "/tmp/avrdude.conf");
+            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.conf.mac", "/tmp/avrdude.conf");
         } catch (IOException e) {
+            reportError(e);
             return CodeBenderApplet.CONF_ERROR;
         }
 
@@ -177,6 +168,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
         } catch (IOException e) {
             LOGGER.error(e);
+            reportError(e);
             return CodeBenderApplet.HEX_ERROR;
         }
 
@@ -199,10 +191,12 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
             } catch (InterruptedException e) {
                 LOGGER.error(e);
+                reportError(e);
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
         } catch (IOException e) {
             LOGGER.error(e, e);
+            reportError(e);
             return CodeBenderApplet.PROCESS_ERROR;
         }
     }
@@ -210,15 +204,17 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     private Object flashLinux() {
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.linux", AVRDUDE_PATH_UNIX);
+            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.linux", AVRDUDE_PATH_UNIX);
             makeExecutable(AVRDUDE_PATH_UNIX);
         } catch (IOException e) {
+            reportError(e);
             return CodeBenderApplet.AVRDUDE_ERROR;
         }
 
         try {
-            downloadBinaryToDisk("http://students.ceid.upatras.gr/~amaxilatis/dudes/avrdude.conf.linux", "/tmp/avrdude.conf");
+            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.conf.linux", "/tmp/avrdude.conf");
         } catch (IOException e) {
+            reportError(e);
             return CodeBenderApplet.CONF_ERROR;
         }
 
@@ -230,6 +226,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
         } catch (IOException e) {
             LOGGER.error(e);
+            reportError(e);
             return CodeBenderApplet.HEX_ERROR;
         }
 
@@ -255,10 +252,12 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
             } catch (InterruptedException e) {
                 LOGGER.error(e);
+                reportError(e);
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
         } catch (IOException e) {
             LOGGER.error(e, e);
+            reportError(e);
             return CodeBenderApplet.PROCESS_ERROR;
         }
 
