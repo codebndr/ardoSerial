@@ -28,7 +28,7 @@ public class CodeBenderApplet extends JApplet {
     public static transient String buildNum;
 
     public static final int FLASH_OK = 0;
-    public static final int LIBUSB_ERROR = 1;
+    public static final int LIBUSB_ERROR = 8;
     public static final int AVRDUDE_ERROR = 2;
     public static final int CONF_ERROR = 3;
     public static final int HEX_ERROR = 4;

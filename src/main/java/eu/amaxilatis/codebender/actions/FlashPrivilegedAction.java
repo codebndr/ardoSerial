@@ -1,14 +1,9 @@
 package eu.amaxilatis.codebender.actions;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Files;
 import eu.amaxilatis.codebender.CodeBenderApplet;
 import jssc.SerialNativeInterface;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.security.PrivilegedAction;
 
@@ -57,6 +52,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             return flashWindows();
         }
     }
+
 
     /**
      * Used to flash on Windows.
@@ -201,6 +197,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         }
     }
 
+
     private Object flashLinux() {
 
         try {
@@ -263,20 +260,45 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
     }
 
-//    private void writeBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
+    //    private void writeBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
 //        LOGGER.info("writing to disk " + inputFile);
 //        final InputStream input = getClass().getResourceAsStream(inputFile);
 //        byte[] barr = ByteStreams.toByteArray(input);
 //        Files.write(barr, new File(destinationFile));
 //    }
 
-    private void downloadBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
+    public static void main(String[] args) {
+        try {
+            long start = System.currentTimeMillis();
+            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.linux", AVRDUDE_PATH_UNIX);
+            System.out.println((System.currentTimeMillis() - start));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void downloadBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
+//        LOGGER.info("downloading to disk " + inputFile);
+//        final URL url = new URL(inputFile);
+//        url.openConnection();
+//        final InputStream input = url.openStream();
+//        final byte[] barr = ByteStreams.toByteArray(input);
+//        Files.write(barr, new File(destinationFile));
+
         LOGGER.info("downloading to disk " + inputFile);
         final URL url = new URL(inputFile);
         url.openConnection();
         final InputStream input = url.openStream();
-        final byte[] barr = ByteStreams.toByteArray(input);
-        Files.write(barr, new File(destinationFile));
+        File filea = new File(destinationFile);
+        FileOutputStream fo = new FileOutputStream(filea);
+        int data = input.read();
+        while (data != -1) {
+            fo.write(data);
+            data = input.read();
+        }
+        input.close();
+        fo.close();
+
     }
 
     private void makeExecutable(final String filename) {
