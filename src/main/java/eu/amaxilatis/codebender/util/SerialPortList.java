@@ -4,6 +4,7 @@ import jssc.SerialNativeInterface;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -22,6 +23,8 @@ public final class SerialPortList {
 
     private static SerialPortList ourInstance = new SerialPortList();
     private static final String DEVICES_PATH = "/dev";
+    private static SerialNativeInterface serialInterface = new SerialNativeInterface();
+
 
     public static SerialPortList getInstance() {
         return ourInstance;
@@ -32,25 +35,35 @@ public final class SerialPortList {
     }
 
 
-//    private static Comparator<String> comparator = new Comparator<String>() {
-//        @Override
-//        public int compare(String valueA, String valueB) {
-//            int result = 0;
-//            if (valueA.toLowerCase().contains("com") && valueB.toLowerCase().contains("com")) {
-//                try {
-//                    int index1 = Integer.valueOf(valueA.toLowerCase().replace("com", ""));
-//                    int index2 = Integer.valueOf(valueB.toLowerCase().replace("com", ""));
-//                    result = index1 - index2;
-//                } catch (Exception ex) {
-//                    result = valueA.compareToIgnoreCase(valueB);
-//                }
-//            } else {
-//                result = valueA.compareToIgnoreCase(valueB);
-//            }
-//            return result;
-//        }
-//    };
+    private static Comparator<String> comparator = new Comparator<String>() {
+        @Override
+        public int compare(String valueA, String valueB) {
+            int result = 0;
+            if (valueA.toLowerCase().contains("com") && valueB.toLowerCase().contains("com")) {
+                try {
+                    int index1 = Integer.valueOf(valueA.toLowerCase().replace("com", ""));
+                    int index2 = Integer.valueOf(valueB.toLowerCase().replace("com", ""));
+                    result = index1 - index2;
+                } catch (Exception ex) {
+                    result = valueA.compareToIgnoreCase(valueB);
+                }
+            } else {
+                result = valueA.compareToIgnoreCase(valueB);
+            }
+            return result;
+        }
+    };
 
+    public static void main(String[] args) {
+        for (String name : getPortNames()) {
+            System.out.println(name);
+        }
+        try {
+            Thread.sleep(60000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
 
     public static String[] getPortNames() {
         if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_LINUX) {
@@ -62,12 +75,13 @@ public final class SerialPortList {
         }//<-since 0.9.0
 
         final java.util.List<String> ports = new ArrayList<String>();
-        for (int i = 0; i < 10; i++) {
-//            final int handle = serialInterface.openPort("COM" + i);
-//            if (handle < 0) {
-//                serialInterface.closePort(handle);
-            ports.add("COM" + i);
-//            }
+        for (int i = 0; i < 20; i++) {
+            final int handle = serialInterface.openPort("COM" + i);
+            System.out.println(handle);
+            if (handle > 0) {
+                serialInterface.closePort(handle);
+                ports.add("COM" + i);
+            }
         }
         String[] portsString = new String[ports.size()];
         for (int i = 0; i < ports.size(); i++) {
