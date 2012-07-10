@@ -1,6 +1,8 @@
 package eu.amaxilatis.codebender.actions;
 
 import eu.amaxilatis.codebender.CodeBenderApplet;
+import eu.amaxilatis.codebender.command.AvrdudeLinuxCommand;
+import eu.amaxilatis.codebender.command.AvrdudeWindowsCommand;
 import jssc.SerialNativeInterface;
 
 import java.io.File;
@@ -29,6 +31,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     private final transient String baudRate;
     private static final String TEMP_HEX_UNIX = "/tmp/file.hex";
     private static final String AVRDUDE_PATH_UNIX = "/tmp/avrdude";
+    private String basepath;
 
     /**
      * Constructs a new flash action.
@@ -41,6 +44,13 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         this.port = port;
         this.file = file;
         this.baudRate = baudRate;
+
+        if ((SerialNativeInterface.getOsType() == SerialNativeInterface.OS_LINUX) ||
+                (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_MAC_OS_X)) {
+            basepath = "/tmp/";
+        } else {
+            basepath = System.getProperty("user.home");
+        }
     }
 
     public Object run() {
@@ -60,7 +70,6 @@ public class FlashPrivilegedAction implements PrivilegedAction {
      * @return The flash Status: 0 is OK , else an Error Code is returned.
      */
     private Object flashWindows() {
-        final String basepath = System.getProperty("user.home");
 
         try {
             downloadBinaryToDisk("http://codebender.cc/dudes/libusb0.dll", basepath + "\\libusb0.dll");
@@ -104,13 +113,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             }
         }
 
-        final StringBuilder flashCommand = (new StringBuilder()).append(basepath + "\\avrdude.exe ")
-                .append(" -C " + basepath + "\\avrdude.conf ")
-                .append(" -b ").append(baudRate)
-                .append(" -P \\\\.\\").append(port)
-                .append(" -c arduino ")
-                .append(" -p m328p ")
-                .append(" -U flash:w:\"").append(basepath + "\\file.hex\":i -F");
+        final AvrdudeWindowsCommand flashCommand =
+                new AvrdudeWindowsCommand(basepath, port, basepath + "\\file.hex\"", baudRate);
 
         System.out.println("running : " + flashCommand.toString());
 
@@ -124,7 +128,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
-           e.printStackTrace();
+            e.printStackTrace();
         }
         flashProc1.destroy();
 
@@ -150,7 +154,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
 
         try {
-            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.conf.mac", "/tmp/avrdude.conf");
+            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.conf.mac", basepath + "avrdude.conf");
         } catch (IOException e) {
             reportError(e);
             return CodeBenderApplet.CONF_ERROR;
@@ -163,19 +167,13 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             fileWriter.close();
 
         } catch (IOException e) {
-           e.printStackTrace();
+            e.printStackTrace();
             reportError(e);
             return CodeBenderApplet.HEX_ERROR;
         }
 
-        final StringBuilder flashCommand = (new StringBuilder()).append("/tmp/avrdude ")
-                .append(" -C /tmp/avrdude.conf ")
-                .append(" -P ").append(port)
-                .append(" -c stk500v1 ")
-                .append(" -p m328p ")
-                .append(" -u -U flash:w:").append(TEMP_HEX_UNIX)
-                .append(" -b ").append(baudRate)
-                .append(" -F");
+        final AvrdudeLinuxCommand flashCommand =
+                new AvrdudeLinuxCommand(basepath, port, TEMP_HEX_UNIX, baudRate);
 
         try {
             System.out.println("running : " + flashCommand.toString());
@@ -191,7 +189,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
         } catch (IOException e) {
-           e.printStackTrace();
+            e.printStackTrace();
             reportError(e);
             return CodeBenderApplet.PROCESS_ERROR;
         }
@@ -227,17 +225,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             return CodeBenderApplet.HEX_ERROR;
         }
 
-        final StringBuilder flashCommand = new StringBuilder();
-
-        flashCommand.append("/tmp/avrdude ")
-                .append(" -C /tmp/avrdude.conf ")
-                .append(" -P ").append(port)
-                .append(" -c stk500v1 ")
-                .append(" -p m328p ")
-                .append(" -u -U flash:w:").append(TEMP_HEX_UNIX)
-                .append(" -b ").append(baudRate)
-                .append(" -F");
-
+        final AvrdudeLinuxCommand flashCommand =
+                new AvrdudeLinuxCommand(basepath, port, TEMP_HEX_UNIX, baudRate);
 
         try {
             System.out.println("running : " + flashCommand.toString());
@@ -253,19 +242,12 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
         } catch (IOException e) {
-           e.printStackTrace();
+            e.printStackTrace();
             reportError(e);
             return CodeBenderApplet.PROCESS_ERROR;
         }
 
     }
-
-    //    private void writeBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
-//       System.out.println("writing to disk " + inputFile);
-//        final InputStream input = getClass().getResourceAsStream(inputFile);
-//        byte[] barr = ByteStreams.toByteArray(input);
-//        Files.write(barr, new File(destinationFile));
-//    }
 
     public static void main(String[] args) {
         try {
@@ -278,13 +260,6 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private static void downloadBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
-//       System.out.println("downloading to disk " + inputFile);
-//        final URL url = new URL(inputFile);
-//        url.openConnection();
-//        final InputStream input = url.openStream();
-//        final byte[] barr = ByteStreams.toByteArray(input);
-//        Files.write(barr, new File(destinationFile));
-
         System.out.println("downloading to disk " + inputFile);
         final URL url = new URL(inputFile);
         url.openConnection();
