@@ -1,5 +1,4 @@
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
-import org.apache.log4j.BasicConfigurator;
 
 /**
  * Created by IntelliJ IDEA.
@@ -9,7 +8,6 @@ import org.apache.log4j.BasicConfigurator;
  */
 public class PortOutputViewerFrameTest {
     public static void main(final String[] inp) {
-        BasicConfigurator.configure();
         final PortOutputViewerFrame frame = new PortOutputViewerFrame();
 
         while (true) {

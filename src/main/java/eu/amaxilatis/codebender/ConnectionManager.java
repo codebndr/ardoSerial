@@ -10,10 +10,7 @@ import jssc.SerialPortException;
  * Uses the jSSC library provided by http://code.google.com/p/java-simple-serial-connector/
  */
 public class ConnectionManager implements Runnable {
-    /**
-     * Logger.
-     */
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ConnectionManager.class);
+
     /**
      * the serial port connection.
      */
@@ -102,7 +99,7 @@ public class ConnectionManager implements Runnable {
         try {
             Thread.sleep(SLEEP_TIME);
         } catch (InterruptedException e) {
-            LOGGER.fatal(e);
+            e.printStackTrace();
         }
         serialPort = new SerialPort(port);
         jTextArea.appendText(port + "@" + baudRate + "\n");
@@ -137,9 +134,9 @@ public class ConnectionManager implements Runnable {
         if ((serialPort != null) && (serialPort.isOpened())) {
             try {
                 serialPort.closePort();
-                LOGGER.info("Port closed");
+                System.out.println("Port closed");
             } catch (final SerialPortException e) {
-                LOGGER.error("Cannot close port");
+                System.out.println("Cannot close port");
             }
         }
     }

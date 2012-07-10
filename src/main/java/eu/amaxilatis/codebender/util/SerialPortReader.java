@@ -10,10 +10,7 @@ import jssc.SerialPortException;
  * A class that handles the serial port output.
  */
 public class SerialPortReader implements SerialPortEventListener {
-    /**
-     * Logger.
-     */
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(ConnectionManager.class);
+
     /**
      * the JTextArea to append output.
      */
@@ -49,10 +46,10 @@ public class SerialPortReader implements SerialPortEventListener {
                 jTextArea.appendText(ex.getExceptionType());
             }
         } else {
-            LOGGER.info(event.isBREAK());
-            LOGGER.info(event.isCTS());
-            LOGGER.info(event.isTXEMPTY());
-            LOGGER.info(event.isRXFLAG());
+//            LOGGER.info(event.isBREAK());
+//            LOGGER.info(event.isCTS());
+//            LOGGER.info(event.isTXEMPTY());
+//            LOGGER.info(event.isRXFLAG());
         }
     }
 

@@ -4,8 +4,9 @@ import eu.amaxilatis.codebender.actions.FlashPrivilegedAction;
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.codebender.util.SerialPortList;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JApplet;
+import javax.swing.SwingUtilities;
+import java.awt.HeadlessException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;

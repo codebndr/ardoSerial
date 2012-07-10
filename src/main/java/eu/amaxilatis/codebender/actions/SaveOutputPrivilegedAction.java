@@ -14,10 +14,6 @@ import java.security.PrivilegedAction;
  * To change this template use File | Settings | File Templates.
  */
 public class SaveOutputPrivilegedAction implements PrivilegedAction {
-    /**
-     * Logger.
-     */
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SaveOutputPrivilegedAction.class);
 
     private final transient String text;
 
@@ -36,7 +32,7 @@ public class SaveOutputPrivilegedAction implements PrivilegedAction {
             fileWriter.close();
 
         } catch (IOException e) {
-            LOGGER.error(e, e);
+            e.printStackTrace();
         }
 
         return 0;

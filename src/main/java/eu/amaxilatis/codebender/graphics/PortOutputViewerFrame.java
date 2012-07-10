@@ -20,10 +20,6 @@ import java.security.AccessController;
  * Time: 12:31 PM
  */
 public class PortOutputViewerFrame extends JFrame {
-    /**
-     * Logger.
-     */
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(PortOutputViewerFrame.class);
 
     /**
      * the textArea that contains output from the arduino.
@@ -67,13 +63,13 @@ public class PortOutputViewerFrame extends JFrame {
             @Override
             public void windowClosing(final WindowEvent windowEvent) {
                 ConnectionManager.getInstance().disconnect();
-                LOGGER.info("windowClosing");
+                System.out.println("windowClosing");
             }
 
             @Override
             public void windowClosed(final WindowEvent windowEvent) {
                 ConnectionManager.getInstance().disconnect();
-                LOGGER.info("windowClosed");
+                System.out.println("windowClosed");
             }
 
             @Override
