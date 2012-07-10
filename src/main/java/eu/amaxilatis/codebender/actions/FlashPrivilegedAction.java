@@ -3,7 +3,11 @@ package eu.amaxilatis.codebender.actions;
 import eu.amaxilatis.codebender.CodeBenderApplet;
 import jssc.SerialNativeInterface;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.security.PrivilegedAction;
 
@@ -11,10 +15,6 @@ import java.security.PrivilegedAction;
  * Used to copy the files needed for flashing to the hard drive and perform flashing using avrdude.
  */
 public class FlashPrivilegedAction implements PrivilegedAction {
-    /**
-     * Logger.
-     */
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(FlashPrivilegedAction.class);
     /**
      * Port to be used.
      */
@@ -92,14 +92,14 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             fileWriter.close();
 
         } catch (IOException e) {
-            LOGGER.error(e);
+            e.printStackTrace();
             reportError(e);
             return CodeBenderApplet.HEX_ERROR;
         } finally {
             try {
                 fileWriter.close();
             } catch (IOException e) {
-                LOGGER.error(e, e);
+                e.printStackTrace();
                 reportError(e);
             }
         }
@@ -112,7 +112,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 .append(" -p m328p ")
                 .append(" -U flash:w:\"").append(basepath + "\\file.hex\":i -F");
 
-        LOGGER.info("running : " + flashCommand.toString());
+        System.out.println("running : " + flashCommand.toString());
 
         Process flashProc1 = null;
         try {
@@ -124,7 +124,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         try {
             Thread.sleep(3000);
         } catch (InterruptedException e) {
-            LOGGER.error(e, e);
+           e.printStackTrace();
         }
         flashProc1.destroy();
 
@@ -163,7 +163,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             fileWriter.close();
 
         } catch (IOException e) {
-            LOGGER.error(e);
+           e.printStackTrace();
             reportError(e);
             return CodeBenderApplet.HEX_ERROR;
         }
@@ -178,20 +178,20 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 .append(" -F");
 
         try {
-            LOGGER.info("running : " + flashCommand.toString());
+            System.out.println("running : " + flashCommand.toString());
             final Process flashProc = Runtime.getRuntime().exec(flashCommand.toString());
             try {
                 flashProc.waitFor();
-                LOGGER.info("flashed=" + flashProc.exitValue());
+                System.out.println("flashed=" + flashProc.exitValue());
                 return flashProc.exitValue();
 
             } catch (InterruptedException e) {
-                LOGGER.error(e);
+                e.printStackTrace();
                 reportError(e);
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
         } catch (IOException e) {
-            LOGGER.error(e, e);
+           e.printStackTrace();
             reportError(e);
             return CodeBenderApplet.PROCESS_ERROR;
         }
@@ -222,7 +222,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             fileWriter.close();
 
         } catch (IOException e) {
-            LOGGER.error(e);
+            e.printStackTrace();
             reportError(e);
             return CodeBenderApplet.HEX_ERROR;
         }
@@ -240,20 +240,20 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
 
         try {
-            LOGGER.info("running : " + flashCommand.toString());
+            System.out.println("running : " + flashCommand.toString());
             final Process flashProcess = Runtime.getRuntime().exec(flashCommand.toString());
             try {
                 flashProcess.waitFor();
-                LOGGER.info("flashed=" + flashProcess.exitValue());
+                System.out.println("flashed=" + flashProcess.exitValue());
                 return flashProcess.exitValue();
 
             } catch (InterruptedException e) {
-                LOGGER.error(e);
+                e.printStackTrace();
                 reportError(e);
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
         } catch (IOException e) {
-            LOGGER.error(e, e);
+           e.printStackTrace();
             reportError(e);
             return CodeBenderApplet.PROCESS_ERROR;
         }
@@ -261,7 +261,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     //    private void writeBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
-//        LOGGER.info("writing to disk " + inputFile);
+//       System.out.println("writing to disk " + inputFile);
 //        final InputStream input = getClass().getResourceAsStream(inputFile);
 //        byte[] barr = ByteStreams.toByteArray(input);
 //        Files.write(barr, new File(destinationFile));
@@ -278,14 +278,14 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private static void downloadBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
-//        LOGGER.info("downloading to disk " + inputFile);
+//       System.out.println("downloading to disk " + inputFile);
 //        final URL url = new URL(inputFile);
 //        url.openConnection();
 //        final InputStream input = url.openStream();
 //        final byte[] barr = ByteStreams.toByteArray(input);
 //        Files.write(barr, new File(destinationFile));
 
-        LOGGER.info("downloading to disk " + inputFile);
+        System.out.println("downloading to disk " + inputFile);
         final URL url = new URL(inputFile);
         url.openConnection();
         final InputStream input = url.openStream();

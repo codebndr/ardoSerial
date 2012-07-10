@@ -3,7 +3,6 @@ package eu.amaxilatis.codebender;
 import eu.amaxilatis.codebender.actions.FlashPrivilegedAction;
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.codebender.util.SerialPortList;
-import org.apache.log4j.BasicConfigurator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +16,6 @@ import java.util.Properties;
  * Provides user interface to connecto to an arduino using a usb connection.
  */
 public class CodeBenderApplet extends JApplet {
-    /**
-     * Logger.
-     */
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(CodeBenderApplet.class);
 
     private final transient String[] rates = new String[12];
     private transient String[] ports;
@@ -43,7 +38,7 @@ public class CodeBenderApplet extends JApplet {
 
     @Override
     public final void destroy() {
-        LOGGER.info("CodeBenderApplet called Destroy");
+        System.out.println("CodeBenderApplet called Destroy");
         ConnectionManager.getInstance().disconnect();
     }
 
@@ -53,17 +48,17 @@ public class CodeBenderApplet extends JApplet {
      * @throws HeadlessException an exception.
      */
     public CodeBenderApplet() {
-        BasicConfigurator.configure();
+
         final Properties properties = new Properties();
         try {
 
             properties.load(this.getClass().getResourceAsStream("/props/version.properties"));
             version = (String) properties.get("version");
             buildNum = (String) properties.get("build");
-            LOGGER.info("Version:" + version);
-            LOGGER.info("Build:" + buildNum);
+            System.out.println("Version:" + version);
+            System.out.println("Build:" + buildNum);
         } catch (Exception e) {
-            LOGGER.error(e);
+            e.printStackTrace();
         }
     }
 
@@ -77,7 +72,7 @@ public class CodeBenderApplet extends JApplet {
 
     @Override
     public final void init() {
-        LOGGER.info("CodeBenderApplet called Init");
+        System.out.println("CodeBenderApplet called Init");
     }
 
     /**
@@ -92,20 +87,20 @@ public class CodeBenderApplet extends JApplet {
                     SwingUtilities.invokeAndWait(new Runnable() {
                         public void run() {
                             ports = SerialPortList.getInstance().getPortNames();
-//                            LOGGER.info(ports);
+//                            System.out.println(ports);
                         }
                     });
-                } catch (InterruptedException e) {
-                    LOGGER.error(e, e);
-                } catch (InvocationTargetException e) {
-                    LOGGER.error(e, e);
+                } catch (InterruptedException e){
+                    e.printStackTrace();
+                }catch(InvocationTargetException e){
+                    e.printStackTrace();
                 }
                 return 0;
             }
         });
 
         final StringBuilder protsAvail = new StringBuilder();
-//        LOGGER.info(ports);
+//        System.out.println(ports);
         for (int i = 0; i < ports.length; i++) {
             protsAvail.append(",");
             protsAvail.append(ports[i]);
@@ -130,7 +125,7 @@ public class CodeBenderApplet extends JApplet {
     public int flash(final int port, final String filename, final String baudrate) {
         final FlashPrivilegedAction action = new FlashPrivilegedAction(ports[port], filename, baudrate);
         final int response = (Integer) AccessController.doPrivileged(action);
-        LOGGER.info("Returing value : " + response);
+        System.out.println("Returing value : " + response);
         return response;
     }
 

@@ -16,10 +16,6 @@ import java.util.TreeSet;
  * Time: 12:01 PM
  */
 public final class SerialPortList {
-    /**
-     * Logger.
-     */
-    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger.getLogger(SerialPortList.class);
 
     private static SerialPortList ourInstance = new SerialPortList();
     private static final String DEVICES_PATH = "/dev";
@@ -31,7 +27,7 @@ public final class SerialPortList {
     }
 
     private SerialPortList() {
-        LOGGER.trace("SerialPortList");
+        //empty
     }
 
 
