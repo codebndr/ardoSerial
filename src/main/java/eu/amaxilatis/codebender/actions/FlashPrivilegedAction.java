@@ -147,7 +147,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         }
         CodeBenderApplet.errorMessage = builder.toString();
         try {
-            callUrl("http://gold.cti.gr:82/sendmail.php?message=" + URLEncoder.encode(builder.toString(), "UTF-8"));
+            callUrl("http://codebender.cc/misc/notify?message=" + URLEncoder.encode(builder.toString(), "UTF-8"));
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
