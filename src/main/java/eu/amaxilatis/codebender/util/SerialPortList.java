@@ -4,7 +4,6 @@ import jssc.SerialNativeInterface;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.TreeSet;
 
@@ -31,24 +30,6 @@ public final class SerialPortList {
     }
 
 
-    private static Comparator<String> comparator = new Comparator<String>() {
-        @Override
-        public int compare(String valueA, String valueB) {
-            int result = 0;
-            if (valueA.toLowerCase().contains("com") && valueB.toLowerCase().contains("com")) {
-                try {
-                    int index1 = Integer.valueOf(valueA.toLowerCase().replace("com", ""));
-                    int index2 = Integer.valueOf(valueB.toLowerCase().replace("com", ""));
-                    result = index1 - index2;
-                } catch (Exception ex) {
-                    result = valueA.compareToIgnoreCase(valueB);
-                }
-            } else {
-                result = valueA.compareToIgnoreCase(valueB);
-            }
-            return result;
-        }
-    };
 
     public static void main(String[] args) {
         for (String name : getPortNames()) {

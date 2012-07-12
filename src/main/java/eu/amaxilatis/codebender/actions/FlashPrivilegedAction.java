@@ -31,7 +31,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     private final transient String baudRate;
     private static final String TEMP_HEX_UNIX = "/tmp/file.hex";
     private static final String AVRDUDE_PATH_UNIX = "/tmp/avrdude";
-    private String basepath;
+    private transient String basepath;
 
     /**
      * Constructs a new flash action.

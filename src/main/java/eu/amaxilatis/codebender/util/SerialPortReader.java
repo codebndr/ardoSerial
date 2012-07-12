@@ -46,6 +46,7 @@ public class SerialPortReader implements SerialPortEventListener {
                 jTextArea.appendText(ex.getExceptionType());
             }
         } else {
+            System.out.println("other char");
 //            LOGGER.info(event.isBREAK());
 //            LOGGER.info(event.isCTS());
 //            LOGGER.info(event.isTXEMPTY());

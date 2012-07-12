@@ -4,7 +4,7 @@ package eu.amaxilatis.codebender.command;
  * Class that automatically generates a new command for AVRDUDE on Windows
  */
 public class AvrdudeWindowsCommand {
-    private StringBuilder flashCommand;
+    private final transient StringBuilder flashCommand;
 
     /**
      * Creates the new Command to execute.
@@ -14,7 +14,7 @@ public class AvrdudeWindowsCommand {
      * @param tempFile the hex file to flash.
      * @param baudRate the baudrate to use.
      */
-    public AvrdudeWindowsCommand(String basepath, String port, String tempFile, String baudRate) {
+    public AvrdudeWindowsCommand(final String basepath, final String port, final String tempFile, final String baudRate) {
 
         flashCommand = (new StringBuilder()).append(basepath + "\\avrdude.exe ")
                 .append(" -C " + basepath + "\\avrdude.conf ")

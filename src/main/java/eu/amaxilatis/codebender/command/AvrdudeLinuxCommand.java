@@ -5,7 +5,7 @@ package eu.amaxilatis.codebender.command;
  */
 public class AvrdudeLinuxCommand {
 
-    private StringBuilder flashCommand = new StringBuilder();
+    private final transient StringBuilder flashCommand = new StringBuilder();
 
     /**
      * Creates the new Command to execute.
@@ -15,7 +15,7 @@ public class AvrdudeLinuxCommand {
      * @param tempFile the hex file to flash.
      * @param baudRate the baudrate to use.
      */
-    public AvrdudeLinuxCommand(String basepath, String port, String tempFile, String baudRate) {
+    public AvrdudeLinuxCommand(final String basepath, final String port, final String tempFile, final String baudRate) {
         flashCommand.append(basepath).append("avrdude ")
                 .append(" -C ").append(basepath).append("avrdude.conf ")
                 .append(" -P ").append(port)
