@@ -31,7 +31,7 @@ public final class SerialPortList {
 
 
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         for (String name : getPortNames()) {
             System.out.println(name);
         }

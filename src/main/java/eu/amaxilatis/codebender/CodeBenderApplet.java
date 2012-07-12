@@ -6,7 +6,7 @@ import eu.amaxilatis.codebender.util.SerialPortList;
 
 import javax.swing.JApplet;
 import javax.swing.SwingUtilities;
-import java.awt.HeadlessException;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
@@ -20,8 +20,8 @@ public class CodeBenderApplet extends JApplet {
 
     private final transient String[] rates = new String[12];
     private transient String[] ports;
-    public static transient String version;
-    public static transient String buildNum;
+    public static transient String version; //NOPMD
+    public static transient String buildNum;//NOPMD
 
     public static final int FLASH_OK = 0;
     public static final int LIBUSB_ERROR = 8;
@@ -45,8 +45,6 @@ public class CodeBenderApplet extends JApplet {
 
     /**
      * default constructor.
-     *
-     * @throws HeadlessException an exception.
      */
     public CodeBenderApplet() {
 
@@ -58,13 +56,13 @@ public class CodeBenderApplet extends JApplet {
             buildNum = (String) properties.get("build");
             System.out.println("Version:" + version);
             System.out.println("Build:" + buildNum);
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public String getRates() {
-        return rates.toString();
+        return rates.toString();//NOPMD
     }
 
     public String getFireRates() {
@@ -91,9 +89,9 @@ public class CodeBenderApplet extends JApplet {
 //                            System.out.println(ports);
                         }
                     });
-                } catch (InterruptedException e){
+                } catch (InterruptedException e) {
                     e.printStackTrace();
-                }catch(InvocationTargetException e){
+                } catch (InvocationTargetException e) {
                     e.printStackTrace();
                 }
                 return 0;

@@ -1,9 +1,12 @@
 package eu.amaxilatis.codebender.command;
 
 /**
- * Class that automatically generates a new command for AVRDUDE on Windows
+ * Class that automatically generates a new command for AVRDUDE on Windows.
  */
 public class AvrdudeWindowsCommand {
+    /**
+     * command string builder.
+     */
     private final transient StringBuilder flashCommand;
 
     /**
@@ -27,7 +30,7 @@ public class AvrdudeWindowsCommand {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return flashCommand.toString();
     }
 }

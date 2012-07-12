@@ -1,10 +1,12 @@
 package eu.amaxilatis.codebender.command;
 
 /**
- * Class that automatically generates a new command for AVRDUDE on Linux and MacOS
+ * Class that automatically generates a new command for AVRDUDE on Linux and MacOS.
  */
 public class AvrdudeLinuxCommand {
-
+    /**
+     * command string builder.
+     */
     private final transient StringBuilder flashCommand = new StringBuilder();
 
     /**
@@ -27,7 +29,7 @@ public class AvrdudeLinuxCommand {
     }
 
     @Override
-    public String toString() {
+    public final String toString() {
         return flashCommand.toString();
     }
 }

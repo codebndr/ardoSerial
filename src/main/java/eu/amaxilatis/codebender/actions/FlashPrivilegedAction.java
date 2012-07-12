@@ -135,12 +135,12 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         return CodeBenderApplet.FLASH_OK;
     }
 
-    private void reportError(Exception e) {
-        StringBuilder sb = new StringBuilder();
-        for (StackTraceElement el : e.getStackTrace()) {
-            sb.append(el.toString()).append("\n");
+    private void reportError(Exception exception) {
+        StringBuilder builder = new StringBuilder();
+        for (StackTraceElement element : exception.getStackTrace()) {
+            builder.append(element.toString()).append("\n");
         }
-        CodeBenderApplet.errorMessage = sb.toString();
+        CodeBenderApplet.errorMessage = builder.toString();
     }
 
     private Object flashMacOSX() {
@@ -249,7 +249,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
     }
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
             long start = System.currentTimeMillis();
             downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.linux", AVRDUDE_PATH_UNIX);
@@ -264,15 +264,15 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         final URL url = new URL(inputFile);
         url.openConnection();
         final InputStream input = url.openStream();
-        File filea = new File(destinationFile);
-        FileOutputStream fo = new FileOutputStream(filea);
+        final File dFile = new File(destinationFile);
+        final FileOutputStream dFileOS = new FileOutputStream(dFile);
         int data = input.read();
         while (data != -1) {
-            fo.write(data);
+            dFileOS.write(data);
             data = input.read();
         }
         input.close();
-        fo.close();
+        dFileOS.close();
 
     }
 

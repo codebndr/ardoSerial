@@ -30,15 +30,34 @@ public class PortOutputViewerFrame extends JFrame {
      * a new command to the arduino.
      */
     private final transient JTextField sendField;
+    /**
+     * enable follow text on the frame.
+     */
     private final transient JCheckBox followText;
+    /**
+     * Size parameter for text area.
+     */
+    private static final int FIELD_COLUMNS = 25;
+    /**
+     * Size parameter for text area.
+     */
+    private static final int FIELD_ROWS = 15;
+    /**
+     * Size parameter for jframe.
+     */
+    private static final int WIDTH_S = 700;
+    /**
+     * Size parameter for jframe.
+     */
+    private static final int LENGTH_S = 400;
 
     /**
      * Constructor that Generates a new JFrame to listen to the arduino output.
      */
     public PortOutputViewerFrame() {
         this.setLayout(new BorderLayout());
-        this.setTitle("Codebender.cc - ArduinoSerialMonitor - v" + CodeBenderApplet.version + "." + CodeBenderApplet.buildNum + "b");
-//        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/img/codebender.jpg").getFile()));
+        this.setTitle("Codebender.cc - ArduinoSerialMonitor - v" +
+                CodeBenderApplet.version + "." + CodeBenderApplet.buildNum + "b");
         textArea = new JTextArea();
         sendField = new JTextField("");
 
@@ -95,7 +114,7 @@ public class PortOutputViewerFrame extends JFrame {
 
         final JPanel pan1 = new JPanel();
         pan1.setLayout(new FlowLayout());
-        sendField.setColumns(25);
+        sendField.setColumns(FIELD_COLUMNS);
         pan1.add(sendField);
         pan1.add(send);
         pan1.add(disconnect);
@@ -109,7 +128,7 @@ public class PortOutputViewerFrame extends JFrame {
 
 
         final JScrollPane middlePanel = new JScrollPane(textArea);
-        textArea.setRows(15);
+        textArea.setRows(FIELD_ROWS);
         this.getContentPane().add(middlePanel, BorderLayout.CENTER);
 
 
@@ -132,7 +151,7 @@ public class PortOutputViewerFrame extends JFrame {
         this.getContentPane().add(bottomPanel, BorderLayout.SOUTH);
 
         this.setVisible(true);
-        this.setMinimumSize(new Dimension(700, 400));
+        this.setMinimumSize(new Dimension(WIDTH_S, LENGTH_S));
     }
 
     /**
@@ -140,7 +159,7 @@ public class PortOutputViewerFrame extends JFrame {
      *
      * @param text the String to add.
      */
-    public void appendText(final String text) {
+    public final void appendText(final String text) {
 
         textArea.append(text);
         if (followText.isSelected()) {
@@ -153,7 +172,7 @@ public class PortOutputViewerFrame extends JFrame {
      *
      * @param text the String to use.
      */
-    public void setText(final String text) {
+    public final void setText(final String text) {
         textArea.setText(text);
     }
 
