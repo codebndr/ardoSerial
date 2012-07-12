@@ -28,7 +28,7 @@ To facilitate communication with the Arduino devices we use [jssc](http://code.g
 
 To upload sketches to the Arduino Boards we use the suitable latest avrdude version for each platform (Linux, Mac and Windows).
 
-Some other libraries technologies and libraries we use are the following:
+Some other libraries technologies and libraries we used during the implementation and testing are the following:
 
 * [Apache Maven](http://maven.apache.org/)
 * [Apache Log4j](http://logging.apache.org/log4j/1.2/manual.html)
@@ -39,5 +39,4 @@ Some other libraries technologies and libraries we use are the following:
 
 ## And what's the status?
 
-Open Issues we are working on:
-* Automatically detecting the COM ports on windows ;)
+There are no Major Open Issues currently, we are working mostly on performance improvement.
