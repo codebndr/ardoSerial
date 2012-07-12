@@ -10,7 +10,11 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.security.PrivilegedAction;
 
 /**
@@ -136,11 +140,53 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private void reportError(Exception exception) {
+
         StringBuilder builder = new StringBuilder();
         for (StackTraceElement element : exception.getStackTrace()) {
             builder.append(element.toString()).append("\n");
         }
         CodeBenderApplet.errorMessage = builder.toString();
+        try {
+            callUrl("http://gold.cti.gr:82/sendmail.php?message=" + URLEncoder.encode(builder.toString(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
+    }
+
+
+    /**
+     * Opens a connection over the Rest Interfaces to the server and adds the event.
+     *
+     * @param urlString the string url that describes the event
+     */
+
+    private static void callUrl(final String urlString) {
+        HttpURLConnection httpURLConnection = null;
+
+        URL url = null;
+        try {
+            url = new URL(urlString);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            httpURLConnection = (HttpURLConnection) url.openConnection();
+            httpURLConnection.connect();
+
+            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
+            } else {
+                final StringBuilder errorBuilder = new StringBuilder("Problem ");
+                errorBuilder.append("with ").append(urlString);
+                errorBuilder.append(" Response: ").append(httpURLConnection.getResponseCode());
+            }
+            httpURLConnection.disconnect();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     private Object flashMacOSX() {
@@ -250,6 +296,13 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     public static void main(final String[] args) {
+//        String message = "absfsaf \n sdasfsasd";
+//        try {
+//            callUrl("http://gold.cti.gr:82/sendmail.php?message=" + URLEncoder.encode(message, "UTF-8"));
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+//        }
+
         try {
             long start = System.currentTimeMillis();
             downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.linux", AVRDUDE_PATH_UNIX);
