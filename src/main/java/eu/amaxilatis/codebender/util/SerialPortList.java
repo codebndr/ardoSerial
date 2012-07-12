@@ -30,7 +30,6 @@ public final class SerialPortList {
     }
 
 
-
     public static void main(final String[] args) {
         for (String name : getPortNames()) {
             System.out.println(name);
@@ -51,7 +50,7 @@ public final class SerialPortList {
             return getMacOSXPortNames();
         }//<-since 0.9.0
 
-        final java.util.List<String> ports = new ArrayList<String>();
+        final List<String> ports = new ArrayList<String>();
         for (int i = 0; i < 20; i++) {
             final int handle = serialInterface.openPort("COM" + i);
             System.out.println(handle);
@@ -110,7 +109,7 @@ public final class SerialPortList {
 
     private static List<String> seachSerialPorts(final String key) {
         final File dir = new File(DEVICES_PATH);
-        ArrayList<String> portsList = new ArrayList<String>();
+        List<String> portsList = new ArrayList<String>();
         if (dir.exists() && dir.isDirectory()) {
 //            System.out.println("found /dev");
             final File[] files = dir.listFiles();
