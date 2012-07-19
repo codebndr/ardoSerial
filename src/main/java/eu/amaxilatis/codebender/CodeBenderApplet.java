@@ -129,6 +129,7 @@ public class CodeBenderApplet extends JApplet {
 
     public int tftpUpload(final String ip, byte[] file) {
         new TFTPUpload(ip, file);
+        return 0;
     }
 
 }
