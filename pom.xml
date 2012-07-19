@@ -11,6 +11,7 @@
     <name>ardoSerial</name>
 
     <dependencies>
+
         <dependency>
             <groupId>jssc</groupId>
             <artifactId>jssc</artifactId>
@@ -19,6 +20,7 @@
             <!--<scope>system</scope>
             <systemPath>${project.basedir}/lib/jSSC-0.9.0-Release/jssc.jar</systemPath>-->
         </dependency>
+
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -26,11 +28,13 @@
             <scope>test</scope>
         </dependency>
 
-        <!--<dependency>-->
-        <!--<groupId>com.google.guava</groupId>-->
-        <!--<artifactId>guava</artifactId>-->
-        <!--<version>r05</version>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>commons-net</groupId>
+            <artifactId>commons-net</artifactId>
+            <version>2.0</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/lib/commons-net-2.0.jar</systemPath>
+        </dependency>
 
     </dependencies>
 
