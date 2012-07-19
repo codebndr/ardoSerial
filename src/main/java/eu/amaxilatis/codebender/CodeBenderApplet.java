@@ -3,14 +3,10 @@ package eu.amaxilatis.codebender;
 import eu.amaxilatis.codebender.actions.FlashPrivilegedAction;
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.codebender.util.SerialPortList;
-import org.apache.commons.net.tftp.TFTP;
-import org.apache.commons.net.tftp.TFTPClient;
 
 import javax.swing.*;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.SocketException;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Properties;
@@ -132,30 +128,7 @@ public class CodeBenderApplet extends JApplet {
     }
 
     public int tftpUpload(final String ip, byte[] file) {
-        TFTPClient tftp = new TFTPClient();
-        tftp.setDefaultTimeout(60000);
-        try {
-            tftp.open();
-        } catch (SocketException e) {
-            System.err.println("Error: could not open local UDP socket.");
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-        ByteArrayInputStream bis = new ByteArrayInputStream(file);
-
-        tftp.setDefaultTimeout(TFTP.DEFAULT_TIMEOUT);
-        System.out.println("sending..");
-
-        try {
-            tftp.sendFile("file", TFTP.OCTET_MODE, bis, ip);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            tftp.close();
-        }
-
-        return 0;
-
+        new TFTPUpload(ip, file);
     }
 
 }
