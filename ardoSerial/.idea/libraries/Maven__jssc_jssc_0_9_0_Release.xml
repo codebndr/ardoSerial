@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: jssc:jssc:0.9.0-Release">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/jssc/jssc/0.9.0-Release/jssc-0.9.0-Release.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/jssc/jssc/0.9.0-Release/jssc-0.9.0-Release-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/jssc/jssc/0.9.0-Release/jssc-0.9.0-Release-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
