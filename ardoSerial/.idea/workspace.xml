@@ -2,7 +2,66 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7bd9cea1-a1f2-4186-8d53-4080b041bee2" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/../README.md" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jSSC-0.9.0-Release/javadoc/jssc-0.9-javadoc.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jSSC-0.9.0-Release/jssc.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jSSC-0.9.0-Release/src/c++/windows/jssc.c++" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jSSC-0.9.0-Release/src/jssc-0.9-source.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/.name" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/lib/commons-net-2.0.jar" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/.name" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__jssc_jssc_0_9_0_Release.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_8_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/scopes/scope_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/ardoSerial.iml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jSSC-0.9.0-Release/COPYING.LESSER" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jSSC-0.9.0-Release/COPYING" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jSSC-0.9.0-Release/Readme.txt" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jSSC-0.9.0-Release/src/c++/jssc_SerialNativeInterface.h" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/lib/jSSC-0.9.0-Release/src/c++/linux_solaris_mac-os-x/jssc.cpp" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/CodeBenderApplet.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/ConnectionManager.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/MyActionListener.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/actions/FlashPrivilegedAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/actions/SaveOutputPrivilegedAction.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/command/AvrdudeLinuxCommand.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/command/AvrdudeWindowsCommand.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/graphics/PortOutputViewerFrame.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/package-info.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/util/SerialPortList.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/eu/amaxilatis/codebender/util/SerialPortReader.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/props/version.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/AvrdudeCommandTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/sun_checks.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/suppressions.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/compiler.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/copyright/profiles_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/encodings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/libraries/Maven__commons_net_commons_net_2_0.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/libraries/Maven__junit_junit_4_8_2.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/misc.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/modules.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/scopes/scope_settings.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/uiDesigner.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/vcs.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/pom.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/src/main/java/eu/amaxilatis/codebender/TFTPUpload.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/src/main/java/eu/amaxilatis/codebender/TftpApplet.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/src/main/java/eu/amaxilatis/codebender/package-info.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/src/main/resources/props/version.properties" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/sun_checks.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/suppressions.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/test.html" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/../tftpUploader/tftpUploader.iml" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../index.html" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../lib/commons-net-2.0.jar" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/../lib/jSSC-0.9.0-Release/COPYING" afterPath="" />
