@@ -54,8 +54,9 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_MAC_OS_X)) {
             basepath = "/tmp/";
         } else {
-            basepath = System.getProperty("user.home");
+            basepath = System.getProperty("java.io.tmpdir");
         }
+        System.out.println("FlashPrivilegedAction");
     }
 
     public Object run() {
