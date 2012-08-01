@@ -5,12 +5,7 @@ import eu.amaxilatis.codebender.command.AvrdudeLinuxCommand;
 import eu.amaxilatis.codebender.command.AvrdudeWindowsCommand;
 import jssc.SerialNativeInterface;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -49,7 +44,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         this.port = port;
         this.file = file;
         this.baudRate = baudRate;
-        
+
         System.out.println("FlashPrivilegedAction");
     }
 
@@ -59,19 +54,16 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         String os = System.getProperty("os.name").toLowerCase();
         System.out.println(System.getProperty("user.home"));
         System.out.println(os);
-    
+
+        basepath = System.getProperty("user.home");
         if ((os.indexOf("win") >= 0)) {
-            basepath = System.getProperty("user.home");
+            return flashWindows();
+        } else if ((os.indexOf("linux") >= 0)) {
+            basepath = "/tmp/";
+            return flashLinux();
         } else {
             basepath = "/tmp/";
-        }
-
-        if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_LINUX) {
-            return flashLinux();
-        } else if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_MAC_OS_X) {
             return flashMacOSX();
-        } else {
-            return flashWindows();
         }
     }
 
