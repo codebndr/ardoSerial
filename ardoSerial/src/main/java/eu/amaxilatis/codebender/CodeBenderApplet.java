@@ -130,6 +130,7 @@ public class CodeBenderApplet extends JApplet {
     }
 
     public int flash(final int port, final String filename, final String baudrate) {
+        System.out.println("flash");
         final FlashPrivilegedAction action = new FlashPrivilegedAction(ports[port], filename, baudrate);
         final int response = (Integer) AccessController.doPrivileged(action);
         System.out.println("Returing value : " + response);
