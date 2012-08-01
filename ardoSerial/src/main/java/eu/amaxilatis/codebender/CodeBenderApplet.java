@@ -73,12 +73,6 @@ public class CodeBenderApplet extends JApplet {
     @Override
     public final void init() {
         System.out.println("CodeBenderApplet called Init");
-        ClassLoader cl = getClass().getClassLoader();
-        URL policyURL = cl.getResource("java.policy");
-
-        System.setProperty("java.security.policy", policyURL.toString());
-
-        System.setSecurityManager(new RMISecurityManager());
 
     }
 
