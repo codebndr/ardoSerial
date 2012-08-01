@@ -45,6 +45,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
      * @param baudRate the baudrate to use during flashing.
      */
     public FlashPrivilegedAction(final String port, final String file, final String baudRate) {
+        System.out.println("FlashPrivilegedAction");
         this.port = port;
         this.file = file;
         this.baudRate = baudRate;
@@ -74,6 +75,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
      * @return The flash Status: 0 is OK , else an Error Code is returned.
      */
     private Object flashWindows() {
+        System.out.println("flashWindows");
 
         try {
             downloadBinaryToDisk("http://codebender.cc/dudes/libusb0.dll", basepath + "\\libusb0.dll");
