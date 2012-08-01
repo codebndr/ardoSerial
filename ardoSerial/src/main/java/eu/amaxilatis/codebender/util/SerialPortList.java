@@ -53,7 +53,7 @@ public final class SerialPortList {
         final List<String> ports = new ArrayList<String>();
         for (int i = 0; i < 40; i++) {
             final int handle = serialInterface.openPort("COM" + i);
-            System.out.println(handle);
+            //System.out.println(handle);
             if (handle > 0) {
                 serialInterface.closePort(handle);
                 ports.add("COM" + i);
