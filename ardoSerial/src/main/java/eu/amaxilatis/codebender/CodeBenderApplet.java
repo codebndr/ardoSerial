@@ -7,6 +7,8 @@ import eu.amaxilatis.codebender.util.SerialPortList;
 import javax.swing.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URL;
+import java.rmi.RMISecurityManager;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Properties;
@@ -71,6 +73,13 @@ public class CodeBenderApplet extends JApplet {
     @Override
     public final void init() {
         System.out.println("CodeBenderApplet called Init");
+        ClassLoader cl = getClass().getClassLoader();
+        URL policyURL = cl.getResource("java.policy");
+
+        System.setProperty("java.security.policy", policyURL.toString());
+
+        System.setSecurityManager(new RMISecurityManager());
+
     }
 
     /**
