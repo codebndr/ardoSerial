@@ -49,17 +49,23 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         this.port = port;
         this.file = file;
         this.baudRate = baudRate;
-
-        if ((SerialNativeInterface.getOsType() == SerialNativeInterface.OS_LINUX) ||
-                (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_MAC_OS_X)) {
-            basepath = "/tmp/";
-        } else {
-            basepath = System.getProperty("java.io.tmpdir");
-        }
+        
         System.out.println("FlashPrivilegedAction");
     }
 
     public Object run() {
+        System.out.println("run");
+
+        String os = System.getProperty("os.name").toLowerCase();
+        System.out.println(System.getProperty("user.home"));
+        System.out.println(os);
+    
+        if ((os.indexOf("win") >= 0)) {
+            basepath = System.getProperty("user.home");
+        } else {
+            basepath = "/tmp/";
+        }
+
         if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_LINUX) {
             return flashLinux();
         } else if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_MAC_OS_X) {
