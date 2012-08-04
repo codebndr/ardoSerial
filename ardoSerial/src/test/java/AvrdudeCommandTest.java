@@ -11,7 +11,6 @@ import org.junit.Test;
 public class AvrdudeCommandTest {
     @Test
     public void TestWindowsCommand() throws Exception {
-
         final String basepath = "C:\\Temp\\";
         final String port = "COM1";
         final String filepath = basepath + "\\file.hex\"";
@@ -20,8 +19,8 @@ public class AvrdudeCommandTest {
                 new AvrdudeWindowsCommand(basepath, port, filepath, baudRate);
 
         System.out.println(avrdudeWindowsFlashCommand);
-        final StringBuilder flashCommand = (new StringBuilder()).append(basepath + "\\avrdude.exe ")
-                .append(" -C " + basepath + "\\avrdude.conf ")
+        final StringBuilder flashCommand = (new StringBuilder()).append("\""+basepath + "\\avrdude.exe\" ")
+                .append(" -C \"" + basepath + "\\avrdude.conf\" ")
                 .append(" -b ").append(baudRate)
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
@@ -46,12 +45,12 @@ public class AvrdudeCommandTest {
         System.out.println(avrdudeFlashCommand);
 
         final StringBuilder oldFlashCommand = new StringBuilder();
-        oldFlashCommand.append("/tmp/avrdude ")
-                .append(" -C /tmp/avrdude.conf ")
+        oldFlashCommand.append("\"/tmp/avrdude\" ")
+                .append(" -C \"/tmp/avrdude.conf\" ")
                 .append(" -P ").append(port)
                 .append(" -c stk500v1 ")
                 .append(" -p m328p ")
-                .append(" -u -U flash:w:").append(filepath)
+                .append(" -u -U flash:w:\"").append(filepath).append("\"")
                 .append(" -b ").append(baudRate)
                 .append(" -F");
 

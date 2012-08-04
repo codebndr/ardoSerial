@@ -19,8 +19,8 @@ public class AvrdudeWindowsCommand {
      */
     public AvrdudeWindowsCommand(final String basepath, final String port, final String tempFile, final String baudRate) {
 
-        flashCommand = (new StringBuilder()).append(basepath + "\\avrdude.exe ")
-                .append(" -C " + basepath + "\\avrdude.conf ")
+        flashCommand = (new StringBuilder()).append("\"").append(basepath + "\\avrdude.exe\" ")
+                .append(" -C \"" + basepath + "\\avrdude.conf\" ")
                 .append(" -b ").append(baudRate)
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
