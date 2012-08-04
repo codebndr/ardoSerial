@@ -3,9 +3,13 @@ package eu.amaxilatis.codebender.actions;
 import eu.amaxilatis.codebender.CodeBenderApplet;
 import eu.amaxilatis.codebender.command.AvrdudeLinuxCommand;
 import eu.amaxilatis.codebender.command.AvrdudeWindowsCommand;
-import jssc.SerialNativeInterface;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -55,14 +59,14 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         System.out.println(System.getProperty("user.home"));
         System.out.println(os);
 
-        basepath = System.getProperty("user.home");
+        basepath = System.getProperty("java.io.tmpdir");
         if ((os.indexOf("win") >= 0)) {
             return flashWindows();
         } else if ((os.indexOf("linux") >= 0)) {
-            basepath = "/tmp/";
+            basepath = basepath+"/";
             return flashLinux();
         } else {
-            basepath = "/tmp/";
+            basepath = basepath+"/";
             return flashMacOSX();
         }
     }
