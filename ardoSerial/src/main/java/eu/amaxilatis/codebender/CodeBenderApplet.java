@@ -7,15 +7,12 @@ import eu.amaxilatis.codebender.util.SerialPortList;
 import javax.swing.*;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.net.URL;
-import java.rmi.RMISecurityManager;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 import java.util.Properties;
 
 /**
- * A JApplet class.
- * Provides user interface to connecto to an arduino using a usb connection.
+ * A JApplet class that provides methods to interface with an Arduino over Usb.
  */
 public class CodeBenderApplet extends JApplet {
 
@@ -25,13 +22,13 @@ public class CodeBenderApplet extends JApplet {
     public static transient String buildNum;//NOPMD
 
     public static final int FLASH_OK = 0;
-    public static final int LIBUSB_ERROR = 8;
     public static final int AVRDUDE_ERROR = 2;
     public static final int CONF_ERROR = 3;
     public static final int HEX_ERROR = 4;
     public static final int PROCESS_ERROR = 5;
     public static final int INTERUPTED_ERROR = 6;
     public static final int PORT_ERROR = 7;
+    public static final int LIBUSB_ERROR = 8;
     public static String errorMessage;
 
     public static String getErrorMessage() {
@@ -45,7 +42,8 @@ public class CodeBenderApplet extends JApplet {
     }
 
     /**
-     * default constructor.
+     * Default Applet constructor.
+     * No arguments, only loads the version and property info from the jar file.
      */
     public CodeBenderApplet() {
 
@@ -62,10 +60,21 @@ public class CodeBenderApplet extends JApplet {
         }
     }
 
+    /**
+     * Returns the Baudrates available for interfacing with Arduino.
+     *
+     * @return comma seperated list of the supported Baudrates.
+     */
+    @Deprecated
     public String getRates() {
         return rates.toString();//NOPMD
     }
 
+    /**
+     * Returns the Baudrates available for interfacing with Arduino.
+     *
+     * @return comma seperated list of the supported Baudrates.
+     */
     public String getFireRates() {
         return ConnectionManager.getInstance().getBaudrates();
     }
@@ -77,10 +86,22 @@ public class CodeBenderApplet extends JApplet {
     }
 
     /**
-     * Called from javascript.
+     * Designed to be called from javascript.
+     * Probes all usb connections for devices and returns the Arduino ports.
      *
      * @return a comma separated list of all available usb ports.
      */
+    public String proveUsb() {
+        return getFire2();
+    }
+
+    /**
+     * Designed to be called from javascript.
+     * Probes all usb connections for devices and returns the Arduino ports.
+     *
+     * @return a comma separated list of all available usb ports.
+     */
+    @Deprecated
     public String getFire2() {
         AccessController.doPrivileged(new PrivilegedAction() {
             public Object run() {
@@ -111,9 +132,10 @@ public class CodeBenderApplet extends JApplet {
     }
 
     /**
-     * Override connect function to be used by javascript.
+     * Designed to be called from javascript.
+     * Connects to the USB port specified to communicate over a serial connection.
      *
-     * @param port the index of the port to connect to.
+     * @param port the index of the port to connect to. Provided by the @see proveUsb
      * @param rate the rate to use when connecting.
      */
     public void overrideConnect(final int port, final int rate) {
@@ -123,6 +145,15 @@ public class CodeBenderApplet extends JApplet {
         ConnectionManager.getInstance().connect();
     }
 
+    /**
+     * Designed to be called from javascript.
+     * Uses avrdude to flash the Arduino connected to the specified port with the file provided.
+     *
+     * @param port     the index of the port to use.
+     * @param filename the contents of the file to flash to the Arduino.
+     * @param baudrate the baudrate to use for flashing.
+     * @return 0 if succesfull and a greater than zero error code else.
+     */
     public int flash(final int port, final String filename, final String baudrate) {
         System.out.println("flash");
         final FlashPrivilegedAction action = new FlashPrivilegedAction(ports[port], filename, baudrate);
@@ -130,7 +161,6 @@ public class CodeBenderApplet extends JApplet {
         System.out.println("Returing value : " + response);
         return response;
     }
-
 }
 
 

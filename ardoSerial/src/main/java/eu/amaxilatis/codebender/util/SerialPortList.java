@@ -42,28 +42,29 @@ public final class SerialPortList {
     }
 
     public static String[] getPortNames() {
-        if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_LINUX) {
-            return getLinuxPortNames();
-        } else if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_SOLARIS) {//since 0.9.0 ->
-            return getSolarisPortNames();
-        } else if (SerialNativeInterface.getOsType() == SerialNativeInterface.OS_MAC_OS_X) {
-            return getMacOSXPortNames();
-        }//<-since 0.9.0
+        String os = System.getProperty("os.name").toLowerCase();
+        System.out.println(os);
 
-        final List<String> ports = new ArrayList<String>();
-        for (int i = 0; i < 40; i++) {
-            final int handle = serialInterface.openPort("COM" + i);
-            //System.out.println(handle);
-            if (handle > 0) {
-                serialInterface.closePort(handle);
-                ports.add("COM" + i);
+        if ((os.indexOf("win") >= 0)) {
+            final List<String> ports = new ArrayList<String>();
+            for (int i = 0; i < 40; i++) {
+                final int handle = serialInterface.openPort("COM" + i);
+                //System.out.println(handle);
+                if (handle > 0) {
+                    serialInterface.closePort(handle);
+                    ports.add("COM" + i);
+                }
             }
+            String[] portsString = new String[ports.size()];
+            for (int i = 0; i < ports.size(); i++) {
+                portsString[i] = ports.get(i);
+            }
+            return portsString;
+        } else if ((os.indexOf("linux") >= 0)) {
+            return getLinuxPortNames();
+        } else {
+            return getMacOSXPortNames();
         }
-        String[] portsString = new String[ports.size()];
-        for (int i = 0; i < ports.size(); i++) {
-            portsString[i] = ports.get(i);
-        }
-        return portsString;
     }
 
     public static String[] getLinuxPortNames() {
