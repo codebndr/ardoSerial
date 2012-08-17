@@ -45,7 +45,7 @@ public class AvrdudeCommandTest {
         System.out.println(avrdudeFlashCommand);
 
         final StringBuilder oldFlashCommand = new StringBuilder();
-        oldFlashCommand.append("\"/tmp/avrdude\" ")
+        oldFlashCommand.append("/tmp/avrdude ")
                 .append(" -C \"/tmp/avrdude.conf\" ")
                 .append(" -P ").append(port)
                 .append(" -c stk500v1 ")

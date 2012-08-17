@@ -18,7 +18,7 @@ public class AvrdudeLinuxCommand {
      * @param baudRate the baudrate to use.
      */
     public AvrdudeLinuxCommand(final String basepath, final String port, final String tempFile, final String baudRate) {
-        flashCommand.append("\"").append(basepath).append("avrdude\" ")
+        flashCommand.append("").append(basepath).append("avrdude ")
                 .append(" -C \"").append(basepath).append("avrdude.conf\" ")
                 .append(" -P ").append(port)
                 .append(" -c stk500v1 ")
