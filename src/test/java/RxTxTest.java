@@ -1,7 +1,6 @@
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.SerialPort;
-import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +15,7 @@ import java.io.OutputStream;
 public class RxTxTest {
     private String portName = "/dev/ttyUSB1";
 
-    @Test
+
     public void TestRxTx() throws Exception {
         System.out.println("blah");
         CommPortIdentifier portIdentifier = CommPortIdentifier.getPortIdentifier(portName);
