@@ -63,10 +63,10 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         if ((os.indexOf("win") >= 0)) {
             return flashWindows();
         } else if ((os.indexOf("linux") >= 0)) {
-            basepath = basepath+"/";
+            basepath = basepath + "/";
             return flashLinux();
         } else {
-            basepath = basepath+"/";
+            basepath = basepath + "/";
             return flashMacOSX();
         }
     }
@@ -318,11 +318,12 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     private static void downloadBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
+        final File dFile = new File(destinationFile);
+        if (dFile.exists()) return;
         System.out.println("downloading to disk " + inputFile);
         final URL url = new URL(inputFile);
         url.openConnection();
         final InputStream input = url.openStream();
-        final File dFile = new File(destinationFile);
         final FileOutputStream dFileOS = new FileOutputStream(dFile);
         int data = input.read();
         while (data != -1) {
