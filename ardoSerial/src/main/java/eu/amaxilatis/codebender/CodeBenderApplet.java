@@ -91,7 +91,7 @@ public class CodeBenderApplet extends JApplet {
      *
      * @return a comma separated list of all available usb ports.
      */
-    public String proveUsb() {
+    public String probeUsb() {
         return getFire2();
     }
 
@@ -135,7 +135,7 @@ public class CodeBenderApplet extends JApplet {
      * Designed to be called from javascript.
      * Connects to the USB port specified to communicate over a serial connection.
      *
-     * @param port the index of the port to connect to. Provided by the @see proveUsb
+     * @param port the index of the port to connect to. Provided by the @see probeUsb
      * @param rate the rate to use when connecting.
      */
     public void overrideConnect(final int port, final int rate) {
