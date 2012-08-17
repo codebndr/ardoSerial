@@ -18,8 +18,6 @@ public class CodeBenderApplet extends JApplet {
 
     private final transient String[] rates = new String[12];
     private transient String[] ports;
-    public static transient String version; //NOPMD
-    public static transient String buildNum;//NOPMD
 
     public static final int FLASH_OK = 0;
     public static final int AVRDUDE_ERROR = 2;
@@ -30,6 +28,7 @@ public class CodeBenderApplet extends JApplet {
     public static final int PORT_ERROR = 7;
     public static final int LIBUSB_ERROR = 8;
     public static String errorMessage;
+    private static transient Properties properties;
 
     public static String getErrorMessage() {
         return errorMessage;
@@ -47,14 +46,11 @@ public class CodeBenderApplet extends JApplet {
      */
     public CodeBenderApplet() {
 
-        final Properties properties = new Properties();
-        try {
 
+        properties = new Properties();
+        try {
             properties.load(this.getClass().getResourceAsStream("/props/version.properties"));
-            version = (String) properties.get("version");
-            buildNum = (String) properties.get("build");
-            System.out.println("Version:" + version);
-            System.out.println("Build:" + buildNum);
+            System.out.println("Version:" + getVersion());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -142,7 +138,7 @@ public class CodeBenderApplet extends JApplet {
      * @param rate the rate to use when connecting.
      */
     public void overrideConnect(final int port, final int rate) {
-        ConnectionManager.getInstance().setjTextArea(new PortOutputViewerFrame());
+        ConnectionManager.getInstance().setjTextArea(new PortOutputViewerFrame(this));
 
         ConnectionManager.getInstance().setPort(ports[port], rate);
         ConnectionManager.getInstance().connect();
@@ -163,6 +159,15 @@ public class CodeBenderApplet extends JApplet {
         final int response = (Integer) AccessController.doPrivileged(action);
         System.out.println("Returing value : " + response);
         return response;
+    }
+
+    /**
+     * Reads the version and build number from the manifest file.
+     *
+     * @return a string containing the version number.
+     */
+    public String getVersion() {
+        return new StringBuilder().append((String) properties.get("version")).append("b").append((String) properties.get("build")).toString();
     }
 }
 
