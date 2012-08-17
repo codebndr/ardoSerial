@@ -43,7 +43,7 @@ public final class SerialPortList {
 
     public static String[] getPortNames() {
         String os = System.getProperty("os.name").toLowerCase();
-        System.out.println(os);
+        //System.out.println(os);
 
         if ((os.indexOf("win") >= 0)) {
             final List<String> ports = new ArrayList<String>();

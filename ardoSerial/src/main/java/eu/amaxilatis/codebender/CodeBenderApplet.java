@@ -128,8 +128,11 @@ public class CodeBenderApplet extends JApplet {
             protsAvail.append(ports[i]);
 
         }
+
         return (protsAvail.toString()).substring(1);
+
     }
+
 
     /**
      * Designed to be called from javascript.
