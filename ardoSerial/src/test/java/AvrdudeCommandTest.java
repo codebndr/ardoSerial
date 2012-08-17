@@ -46,11 +46,11 @@ public class AvrdudeCommandTest {
 
         final StringBuilder oldFlashCommand = new StringBuilder();
         oldFlashCommand.append("/tmp/avrdude ")
-                .append(" -C \"/tmp/avrdude.conf\" ")
+                .append(" -C /tmp/avrdude.conf ")
                 .append(" -P ").append(port)
                 .append(" -c stk500v1 ")
                 .append(" -p m328p ")
-                .append(" -u -U flash:w:\"").append(filepath).append("\"")
+                .append(" -u -U flash:w:").append(filepath).append("")
                 .append(" -b ").append(baudRate)
                 .append(" -F");
 

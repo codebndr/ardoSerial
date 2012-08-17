@@ -19,11 +19,11 @@ public class AvrdudeLinuxCommand {
      */
     public AvrdudeLinuxCommand(final String basepath, final String port, final String tempFile, final String baudRate) {
         flashCommand.append("").append(basepath).append("avrdude ")
-                .append(" -C \"").append(basepath).append("avrdude.conf\" ")
+                .append(" -C ").append(basepath).append("avrdude.conf ")
                 .append(" -P ").append(port)
                 .append(" -c stk500v1 ")
                 .append(" -p m328p ")
-                .append(" -u -U flash:w:\"").append(tempFile).append("\"")
+                .append(" -u -U flash:w:").append(tempFile).append("")
                 .append(" -b ").append(baudRate)
                 .append(" -F");
     }
