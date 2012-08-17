@@ -2,25 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
 
+    <modelVersion>4.0.0</modelVersion>
     <groupId>ardoSerial</groupId>
     <artifactId>ardoSerial</artifactId>
     <version>0.1</version>
-
     <name>ardoSerial</name>
 
     <dependencies>
 
+        <!-- Jar Dependencies-->
         <dependency>
             <groupId>jssc</groupId>
             <artifactId>jssc</artifactId>
             <version>0.9.0-Release</version>
-
-            <!--<scope>system</scope>
-            <systemPath>${project.basedir}/lib/jSSC-0.9.0-Release/jssc.jar</systemPath>-->
         </dependency>
-
+        <!-- Test Dependencies-->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
@@ -33,10 +30,12 @@
             <version>2.1.7</version>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -65,7 +64,6 @@
                         <exclude>**/eu/amaxilatis/**</exclude>
                     </excludes>
                 </configuration>
-
                 <executions>
                     <execution>
                         <configuration>
@@ -131,14 +129,12 @@
                 </configuration>
             </plugin>
 
-
         </plugins>
-
-
     </build>
 
     <reporting>
         <plugins>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
@@ -152,7 +148,6 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>
-                    <!-- <linkXref>true</linkXref>-->
                     <sourceEncoding>utf-8</sourceEncoding>
                     <minimumTokens>100</minimumTokens>
                     <targetJdk>1.6</targetJdk>
@@ -168,11 +163,9 @@
                         <ruleset>rulesets/design.xml</ruleset>
                         <ruleset>rulesets/finalizers.xml</ruleset>
                         <ruleset>rulesets/imports.xml</ruleset>
-                        <!--<ruleset>rulesets/j2ee.xml</ruleset>-->
                         <ruleset>rulesets/javabeans.xml</ruleset>
                         <ruleset>rulesets/junit.xml</ruleset>
                         <ruleset>rulesets/logging-jakarta-commons.xml</ruleset>
-                        <!--<ruleset>rulesets/logging-java.xml</ruleset>-->
                         <ruleset>rulesets/migrating.xml</ruleset>
                         <ruleset>rulesets/naming.xml</ruleset>
                         <ruleset>rulesets/optimizations.xml</ruleset>
@@ -183,17 +176,15 @@
                     </rulesets>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
                 <version>2.6</version>
                 <configuration>
                     <configLocation>sun_checks.xml</configLocation>
-                    <suppressionsFile>suppresssions.xml</suppressionsFile>
+                    <suppressionsLocation>suppresssions.xml</suppressionsLocation>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -202,21 +193,17 @@
                     <show>public</show>
                 </configuration>
             </plugin>
-
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
                     <findbugsXmlOutput>true</findbugsXmlOutput>
-                    <!-- Optional directory to put findbugs xml report -->
                     <findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
                 </configuration>
             </plugin>
 
         </plugins>
-
     </reporting>
-
 
 </project>
