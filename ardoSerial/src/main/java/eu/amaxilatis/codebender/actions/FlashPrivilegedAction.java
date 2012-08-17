@@ -307,19 +307,17 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 //        } catch (UnsupportedEncodingException e) {
 //            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
 //        }
-
-        try {
-            long start = System.currentTimeMillis();
-            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.linux", AVRDUDE_PATH_UNIX);
-            System.out.println((System.currentTimeMillis() - start));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        File dFile = new File("/tmp/avrdude");
+        System.out.println(dFile.length());
+        dFile = new File("/tmp/avrdude.conf");
+        System.out.println(dFile.length());
     }
 
     private static void downloadBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
         final File dFile = new File(destinationFile);
+
         if (dFile.exists()) return;
+
         System.out.println("downloading to disk " + inputFile);
         final URL url = new URL(inputFile);
         url.openConnection();
