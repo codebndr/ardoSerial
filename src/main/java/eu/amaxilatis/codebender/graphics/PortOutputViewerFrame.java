@@ -1,9 +1,9 @@
 package eu.amaxilatis.codebender.graphics;
 
 import eu.amaxilatis.codebender.CodeBenderApplet;
-import eu.amaxilatis.codebender.ConnectionManager;
-import eu.amaxilatis.codebender.MyActionListener;
 import eu.amaxilatis.codebender.actions.SaveOutputPrivilegedAction;
+import eu.amaxilatis.codebender.util.ConnectionManager;
+import eu.amaxilatis.codebender.util.MyActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -65,8 +65,8 @@ public class PortOutputViewerFrame extends JFrame {
      */
     public PortOutputViewerFrame(final CodeBenderApplet applet) {
         this.setLayout(new BorderLayout());
-        this.setTitle("Codebender.cc - ArduinoSerialMonitor - Version:" +
-                applet.getVersion());
+        this.setTitle("Codebender.cc - ArduinoSerialMonitor - Version:"
+                + applet.getVersion());
         textArea = new JTextArea();
         sendField = new JTextField("");
 

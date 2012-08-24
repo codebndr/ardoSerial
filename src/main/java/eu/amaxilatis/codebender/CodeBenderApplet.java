@@ -2,6 +2,7 @@ package eu.amaxilatis.codebender;
 
 import eu.amaxilatis.codebender.actions.FlashPrivilegedAction;
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
+import eu.amaxilatis.codebender.util.ConnectionManager;
 import eu.amaxilatis.codebender.util.SerialPortList;
 
 import javax.swing.JApplet;
@@ -36,8 +37,6 @@ public class CodeBenderApplet extends JApplet {
      * No arguments, only loads the version and property info from the jar file.
      */
     public CodeBenderApplet() {
-
-
         properties = new Properties();
         try {
             properties.load(this.getClass().getResourceAsStream("/props/version.properties"));
@@ -65,8 +64,8 @@ public class CodeBenderApplet extends JApplet {
      * @return comma seperated list of the supported Baudrates.
      */
     @Deprecated
-    public String getRates() {
-        return rates.toString();//NOPMD
+    public final String getRates() {
+        return rates.toString(); //NOPMD
     }
 
     /**
@@ -75,7 +74,7 @@ public class CodeBenderApplet extends JApplet {
      * @return comma seperated list of the supported Baudrates.
      */
     @Deprecated
-    public String getFireRates() {
+    public final String getFireRates() {
         return getSupportedBaudrates();
     }
 
@@ -84,7 +83,7 @@ public class CodeBenderApplet extends JApplet {
      *
      * @return comma seperated list of the supported Baudrates.
      */
-    public String getSupportedBaudrates() {
+    public final String getSupportedBaudrates() {
         return ConnectionManager.getInstance().getBaudrates();
     }
 
@@ -95,7 +94,7 @@ public class CodeBenderApplet extends JApplet {
      * @return a comma separated list of all available usb ports.
      */
     @Deprecated
-    public String getFire2() {
+    public final String getFire2() {
         return probeUsb();
     }
 
@@ -105,7 +104,7 @@ public class CodeBenderApplet extends JApplet {
      *
      * @return a comma separated list of all available usb ports.
      */
-    public String probeUsb() {
+    public final String probeUsb() {
         AccessController.doPrivileged(new PrivilegedAction() {
             public Object run() {
                 try {
@@ -143,7 +142,7 @@ public class CodeBenderApplet extends JApplet {
      * @param port the index of the port to connect to. Provided by the @see probeUsb
      * @param rate the rate to use when connecting.
      */
-    public void overrideConnect(final int port, final int rate) {
+    public final void overrideConnect(final int port, final int rate) {
         ConnectionManager.getInstance().setjTextArea(new PortOutputViewerFrame(this));
 
         ConnectionManager.getInstance().setPort(ports[port], rate);
@@ -160,7 +159,7 @@ public class CodeBenderApplet extends JApplet {
      * @param baudrate the baudrate to use for flashing.
      * @return 0 if succesfull and a greater than zero error code else.
      */
-    public int flash(final int port, final String filename, final String baudrate) {
+    public final int flash(final int port, final String filename, final String baudrate) {
         System.out.println("flash");
         final FlashPrivilegedAction action = new FlashPrivilegedAction(ports[port], filename, baudrate);
         final int response = (Integer) AccessController.doPrivileged(action);
@@ -173,8 +172,10 @@ public class CodeBenderApplet extends JApplet {
      *
      * @return a string containing the version number.
      */
-    public String getVersion() {
-        return new StringBuilder().append((String) properties.get("version")).append("b").append((String) properties.get("build")).toString();
+    public final String getVersion() {
+        return new StringBuilder()
+                .append((String) properties.get("version"))
+                .append("b").append((String) properties.get("build")).toString();
     }
 
     /**

@@ -1,6 +1,5 @@
 package eu.amaxilatis.codebender.util;
 
-import eu.amaxilatis.codebender.ConnectionManager;
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 import jssc.SerialPortEvent;
 import jssc.SerialPortEventListener;
@@ -32,14 +31,14 @@ public class SerialPortReader implements SerialPortEventListener {
      *
      * @param event a new SerialPortEvent.
      */
-    public void serialEvent(final SerialPortEvent event) {
+    public final void serialEvent(final SerialPortEvent event) {
 
         //Object type SerialPortEvent carries information about which event occurred and a value.
         //ie, if the data came a method event.getEventValue() returns the number of bytes in the in buffer.
         if (event.isRXCHAR()) {
             try {
 
-                final byte buffer[] = connectionManager.getSerialPort().readBytes(1);
+                final byte[] buffer = connectionManager.getSerialPort().readBytes(1);
 //                LOGGER.info("|" + (char) buffer[0] + "|");
                 jTextArea.appendText(String.valueOf((char) buffer[0]));
             } catch (SerialPortException ex) {

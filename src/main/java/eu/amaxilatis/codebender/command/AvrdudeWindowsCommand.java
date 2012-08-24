@@ -12,15 +12,15 @@ public class AvrdudeWindowsCommand {
     /**
      * Creates the new Command to execute.
      *
-     * @param basepath the base path of avrdude.
+     * @param bpath the base path of avrdude.
      * @param port     the port of the arduino.
      * @param tempFile the hex file to flash.
      * @param baudRate the baudrate to use.
      */
-    public AvrdudeWindowsCommand(final String basepath, final String port, final String tempFile, final String baudRate) {
+    public AvrdudeWindowsCommand(final String bpath, final String port, final String tempFile, final String baudRate) {
 
-        flashCommand = (new StringBuilder()).append("\"").append(basepath + "\\avrdude.exe\" ")
-                .append(" -C \"" + basepath + "\\avrdude.conf\" ")
+        flashCommand = (new StringBuilder()).append("\"").append(bpath + "\\avrdude.exe\" ")
+                .append(" -C \"" + bpath + "\\avrdude.conf\" ")
                 .append(" -b ").append(baudRate)
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")

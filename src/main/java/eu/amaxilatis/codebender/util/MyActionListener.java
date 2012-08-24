@@ -1,4 +1,4 @@
-package eu.amaxilatis.codebender;
+package eu.amaxilatis.codebender.util;
 
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 
@@ -15,7 +15,7 @@ public class MyActionListener implements ActionListener {
 
 
     @Override
-    public void actionPerformed(final ActionEvent actionEvent) {
+    public final void actionPerformed(final ActionEvent actionEvent) {
 
         ConnectionManager.getInstance().disconnect();
         viewerFrame.dispose();

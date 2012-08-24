@@ -21,7 +21,7 @@ public class SaveOutputPrivilegedAction implements PrivilegedAction {
         this.text = text;
     }
 
-    public Object run() {
+    public final Object run() {
         final JFileChooser fileChooser = new JFileChooser();
         fileChooser.showSaveDialog(fileChooser);
         final File file = fileChooser.getSelectedFile();

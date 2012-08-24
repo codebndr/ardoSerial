@@ -52,7 +52,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         System.out.println("FlashPrivilegedAction");
     }
 
-    public Object run() {
+    public final Object run() {
         System.out.println("run");
 
         final String osys = System.getProperty("os.name").toLowerCase();
@@ -186,11 +186,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
                 errorBuilder.append(" Response: ").append(httpURLConnection.getResponseCode());
             }
             httpURLConnection.disconnect();
-        } catch (
-                IOException e
-                )
-
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
 

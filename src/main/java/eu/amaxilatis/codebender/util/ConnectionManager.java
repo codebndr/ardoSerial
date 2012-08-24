@@ -1,7 +1,6 @@
-package eu.amaxilatis.codebender;
+package eu.amaxilatis.codebender.util;
 
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
-import eu.amaxilatis.codebender.util.SerialPortReader;
 import jssc.SerialPort;
 import jssc.SerialPortException;
 
@@ -21,7 +20,7 @@ public class ConnectionManager implements Runnable {
     private static String port;
     private static final String BAUDRATES = "300,1200,2400,4800,9600,14400,19200,28800,38400,57600,115200";
 
-    public void setjTextArea(final PortOutputViewerFrame jTextArea) {
+    public final void setjTextArea(final PortOutputViewerFrame jTextArea) {
         this.jTextArea = jTextArea;
     }
 
@@ -152,7 +151,7 @@ public class ConnectionManager implements Runnable {
         connect();
     }
 
-    public void send(final String inputString) {
+    public final void send(final String inputString) {
         try {
             serialPort.writeBytes(inputString.getBytes());
         } catch (SerialPortException e) {
