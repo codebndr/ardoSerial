@@ -63,7 +63,7 @@ public class PortOutputViewerFrame extends JFrame {
     /**
      * Constructor that Generates a new JFrame to listen to the arduino output.
      */
-    public PortOutputViewerFrame(CodeBenderApplet applet) {
+    public PortOutputViewerFrame(final CodeBenderApplet applet) {
         this.setLayout(new BorderLayout());
         this.setTitle("Codebender.cc - ArduinoSerialMonitor - Version:" +
                 applet.getVersion());

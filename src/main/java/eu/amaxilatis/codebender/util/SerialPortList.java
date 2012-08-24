@@ -42,10 +42,10 @@ public final class SerialPortList {
     }
 
     public static String[] getPortNames() {
-        final String os = System.getProperty("os.name").toLowerCase();
-        //System.out.println(os);
+        final String osys = System.getProperty("osys.name").toLowerCase();
+        //System.out.println(osys);
 
-        if ((os.indexOf("win") >= 0)) {
+        if ((osys.indexOf("win") >= 0)) {
             final List<String> ports = new ArrayList<String>();
             for (int i = 0; i < 40; i++) {
                 final int handle = serialInterface.openPort("COM" + i);
@@ -60,7 +60,7 @@ public final class SerialPortList {
                 portsString[i] = ports.get(i);
             }
             return portsString;
-        } else if ((os.indexOf("linux") >= 0)) {
+        } else if ((osys.indexOf("linux") >= 0)) {
             return getLinuxPortNames();
         } else {
             return getMacOSXPortNames();
