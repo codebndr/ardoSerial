@@ -134,13 +134,12 @@
 
     <reporting>
         <plugins>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>[2.12,)</version>
                 <configuration>
-                    <skipTests>false</skipTests>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
             <plugin>
@@ -148,6 +147,7 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>[2.7.1,)</version>
                 <configuration>
+                    <!-- <linkXref>true</linkXref>-->
                     <sourceEncoding>utf-8</sourceEncoding>
                     <minimumTokens>100</minimumTokens>
                     <targetJdk>1.6</targetJdk>
@@ -165,7 +165,6 @@
                         <ruleset>rulesets/imports.xml</ruleset>
                         <ruleset>rulesets/javabeans.xml</ruleset>
                         <ruleset>rulesets/junit.xml</ruleset>
-                        <ruleset>rulesets/logging-jakarta-commons.xml</ruleset>
                         <ruleset>rulesets/migrating.xml</ruleset>
                         <ruleset>rulesets/naming.xml</ruleset>
                         <ruleset>rulesets/optimizations.xml</ruleset>
@@ -176,6 +175,7 @@
                     </rulesets>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-checkstyle-plugin</artifactId>
@@ -183,8 +183,10 @@
                 <configuration>
                     <configLocation>sun_checks.xml</configLocation>
                     <suppressionsLocation>suppresssions.xml</suppressionsLocation>
+                    <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
@@ -193,16 +195,14 @@
                     <show>public</show>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>findbugs-maven-plugin</artifactId>
                 <version>[2.5.2,)</version>
-                <configuration>
-                    <findbugsXmlOutputDirectory>target/site</findbugsXmlOutputDirectory>
-                </configuration>
             </plugin>
-
         </plugins>
+
     </reporting>
 
 </project>
