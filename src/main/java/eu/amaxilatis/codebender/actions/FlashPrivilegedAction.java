@@ -55,14 +55,14 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     public Object run() {
         System.out.println("run");
 
-        String os = System.getProperty("os.name").toLowerCase();
+        final String osys = System.getProperty("os.name").toLowerCase();
         System.out.println(System.getProperty("user.home"));
-        System.out.println(os);
+        System.out.println(osys);
 
         basepath = System.getProperty("java.io.tmpdir");
-        if ((os.indexOf("win") >= 0)) {
+        if ((osys.indexOf("win") >= 0)) {
             return flashWindows();
-        } else if ((os.indexOf("linux") >= 0)) {
+        } else if ((osys.indexOf("linux") >= 0)) {
             basepath = basepath + "/";
             return flashLinux();
         } else {
@@ -144,9 +144,9 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         return CodeBenderApplet.FLASH_OK;
     }
 
-    private void reportError(Exception exception) {
+    private void reportError(final Exception exception) {
 
-        StringBuilder builder = new StringBuilder();
+        final StringBuilder builder = new StringBuilder();
         for (StackTraceElement element : exception.getStackTrace()) {
             builder.append(element.toString()).append("\n");
         }
@@ -180,14 +180,17 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             httpURLConnection = (HttpURLConnection) url.openConnection();
             httpURLConnection.connect();
 
-            if (httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK) {
-            } else {
+            if (!(httpURLConnection.getResponseCode() == HttpURLConnection.HTTP_OK)) {
                 final StringBuilder errorBuilder = new StringBuilder("Problem ");
                 errorBuilder.append("with ").append(urlString);
                 errorBuilder.append(" Response: ").append(httpURLConnection.getResponseCode());
             }
             httpURLConnection.disconnect();
-        } catch (IOException e) {
+        } catch (
+                IOException e
+                )
+
+        {
             e.printStackTrace();
         }
 
@@ -316,7 +319,9 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     private static void downloadBinaryToDisk(final String inputFile, final String destinationFile) throws IOException {
         final File dFile = new File(destinationFile);
 
-        if (dFile.exists()) return;
+        if (dFile.exists()) {
+            return;
+        }
 
         System.out.println("downloading to disk " + inputFile);
         final URL url = new URL(inputFile);
