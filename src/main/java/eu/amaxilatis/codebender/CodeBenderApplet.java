@@ -4,7 +4,8 @@ import eu.amaxilatis.codebender.actions.FlashPrivilegedAction;
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
 import eu.amaxilatis.codebender.util.SerialPortList;
 
-import javax.swing.*;
+import javax.swing.JApplet;
+import javax.swing.SwingUtilities;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.AccessController;
@@ -30,16 +31,6 @@ public class CodeBenderApplet extends JApplet {
     public static String errorMessage;
     private static transient Properties properties;
 
-    public static String getErrorMessage() {
-        return errorMessage;
-    }
-
-    @Override
-    public final void destroy() {
-        System.out.println("CodeBenderApplet called Destroy");
-        ConnectionManager.getInstance().disconnect();
-    }
-
     /**
      * Default Applet constructor.
      * No arguments, only loads the version and property info from the jar file.
@@ -54,6 +45,18 @@ public class CodeBenderApplet extends JApplet {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public final void destroy() {
+        System.out.println("CodeBenderApplet called Destroy");
+        ConnectionManager.getInstance().disconnect();
+    }
+
+    @Override
+    public final void init() {
+        System.out.println("CodeBenderApplet called Init");
+
     }
 
     /**
@@ -71,24 +74,18 @@ public class CodeBenderApplet extends JApplet {
      *
      * @return comma seperated list of the supported Baudrates.
      */
+    @Deprecated
     public String getFireRates() {
-        return ConnectionManager.getInstance().getBaudrates();
-    }
-
-    @Override
-    public final void init() {
-        System.out.println("CodeBenderApplet called Init");
-
+        return getSupportedBaudrates();
     }
 
     /**
-     * Designed to be called from javascript.
-     * Probes all usb connections for devices and returns the Arduino ports.
+     * Returns the Baudrates available for interfacing with Arduino.
      *
-     * @return a comma separated list of all available usb ports.
+     * @return comma seperated list of the supported Baudrates.
      */
-    public String probeUsb() {
-        return getFire2();
+    public String getSupportedBaudrates() {
+        return ConnectionManager.getInstance().getBaudrates();
     }
 
     /**
@@ -99,6 +96,16 @@ public class CodeBenderApplet extends JApplet {
      */
     @Deprecated
     public String getFire2() {
+        return probeUsb();
+    }
+
+    /**
+     * Designed to be called from javascript.
+     * Probes all usb connections for devices and returns the Arduino ports.
+     *
+     * @return a comma separated list of all available usb ports.
+     */
+    public String probeUsb() {
         AccessController.doPrivileged(new PrivilegedAction() {
             public Object run() {
                 try {
@@ -129,7 +136,6 @@ public class CodeBenderApplet extends JApplet {
 
     }
 
-
     /**
      * Designed to be called from javascript.
      * Connects to the USB port specified to communicate over a serial connection.
@@ -143,6 +149,7 @@ public class CodeBenderApplet extends JApplet {
         ConnectionManager.getInstance().setPort(ports[port], rate);
         ConnectionManager.getInstance().connect();
     }
+
 
     /**
      * Designed to be called from javascript.
@@ -168,6 +175,15 @@ public class CodeBenderApplet extends JApplet {
      */
     public String getVersion() {
         return new StringBuilder().append((String) properties.get("version")).append("b").append((String) properties.get("build")).toString();
+    }
+
+    /**
+     * Returns the latest error message.
+     *
+     * @return
+     */
+    public static String getErrorMessage() {
+        return errorMessage;
     }
 }
 

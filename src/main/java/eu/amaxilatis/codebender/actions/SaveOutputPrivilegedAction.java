@@ -1,6 +1,6 @@
 package eu.amaxilatis.codebender.actions;
 
-import javax.swing.*;
+import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
