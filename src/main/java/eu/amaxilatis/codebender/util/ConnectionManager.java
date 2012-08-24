@@ -54,7 +54,7 @@ public class ConnectionManager implements Runnable {
         return instance;
     }
 
-    public SerialPort getSerialPort() {
+    public final SerialPort getSerialPort() {
         return serialPort;
     }
 
