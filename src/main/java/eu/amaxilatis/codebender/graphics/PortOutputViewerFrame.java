@@ -7,6 +7,7 @@ import eu.amaxilatis.codebender.util.MyActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -46,7 +47,7 @@ public class PortOutputViewerFrame extends JFrame {
     /**
      * Size parameter for text area.
      */
-    private static final int FIELD_COLUMNS = 25;
+    private static final int FIELD_COLUMNS = 15;
     /**
      * Size parameter for text area.
      */
@@ -59,19 +60,28 @@ public class PortOutputViewerFrame extends JFrame {
      * Size parameter for jframe.
      */
     private static final int LENGTH_S = 400;
+    private static String port;
+    private JComboBox baudratesList;
+    private JButton send;
+    private JButton disconnect;
 
     /**
      * Constructor that Generates a new JFrame to listen to the arduino output.
      */
-    public PortOutputViewerFrame(final CodeBenderApplet applet) {
+    public PortOutputViewerFrame(final CodeBenderApplet applet, final String port) {
+        this.port = port;
         this.setLayout(new BorderLayout());
-        this.setTitle("Codebender.cc - ArduinoSerialMonitor - Version:"
-                + applet.getVersion());
+        if (applet != null) {
+            this.setTitle("Codebender.cc - ArduinoSerialMonitor - Version:"
+                    + applet.getVersion());
+        } else {
+            this.setTitle("Codebender.cc - ArduinoSerialMonitor - Version:");
+        }
         textArea = new JTextArea();
         sendField = new JTextField("");
 
-        final JButton send = new JButton("Send to Arduino");
-        final JButton disconnect = new JButton("Disconnect & Close");
+        send = new JButton("Send to Arduino");
+        disconnect = new JButton("Disconnect & Close");
 
         send.addActionListener(new ActionListener() {
             @Override
@@ -121,18 +131,41 @@ public class PortOutputViewerFrame extends JFrame {
             }
         });
 
-        final JPanel pan1 = new JPanel();
-        pan1.setLayout(new FlowLayout());
+
+        final JPanel sendPanel = new JPanel();
+        sendPanel.setLayout(new FlowLayout());
+
+        String list = ConnectionManager.getInstance().getBaudrates();
+        baudratesList = new JComboBox(list.split(","));
+
+        ConnectionManager.getInstance().setjTextArea(this);
+
+        JButton connectButton = new JButton("Connect");
+        connectButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                final int rate = Integer.parseInt((String) baudratesList.getSelectedItem());
+                System.out.println("connecting to  " + port + " @ " + rate);
+
+                ConnectionManager.getInstance().setPort(port, rate);
+                ConnectionManager.getInstance().connect();
+                enableInterface();
+            }
+        });
+
+
+        sendPanel.add(connectButton);
+        sendPanel.add(baudratesList);
         sendField.setColumns(FIELD_COLUMNS);
-        pan1.add(sendField);
-        pan1.add(send);
-        pan1.add(disconnect);
+        sendPanel.add(sendField);
+        sendPanel.add(send);
+        sendPanel.add(disconnect);
 
         getContentPane().setLayout(new BorderLayout());
 
         final JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(0, 1));
-        topPanel.add(pan1);
+        topPanel.add(sendPanel);
         this.getContentPane().add(topPanel, BorderLayout.NORTH);
 
 
@@ -161,6 +194,7 @@ public class PortOutputViewerFrame extends JFrame {
 
         this.setVisible(true);
         this.setMinimumSize(new Dimension(WIDTH_S, LENGTH_S));
+        disableInterface();
     }
 
     /**
@@ -183,6 +217,27 @@ public class PortOutputViewerFrame extends JFrame {
      */
     public final void setText(final String text) {
         textArea.setText(text);
+    }
+
+    public final void enableInterface() {
+        sendField.setEnabled(true);
+        send.setEnabled(true);
+        disconnect.setEnabled(true);
+        textArea.setEnabled(true);
+        textArea.setText("");
+    }
+
+    public final void disableInterface() {
+        sendField.setEnabled(false);
+        send.setEnabled(false);
+        disconnect.setEnabled(false);
+        textArea.setEnabled(false);
+        textArea.setText("No Connection avaialable please select a Baudrate and click connect");
+    }
+
+    public static void main(String[] args) {
+        PortOutputViewerFrame pf = new PortOutputViewerFrame(null, "/dev/ttyACM0");
+        pf.show();
     }
 
 

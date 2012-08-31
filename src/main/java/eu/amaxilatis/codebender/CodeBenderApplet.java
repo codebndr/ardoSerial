@@ -143,10 +143,7 @@ public class CodeBenderApplet extends JApplet {
      * @param rate the rate to use when connecting.
      */
     public final void overrideConnect(final int port, final int rate) {
-        ConnectionManager.getInstance().setjTextArea(new PortOutputViewerFrame(this));
-
-        ConnectionManager.getInstance().setPort(ports[port], rate);
-        ConnectionManager.getInstance().connect();
+        ConnectionManager.getInstance().setjTextArea(new PortOutputViewerFrame(this,ports[port]));
     }
 
 

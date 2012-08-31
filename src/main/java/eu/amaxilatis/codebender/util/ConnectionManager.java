@@ -18,7 +18,7 @@ public class ConnectionManager implements Runnable {
      * the name of the serial port.
      */
     private static String port;
-    private static final String BAUDRATES = "300,1200,2400,4800,9600,14400,19200,28800,38400,57600,115200";
+    private static final String BAUDRATES = "9600,300,1200,2400,4800,14400,19200,28800,38400,57600,115200";
 
     public final void setjTextArea(final PortOutputViewerFrame jTextArea) {
         this.jTextArea = jTextArea;
@@ -78,7 +78,7 @@ public class ConnectionManager implements Runnable {
      */
     public final void setPort(final String port, final int baudRate) {
         ConnectionManager.port = port;
-        ConnectionManager.baudRate = Integer.parseInt(BAUDRATES.split(",")[baudRate]);
+        ConnectionManager.baudRate = baudRate;
     }
 
     /**
@@ -101,6 +101,8 @@ public class ConnectionManager implements Runnable {
             e.printStackTrace();
         }
         serialPort = new SerialPort(port);
+        System.out.println(jTextArea);
+
         jTextArea.appendText(port + "@" + baudRate + "\n");
         try {
             serialPort.openPort();
@@ -154,6 +156,9 @@ public class ConnectionManager implements Runnable {
     public final void send(final String inputString) {
         try {
             serialPort.writeBytes(inputString.getBytes());
+        } catch (NullPointerException npe) {
+            System.out.println("No Connection avaialable please select a Baudrate and click connect");
+            jTextArea.appendText("No Connection avaialable please select a Baudrate and click connect");
         } catch (SerialPortException e) {
             jTextArea.appendText(e.getExceptionType());
         }
