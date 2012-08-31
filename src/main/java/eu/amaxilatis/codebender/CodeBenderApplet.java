@@ -140,9 +140,8 @@ public class CodeBenderApplet extends JApplet {
      * Connects to the USB port specified to communicate over a serial connection.
      *
      * @param port the index of the port to connect to. Provided by the @see probeUsb
-     * @param rate the rate to use when connecting.
      */
-    public final void overrideConnect(final int port, final int rate) {
+    public final void overrideConnect(final int port) {
         ConnectionManager.getInstance().setjTextArea(new PortOutputViewerFrame(this,ports[port]));
     }
 
