@@ -72,10 +72,10 @@ public class PortOutputViewerFrame extends JFrame {
         this.port = port;
         this.setLayout(new BorderLayout());
         if (applet != null) {
-            this.setTitle("Codebender.cc - ArduinoSerialMonitor - Version:"
+            this.setTitle("Codebender.cc - ArduinoSerialMonitor - Port : " + port + " Version:"
                     + applet.getVersion());
         } else {
-            this.setTitle("Codebender.cc - ArduinoSerialMonitor - Version:");
+            this.setTitle("Codebender.cc - ArduinoSerialMonitor - Port : " + port + " Version:");
         }
         textArea = new JTextArea();
         sendField = new JTextField("");
@@ -148,6 +148,7 @@ public class PortOutputViewerFrame extends JFrame {
                 System.out.println("connecting to  " + port + " @ " + rate);
 
                 ConnectionManager.getInstance().setPort(port, rate);
+                textArea.setText("");
                 ConnectionManager.getInstance().connect();
                 enableInterface();
             }
@@ -224,7 +225,6 @@ public class PortOutputViewerFrame extends JFrame {
         send.setEnabled(true);
         disconnect.setEnabled(true);
         textArea.setEnabled(true);
-        textArea.setText("");
     }
 
     public final void disableInterface() {
