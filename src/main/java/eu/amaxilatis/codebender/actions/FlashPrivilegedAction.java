@@ -313,12 +313,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     }
 
     public static void main(final String[] args) {
-//        String message = "absfsaf \n sdasfsasd";
-//        try {
-//            callUrl("http://gold.cti.gr:82/sendmail.php?message=" + URLEncoder.encode(message, "UTF-8"));
-//        } catch (UnsupportedEncodingException e) {
-//            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-//        }
+
         File dFile = new File("/tmp/avrdude");
         System.out.println(dFile.length());
         dFile = new File("/tmp/avrdude.conf");
