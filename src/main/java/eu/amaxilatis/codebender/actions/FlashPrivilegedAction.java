@@ -131,7 +131,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         try {
             flashProc1 = Runtime.getRuntime().exec(flashCommand.toString());
         } catch (IOException e) {
-            reportError(e);
+            reportError(e, flashCommand.toString());
             return CodeBenderApplet.PROCESS_ERROR;
         }
         try {
@@ -142,6 +142,19 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         flashProc1.destroy();
 
         return CodeBenderApplet.FLASH_OK;
+    }
+
+    private void reportError(Exception exception, String flashCommand) {
+        final StringBuilder builder = new StringBuilder(flashCommand);
+        for (StackTraceElement element : exception.getStackTrace()) {
+            builder.append(element.toString()).append("\n");
+        }
+        CodeBenderApplet.errorMessage = builder.toString();
+        try {
+            callUrl("http://codebender.cc/misc/notify?message=" + URLEncoder.encode(builder.toString(), "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
     }
 
     private void reportError(final Exception exception) {
@@ -235,7 +248,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                reportError(e);
+                reportError(e, flashCommand.toString());
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
         } catch (IOException e) {
@@ -288,7 +301,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
             } catch (InterruptedException e) {
                 e.printStackTrace();
-                reportError(e);
+                reportError(e, flashCommand.toString());
                 return CodeBenderApplet.INTERUPTED_ERROR;
             }
         } catch (IOException e) {
