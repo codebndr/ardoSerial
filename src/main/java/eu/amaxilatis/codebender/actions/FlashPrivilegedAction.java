@@ -3,6 +3,7 @@ package eu.amaxilatis.codebender.actions;
 import eu.amaxilatis.codebender.CodeBenderApplet;
 import eu.amaxilatis.codebender.command.AvrdudeLinuxCommand;
 import eu.amaxilatis.codebender.command.AvrdudeWindowsCommand;
+import org.apache.commons.codec.binary.Base64;
 
 import java.io.*;
 import java.net.*;
@@ -34,6 +35,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
     private String maximumSize;
     private String board;
     private String protocol;
+    private static final String TEMP_BIN_UNIX = "/tmp/file.bin";
 
     /**
      * Constructs a new flash action.
@@ -60,8 +62,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
         this.port = port;
         this.file = file;
         this.maximumSize = this.maximumSize;
-        this.baudRate=baudRate;
-        this.protocol=protocol;
+        this.baudRate = baudRate;
+        this.protocol = protocol;
 
 
         populateChangemap();
@@ -122,32 +124,54 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             return CodeBenderApplet.CONF_ERROR;
         }
 
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter(basepath + "\\file.hex");
-            fileWriter.write(file);
-            fileWriter.close();
+        AvrdudeWindowsCommand flashCommand;
+        if ("".equals(maximumSize)) {
 
-        } catch (IOException e) {
-            e.printStackTrace();
-            reportError(e);
-            return CodeBenderApplet.HEX_ERROR;
-        } finally {
+            FileWriter fileWriter = null;
             try {
+                fileWriter = new FileWriter(basepath + "\\file.hex");
+                fileWriter.write(file);
                 fileWriter.close();
+
             } catch (IOException e) {
                 e.printStackTrace();
                 reportError(e);
+                return CodeBenderApplet.HEX_ERROR;
+            } finally {
+                try {
+                    fileWriter.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    reportError(e);
+                }
             }
-        }
 
-        AvrdudeWindowsCommand flashCommand;
-        if ("".equals(maximumSize)) {
             flashCommand =
                     new AvrdudeWindowsCommand(basepath, port, basepath + "\\file.hex\"", baudRate);
         } else {
+            byte[] bytes = Base64.decodeBase64(file);
+
+            File file = new File(basepath + "\\file.bin");
+            FileOutputStream fout = null;
+            try {
+                fout = new FileOutputStream(file);
+                fout.write(bytes);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                reportError(e);
+                return CodeBenderApplet.BIN_ERROR;
+            } finally {
+                try {
+                    fout.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    reportError(e);
+                }
+            }
+
             flashCommand =
-                    new AvrdudeWindowsCommand(basepath, port, basepath + "\\file.hex\"", maximumSize,protocol,baudRate, board);
+                    new AvrdudeWindowsCommand(basepath, port, basepath + "\\file.bin\"", maximumSize, protocol, baudRate, board);
         }
 
         System.out.println("running : " + flashCommand.toString());
@@ -249,25 +273,47 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             return CodeBenderApplet.CONF_ERROR;
         }
 
-        try {
-            FileWriter fileWriter = null;
-            fileWriter = new FileWriter(TEMP_HEX_UNIX);
-            fileWriter.write(file);
-            fileWriter.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            reportError(e);
-            return CodeBenderApplet.HEX_ERROR;
-        }
-
         final AvrdudeLinuxCommand flashCommand;
         if ("".equals(maximumSize)) {
+            try {
+                FileWriter fileWriter = null;
+                fileWriter = new FileWriter(TEMP_HEX_UNIX);
+                fileWriter.write(file);
+                fileWriter.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                reportError(e);
+                return CodeBenderApplet.HEX_ERROR;
+            }
+
+
             flashCommand =
                     new AvrdudeLinuxCommand(basepath, port, TEMP_HEX_UNIX, baudRate);
         } else {
+            byte[] bytes = Base64.decodeBase64(file);
+
+            File file = new File(TEMP_BIN_UNIX);
+            FileOutputStream fout = null;
+            try {
+                fout = new FileOutputStream(file);
+                fout.write(bytes);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                reportError(e);
+                return CodeBenderApplet.BIN_ERROR;
+            } finally {
+                try {
+                    fout.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    reportError(e);
+                }
+            }
+
             flashCommand =
-                    new AvrdudeLinuxCommand(basepath, port, TEMP_HEX_UNIX, maximumSize,protocol,baudRate, board);
+                    new AvrdudeLinuxCommand(basepath, port, TEMP_BIN_UNIX, maximumSize, protocol, baudRate, board);
         }
 
         try {
@@ -307,25 +353,45 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             return CodeBenderApplet.CONF_ERROR;
         }
 
-        try {
-            FileWriter fileWriter = null;
-            fileWriter = new FileWriter(TEMP_HEX_UNIX);
-            fileWriter.write(file);
-            fileWriter.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            reportError(e);
-            return CodeBenderApplet.HEX_ERROR;
-        }
-
         final AvrdudeLinuxCommand flashCommand;
         if ("".equals(maximumSize)) {
+            try {
+                FileWriter fileWriter = null;
+                fileWriter = new FileWriter(TEMP_HEX_UNIX);
+                fileWriter.write(file);
+                fileWriter.close();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                reportError(e);
+                return CodeBenderApplet.HEX_ERROR;
+            }
+
             flashCommand =
                     new AvrdudeLinuxCommand(basepath, port, TEMP_HEX_UNIX, baudRate);
         } else {
+            byte[] bytes = Base64.decodeBase64(file);
+
+            File file = new File(TEMP_BIN_UNIX);
+            FileOutputStream fout = null;
+            try {
+                fout = new FileOutputStream(file);
+                fout.write(bytes);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                reportError(e);
+                return CodeBenderApplet.BIN_ERROR;
+            } finally {
+                try {
+                    fout.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    reportError(e);
+                }
+            }
             flashCommand =
-                    new AvrdudeLinuxCommand(basepath, port, TEMP_HEX_UNIX, maximumSize,protocol,baudRate, board);
+                    new AvrdudeLinuxCommand(basepath, port, TEMP_BIN_UNIX, maximumSize, protocol, baudRate, board);
         }
 
         try {
