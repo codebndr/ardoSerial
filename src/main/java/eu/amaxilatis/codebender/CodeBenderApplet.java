@@ -183,6 +183,18 @@ public class CodeBenderApplet extends JApplet {
         return errorMessage;
     }
 
+    /**
+     * Designed to be called from javascript.
+     * Uses avrdude to flash the Arduino connected to the specified port with the file provided.
+     *
+     * @param port        the index of the port to use.
+     * @param filename    the contents of the file to flash to the Arduino.
+     * @param maximumSize the maximum size for flashing
+     * @param protocol    the protocol for flashing
+     * @param speed       the baudrate to use for flashing.
+     * @param board       the mcu to be converted internally
+     * @return 0 if succesfull and a greater than zero error code else.
+     */
     public final int uploadUSB(final int port, final String filename, final String maximumSize, final String protocol, final String speed, final String board) {
         System.out.println("flash");
         final FlashPrivilegedAction action = new FlashPrivilegedAction(ports[port], filename, maximumSize, protocol, speed, board);
