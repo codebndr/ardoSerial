@@ -142,7 +142,7 @@ public class CodeBenderApplet extends JApplet {
      * @param port the index of the port to connect to. Provided by the @see probeUsb
      */
     public final void overrideConnect(final int port) {
-        ConnectionManager.getInstance().setjTextArea(new PortOutputViewerFrame(this,ports[port]));
+        ConnectionManager.getInstance().setjTextArea(new PortOutputViewerFrame(this, ports[port]));
     }
 
 
@@ -181,6 +181,14 @@ public class CodeBenderApplet extends JApplet {
      */
     public static String getErrorMessage() {
         return errorMessage;
+    }
+
+    public final int uploadUSB(final int port, final String filename, final String maximumSize, final String protocol, final String speed, final String board) {
+        System.out.println("flash");
+        final FlashPrivilegedAction action = new FlashPrivilegedAction(ports[port], filename, maximumSize, protocol, speed, board);
+        final int response = (Integer) AccessController.doPrivileged(action);
+        System.out.println("Returing value : " + response);
+        return response;
     }
 }
 

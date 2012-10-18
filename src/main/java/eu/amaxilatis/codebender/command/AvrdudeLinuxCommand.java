@@ -28,6 +28,18 @@ public class AvrdudeLinuxCommand {
                 .append(" -F");
     }
 
+    public AvrdudeLinuxCommand(final String basepath, final String port, final String tempFile, final String maximumSize, final String protocol, final String baudRate, final String board) {
+        flashCommand.append("").append(basepath).append("avrdude ")
+                .append(" -C ").append(basepath).append("avrdude.conf ")
+                .append(" -P ").append(port)
+                .append(" -p ").append(board)
+                .append(" -c ").append(protocol)
+                .append(" -b ").append(baudRate)
+//                .append(" -c ").append(maximumSize)
+                .append(" -u -U flash:w:").append(tempFile).append("")
+                .append(" -F");
+    }
+
     @Override
     public final String toString() {
         return flashCommand.toString();

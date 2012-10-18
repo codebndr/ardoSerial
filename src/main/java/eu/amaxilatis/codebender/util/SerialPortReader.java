@@ -1,9 +1,7 @@
 package eu.amaxilatis.codebender.util;
 
 import eu.amaxilatis.codebender.graphics.PortOutputViewerFrame;
-import jssc.SerialPortEvent;
-import jssc.SerialPortEventListener;
-import jssc.SerialPortException;
+import jssc.*;
 
 /**
  * A class that handles the serial port output.
