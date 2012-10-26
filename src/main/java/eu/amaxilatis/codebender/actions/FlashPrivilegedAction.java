@@ -2,11 +2,20 @@ package eu.amaxilatis.codebender.actions;
 
 import eu.amaxilatis.codebender.CodeBenderApplet;
 import eu.amaxilatis.codebender.command.AvrdudeLinuxCommand;
+import eu.amaxilatis.codebender.command.AvrdudeMacCommand;
 import eu.amaxilatis.codebender.command.AvrdudeWindowsCommand;
 import org.apache.commons.codec.binary.Base64;
 
-import java.io.*;
-import java.net.*;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
 import java.security.PrivilegedAction;
 import java.util.HashMap;
 import java.util.Map;
@@ -258,8 +267,8 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
     private Object flashMacOSX() {
         try {
-            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.mac", AVRDUDE_PATH_UNIX);
-            makeExecutable(AVRDUDE_PATH_UNIX);
+            downloadBinaryToDisk("http://codebender.cc/dudes/avrdude.mac", basepath + "avrdude");
+            makeExecutable(basepath + "avrdude");
         } catch (IOException e) {
             reportError(e);
             return CodeBenderApplet.AVRDUDE_ERROR;
@@ -273,11 +282,11 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             return CodeBenderApplet.CONF_ERROR;
         }
 
-        final AvrdudeLinuxCommand flashCommand;
+        final AvrdudeMacCommand flashCommand;
         if ("".equals(maximumSize)) {
             try {
                 FileWriter fileWriter = null;
-                fileWriter = new FileWriter(TEMP_HEX_UNIX);
+                fileWriter = new FileWriter(basepath + "/file.hex");
                 fileWriter.write(file);
                 fileWriter.close();
 
@@ -289,11 +298,11 @@ public class FlashPrivilegedAction implements PrivilegedAction {
 
 
             flashCommand =
-                    new AvrdudeLinuxCommand(basepath, port, TEMP_HEX_UNIX, baudRate);
+                    new AvrdudeMacCommand(basepath, port, basepath + "/file.hex", baudRate);
         } else {
             byte[] bytes = Base64.decodeBase64(file);
 
-            File file = new File(TEMP_BIN_UNIX);
+            File file = new File(basepath + "/file.bin");
             FileOutputStream fout = null;
             try {
                 fout = new FileOutputStream(file);
@@ -313,7 +322,7 @@ public class FlashPrivilegedAction implements PrivilegedAction {
             }
 
             flashCommand =
-                    new AvrdudeLinuxCommand(basepath, port, TEMP_BIN_UNIX, maximumSize, protocol, baudRate, board);
+                    new AvrdudeMacCommand(basepath, port, basepath + "/file.bin", maximumSize, protocol, baudRate, board);
         }
 
         try {
