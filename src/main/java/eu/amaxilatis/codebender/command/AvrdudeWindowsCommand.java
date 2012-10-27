@@ -25,7 +25,7 @@ public class AvrdudeWindowsCommand {
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
                 .append(" -p m328p ")
-                .append(" -U flash:w:\"").append(tempFile + ":i -F");
+                .append(" -U flash:w:\"").append(tempFile + ":a -F");
 
     }
 
@@ -37,7 +37,7 @@ public class AvrdudeWindowsCommand {
                 .append(" -c ").append(protocol)
 //                .append(" -c ").append(maximumSize)//need to fix this
                 .append(" -p ").append(board)
-                .append(" -U flash:w:\"").append(tempFile + ":i -F");
+                .append(" -U flash:w:\"").append(tempFile + ":a -F");
 
     }
 

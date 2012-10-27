@@ -25,7 +25,7 @@ public class AvrdudeCommandTest {
                 .append(" -P \\\\.\\").append(port)
                 .append(" -c arduino ")
                 .append(" -p m328p ")
-                .append(" -U flash:w:\"").append(basepath + "\\file.hex\":i -F");
+                .append(" -U flash:w:\"").append(basepath + "\\file.hex\":a -F");
 
 
         System.out.println(flashCommand.toString());
