@@ -1,3 +1,5 @@
+#Replaced by [npapi plugin](https://github.com/codebendercc/npapiPlugins)
+
 This repository is part of the [codebender.cc](http://www.codebender.cc) maker and artist web platform.
 
 ## And what's that?
